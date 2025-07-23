@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Code Factory – Interactive Industrial Coding Platform
 
-## Getting Started
+This project is a web-based educational platform designed to teach coding through industrial machine simulation.
+Inspired by platforms like boot.dev, it combines learning paths with hands-on drag-and-drop exercises to build functional automation sequences.
 
-First, run the development server:
+The goal is to help learners understand how to program industrial machines by manipulating a timeline and simulating behavior in 3D via a Unity WebGL game.
+
+---
+
+## 🚀 Tech Stack
+
+- Next.js (App Router, TypeScript)
+- Tailwind CSS + shadcn/ui
+- Prettier + ESLint for formatting & linting
+- Unity WebGL (embedded game engine)
+- (Planned) Stripe API (for subscriptions)
+- (Planned) Auth.js (for user authentication)
+- (Planned) PostgreSQL + Prisma (for storing progress)
+
+---
+
+## 🧪 Getting Started
+
+Run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure (atomic design)
 
-## Learn More
+```
+public/Build/   # Unity WebGL export
+src/
+├── app/            # Routes (Next.js App Router)
+├── components/
+│   ├── atoms/
+│   ├── molecules/
+│   └── organisms/
+├── lib/            # Utilities (Prisma, auth, stripe...)
+├── styles/
+├── hooks/
+├── types/
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📦 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app is ready for deployment on Vercel or any Node.js-compatible platform.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 💡 Roadmap
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] Setup Next.js + Tailwind + Prettier + ESLint
+- [ ] First components
+- [ ] Embed Unity WebGL
+- [ ] User accounts & saved progress (Auth.js + Prisma)
+- [ ] Subscription or ad-based access (Stripe + ads)
+- [ ] Real-time feedback on exercises
+
+---
+
+Feel free to fork the repo, test locally, and contribute!
