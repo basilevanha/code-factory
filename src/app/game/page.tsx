@@ -10,7 +10,7 @@ export default function GamePage() {
         Retour à l'accueil
       </Button>
       <div className="mt-8 w-full max-w-3xl">
-        <UnityWrapper />
+        <UnityWrapper buildPath={'/unity-test'} />
       </div>
     </div>
   );
