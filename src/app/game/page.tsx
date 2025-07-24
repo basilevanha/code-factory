@@ -1,6 +1,10 @@
+'use client';
+
 import Button from '@/components/atoms/Button';
 import Title from '@/components/atoms/Title';
 import UnityWrapper from '@/components/organisms/UnityWrapper';
+
+const gamePath = '/unity/coding-factory-v2';
 
 export default function GamePage() {
   return (
@@ -10,7 +14,7 @@ export default function GamePage() {
         {"Retour à l'accueil"}
       </Button>
       <div className="mt-8 w-full max-w-3xl">
-        <UnityWrapper buildPath={'/unity/coding-factory-v1'} />
+        <UnityWrapper buildPath={gamePath} />
       </div>
     </div>
   );
