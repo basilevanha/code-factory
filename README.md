@@ -30,22 +30,32 @@ pnpm dev
 
 Then open http://localhost:3000 in your browser.
 
+Add unity builds in public/unity , then if the files are compressed (default brotli compression by unity) you can open the build folder in a terminal and run :
+
+```
+for file in *.br; do
+  brotli --decompress "$file" -o "${file%.br}"
+done
+```
+
 ---
 
 ## 📁 Project Structure (atomic design)
 
 ```
-public/Build/   # Unity WebGL export
-src/
-├── app/            # Routes (Next.js App Router)
-├── components/
-│   ├── atoms/
-│   ├── molecules/
-│   └── organisms/
-├── lib/            # Utilities (Prisma, auth, stripe...)
-├── styles/
-├── hooks/
-├── types/
+code-factory/
+├──public/
+│   └──unity/           # Unity WebGL export
+├──src/
+│   ├── app/            # Routes (Next.js App Router)
+│   ├── components/
+│   │   ├── atoms/
+│   │   ├── molecules/
+│   │   └── organisms/
+│   ├── lib/            # Utilities (Prisma, auth, stripe...)
+│   ├── styles/
+│   ├── hooks/
+│   └── types/
 ```
 
 ---
@@ -59,8 +69,8 @@ The app is ready for deployment on Vercel or any Node.js-compatible platform.
 ## 💡 Roadmap
 
 - [x] Setup Next.js + Tailwind + Prettier + ESLint
-- [ ] First components
-- [ ] Embed Unity WebGL
+- [x] First components
+- [x] Embed Unity WebGL
 - [ ] User accounts & saved progress (Auth.js + Prisma)
 - [ ] Subscription or ad-based access (Stripe + ads)
 - [ ] Real-time feedback on exercises
