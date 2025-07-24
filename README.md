@@ -1,4 +1,4 @@
-# Code Factory – Interactive Industrial Coding Platform
+# Coding Factory – Interactive Industrial Coding Platform
 
 This project is a web-based educational platform designed to teach coding through industrial machine simulation.
 Inspired by platforms like boot.dev, it combines learning paths with hands-on drag-and-drop exercises to build functional automation sequences.
@@ -43,7 +43,7 @@ done
 ## 📁 Project Structure (atomic design)
 
 ```
-code-factory/
+coding-factory/
 ├──public/
 │   └──unity/           # Unity WebGL export
 ├──src/
