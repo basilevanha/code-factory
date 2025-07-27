@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "brotli": "find ./public/unity -type f -name \"*.br\" | while read -r file; do brotli --decompress \"$file\" -o \"${file%.br}\"; done"
   },
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.13",
