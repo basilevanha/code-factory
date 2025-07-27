@@ -4,12 +4,12 @@ import Button from '@/components/atoms/Button';
 import Title from '@/components/atoms/Title';
 import UnityWrapper from '@/components/organisms/UnityWrapper';
 
-const gamePath = '/unity/coding-factory-v2';
+const gamePath = '/unity/demo';
 
 export default function GamePage() {
   return (
     <div className="flex flex-col items-center">
-      <Title>Page de jeu</Title>
+      <Title>LEVEL 1</Title>
       <Button href="/" icon="chevron-left">
         {"Retour à l'accueil"}
       </Button>

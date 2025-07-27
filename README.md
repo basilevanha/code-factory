@@ -33,9 +33,7 @@ Then open http://localhost:3000 in your browser.
 Add unity builds in public/unity , then if the files are compressed (default brotli compression by unity) you can open the build folder in a terminal and run :
 
 ```
-for file in *.br; do
-  brotli --decompress "$file" -o "${file%.br}"
-done
+pnpm brotli
 ```
 
 ---
