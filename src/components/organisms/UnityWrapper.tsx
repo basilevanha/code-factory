@@ -5,6 +5,7 @@ import { useMemo, useEffect, useState } from 'react';
 import Toggle from '@/components/atoms/Toggle';
 import Button from '@/components/atoms/Button';
 
+// Typescipt declarations
 declare global {
   interface Window {
     onUnitySendEtat?: (json: string) => void;
@@ -15,9 +16,10 @@ type UnityWrapperProps = {
   buildPath: string;
   className?: string;
 };
+// End of TypeScript declarations
 
 const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
-  const [etatDetecteur, setEtatDetecteur] = useState<number | null>(null);
+  const [isDetectorOn, setIsDetectorOn] = useState<number | null>(null);
 
   const paths = useMemo(
     () => ({
@@ -34,7 +36,6 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
 
   const handleSpawn = () => {
     if (!isLoaded) return;
-    console.log('Spawner button clicked');
     sendMessage('Pipe', 'TriggerSpawn', '');
   };
 
@@ -43,7 +44,7 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
       try {
         const data = JSON.parse(json);
         if (data.id === 'Sensor_1') {
-          setEtatDetecteur(data.etat);
+          setIsDetectorOn(data.etat);
         }
       } catch (e) {
         console.error('Erreur JSON Unity → JS :', e);
@@ -61,23 +62,15 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
     sendMessage('Conveyor_1', 'SetActifFromReact', value);
   };
 
-  const demanderEtatSensor = () => {
-    if (!isLoaded) return;
-    sendMessage('Sensor_1', 'SendEtatJSONToJS');
-    console.log(etatDetecteur);
-  };
-
   return (
     <div className={`mx-auto max-w-6xl ${className}`}>
       <div className="flex gap-8">
         <div className="flex w-1/3 flex-col justify-start gap-4">
           <Toggle onClick={handleConveyor}>Conveyor on/off</Toggle>
-
-          <Button onClick={demanderEtatSensor}>lecture Sensor_1</Button>
           <Button onClick={handleSpawn}>Spawwwwn</Button>
 
           <p className="mt-2 text-lg font-bold">
-            État Sensor_1 → {etatDetecteur !== null ? etatDetecteur : '...'}
+            État Sensor_1 → {isDetectorOn !== null ? isDetectorOn : '...'}
           </p>
         </div>
 
