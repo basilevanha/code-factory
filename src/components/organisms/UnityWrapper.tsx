@@ -7,7 +7,7 @@ import Button from '@/components/atoms/Button';
 
 declare global {
   interface Window {
-    onReceiveEtatJSON?: (json: string) => void;
+    onUnitySendEtat?: (json: string) => void;
   }
 }
 
@@ -39,12 +39,11 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
   };
 
   useEffect(() => {
-    window.onReceiveEtatJSON = (json: string) => {
+    window.onUnitySendEtat = (json: string) => {
       try {
         const data = JSON.parse(json);
         if (data.id === 'Sensor_1') {
           setEtatDetecteur(data.etat);
-          //console.log(data);
         }
       } catch (e) {
         console.error('Erreur JSON Unity → JS :', e);
@@ -52,7 +51,7 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
     };
 
     return () => {
-      delete window.onReceiveEtatJSON;
+      delete window.onUnitySendEtat;
     };
   }, []);
 
@@ -78,7 +77,7 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
           <Button onClick={handleSpawn}>Spawwwwn</Button>
 
           <p className="mt-2 text-lg font-bold">
-            État détecteur : {etatDetecteur !== null ? etatDetecteur : '...'}
+            État Sensor_1 → {etatDetecteur !== null ? etatDetecteur : '...'}
           </p>
         </div>
 
