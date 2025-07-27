@@ -4,7 +4,7 @@ import Button from '@/components/atoms/Button';
 import Title from '@/components/atoms/Title';
 import UnityWrapper from '@/components/organisms/UnityWrapper';
 
-const gamePath = '/unity/coding-factory-v2';
+const gamePath = '/unity/demo';
 
 export default function GamePage() {
   return (
