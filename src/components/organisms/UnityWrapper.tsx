@@ -32,29 +32,29 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
     useUnityContext(paths);
 
-  // const handleSpawn = () => {
-  //   if (!isLoaded) return;
-  //   console.log('Spawner button clicked');
-  //   sendMessage('Spawner', 'TriggerSpawn', '');
-  // };
+  const handleSpawn = () => {
+    if (!isLoaded) return;
+    console.log('Spawner button clicked');
+    sendMessage('Pipe', 'TriggerSpawn', '');
+  };
 
   useEffect(() => {
-    ((window.onReceiveEtatJSON = (json: string) => {
+    window.onReceiveEtatJSON = (json: string) => {
       try {
         const data = JSON.parse(json);
         if (data.id === 'Sensor_1') {
           setEtatDetecteur(data.etat);
+          //console.log(data);
         }
       } catch (e) {
         console.error('Erreur JSON Unity → JS :', e);
       }
+    };
 
-      return () => {
-        delete window.onReceiveEtatJSON;
-      };
-    }),
-      []);
-  });
+    return () => {
+      delete window.onReceiveEtatJSON;
+    };
+  }, []);
 
   const handleConveyor = (isActive: boolean) => {
     if (!isLoaded) return;
@@ -65,6 +65,7 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
   const demanderEtatSensor = () => {
     if (!isLoaded) return;
     sendMessage('Sensor_1', 'SendEtatJSONToJS');
+    console.log(etatDetecteur);
   };
 
   return (
@@ -74,6 +75,7 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
           <Toggle onClick={handleConveyor}>Conveyor on/off</Toggle>
 
           <Button onClick={demanderEtatSensor}>lecture Sensor_1</Button>
+          <Button onClick={handleSpawn}>Spawwwwn</Button>
 
           <p className="mt-2 text-lg font-bold">
             État détecteur : {etatDetecteur !== null ? etatDetecteur : '...'}
