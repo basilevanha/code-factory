@@ -58,7 +58,7 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
 
   const handleConveyor = (isActive: boolean) => {
     if (!isLoaded) return;
-    const value = isActive ? '0' : '1';
+    const value = isActive ? '1' : '0';
     sendMessage('Conveyor_1', 'SetActifFromReact', value);
   };
 
