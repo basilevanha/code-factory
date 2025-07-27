@@ -2,7 +2,7 @@
 
 import { Unity, useUnityContext } from 'react-unity-webgl';
 import { useMemo } from 'react';
-// import Button from '@/components/atoms/Button';
+import Button from '@/components/atoms/Button';
 import Toggle from '@/components/atoms/Toggle';
 
 type UnityWrapperProps = {
@@ -24,16 +24,15 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
     useUnityContext(paths);
 
-  // const handleSpawn = () => {
-  //   if (!isLoaded) return;
-  //   console.log('Spawner button clicked');
-  //   sendMessage('Spawner', 'TriggerSpawn');
-  // };
+  const handleSpawn = () => {
+    if (!isLoaded) return;
+    console.log('Spawner button clicked');
+    sendMessage('Spawner', 'TriggerSpawn', '');
+  };
 
   const handleConveyor = (isActive: boolean) => {
     if (!isLoaded) return;
-    console.log('Conveyor button clicked');
-    const value = isActive ? '0' : '1';
+    const value = isActive ? '1' : '0';
     sendMessage('Conveyor_1', 'SetActifFromReact', value);
   };
 
@@ -48,13 +47,13 @@ const UnityWrapper = ({ buildPath, className = '' }: UnityWrapperProps) => {
           Chargement... {Math.round(loadingProgression * 100)}%
         </p>
       )}
-      {/* <Button
+      <Button
         onClick={handleSpawn}
         className="m-5 flex w-min bg-green-600 text-white hover:bg-green-700"
         icon="chevron-right"
       >
         {'Spawn'}
-      </Button> */}
+      </Button>
       <Toggle onClick={handleConveyor}>{'Conveyor on/off'}</Toggle>
     </div>
   );

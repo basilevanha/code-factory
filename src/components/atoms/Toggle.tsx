@@ -12,7 +12,7 @@ const Toggle = ({ defaultChecked = false, onClick, children }: ToggleProps) => {
   const handleToggle = () => {
     const newValue = !checked;
     setChecked(newValue);
-    onClick?.(!newValue);
+    onClick?.(newValue);
   };
 
   return (
