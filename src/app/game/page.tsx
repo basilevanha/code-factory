@@ -9,7 +9,7 @@ const gamePath = '/unity/coding-factory-v2';
 export default function GamePage() {
   return (
     <div className="flex flex-col items-center">
-      <Title>Page de jeu</Title>
+      <Title>LEVEL 1</Title>
       <Button href="/" icon="chevron-left">
         {"Retour à l'accueil"}
       </Button>
