@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Jeu 1',
-  description: 'Premier niveau du jeu Coding Factory',
+  title: 'Demo',
+  description: 'First game of the Coding Factory',
 };
 
 export default function RootLayout({
