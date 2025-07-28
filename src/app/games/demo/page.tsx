@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUnityContext } from 'react-unity-webgl';
 
 // Utilities
@@ -22,9 +22,7 @@ const gamePath = '/unity/demo';
 
 export default function GamePage() {
   const [sensorState, setSensorState] = useState<number | null>(null);
-
-  // Génère et mémorise les chemins de fichiers Unity, recalculés uniquement si gamePath change
-  const unityPaths = useMemo(() => getUnityPaths(gamePath), [gamePath]);
+  const unityPaths = getUnityPaths(gamePath);
 
   // Initialise Unity avec les chemins fournis et extrait les fonctions utiles
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
