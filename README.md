@@ -24,16 +24,16 @@ The goal is to help learners understand how to program industrial machines by ma
 Run the development server:
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 Then open http://localhost:3000 in your browser.
 
-Add unity builds in public/unity , then if the files are compressed (default brotli compression by unity) you can open the build folder in a terminal and run :
+Add unity builds in public/unity , then if the files are compressed (default brotli compression by unity) you can open a terminal and run :
 
 ```
-pnpm brotli
+npm run brotli
 ```
 
 ---
@@ -44,16 +44,15 @@ pnpm brotli
 coding-factory/
 ├──public/
 │   └──unity/           # Unity WebGL export
-├──src/
-│   ├── app/            # Routes (Next.js App Router)
-│   ├── components/
-│   │   ├── atoms/
-│   │   ├── molecules/
-│   │   └── organisms/
-│   ├── lib/            # Utilities (Prisma, auth, stripe...)
-│   ├── styles/
-│   ├── hooks/
-│   └── types/
+└──src/
+    ├── app/            # Routes (Next.js App Router)
+    ├── components/
+    │   ├── atoms/
+    │   ├── molecules/
+    │   └── organisms/
+    ├── lib/            # Utilities (Prisma, auth, stripe...)
+    ├── hooks/
+    └── types/
 ```
 
 ---

@@ -19,7 +19,7 @@ const Toggle = ({ defaultChecked = false, onClick, children }: ToggleProps) => {
     <button
       type="button"
       onClick={handleToggle}
-      className="m-5 flex cursor-pointer items-center gap-3 focus:outline-none"
+      className="flex cursor-pointer items-center gap-3 focus:outline-none"
     >
       <div className="relative">
         <div
