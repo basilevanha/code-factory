@@ -20,10 +20,10 @@ const UnityWrapper = ({
   className = '',
 }: UnityWrapperProps) => {
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`mx-auto w-full max-w-[90vmin] ${className}`}>
       <Unity
         unityProvider={unityProvider}
-        className="aspect-video w-full rounded-lg bg-black"
+        className="aspect-square w-full rounded-lg bg-black"
       />
       <div className="flex min-h-[2rem] items-center justify-center">
         {!isLoaded && (
