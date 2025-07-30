@@ -12,8 +12,11 @@ import Button from '@/components/atoms/Button';
 import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
 
+import BlocContactNO from '@/components/atoms/BlocContactNO';
+
 declare global {
   interface Window {
+    onUnityReady?: (json: string) => void;
     onUnitySendEtat?: (json: string) => void;
   }
 }
@@ -38,6 +41,23 @@ export default function GamePage() {
     const value = isActive ? '1' : '0';
     sendMessage('Conveyor_1', 'SetActifFromReact', value);
   };
+
+  const [composantsUnity, setComposantsUnity] = useState<string[]>([]);
+
+  useEffect(() => {
+    window.onUnityReady = (json: string) => {
+      try {
+        const composants = JSON.parse(json); // ex : ["Sensor_1", "Conveyor_1", ...]
+        setComposantsUnity(composants.items);
+      } catch (e) {
+        console.error('Erreur JSON dans la liste des composants Unity:', e);
+      }
+    };
+
+    return () => {
+      delete window.onUnityReady;
+    };
+  }, []);
 
   useEffect(() => {
     window.onUnitySendEtat = (json: string) => {
@@ -64,6 +84,11 @@ export default function GamePage() {
           <Button href="/" icon="chevron-left">
             Retour à l'accueil
           </Button>
+        </div>
+        <div className="p-8">
+          <BlocContactNO
+            sensors={composantsUnity.map((name) => ({ name, state: false }))}
+          />
         </div>
 
         <div className="flex w-full flex-col gap-8 md:flex-row">

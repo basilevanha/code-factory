@@ -6,7 +6,7 @@ export default function Home() {
     <main className="min-h-screen bg-white px-6 py-16 text-gray-900">
       <div className="mx-auto max-w-3xl">
         <h1 className="mb-4 text-3xl font-semibold">
-          Bienvenue sur Code Factory 🎉
+          Bienvenue sur Coding Factory 🎉
         </h1>
         <p className="mb-10 text-gray-600">
           Une collection de mini-jeux pour apprendre, s'amuser et expérimenter.
