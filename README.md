@@ -36,7 +36,11 @@ Add unity builds in public/unity , then if the files are compressed (default bro
 npm run brotli
 ```
 
----
+ou
+
+```
+find ./public/unity -type f -name "\*.br" | while read -r file; do brotli --decompress "$file" -o "${file%.br}"; done
+```
 
 ## 📁 Project Structure (atomic design)
 
