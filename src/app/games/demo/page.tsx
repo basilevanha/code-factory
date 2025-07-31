@@ -60,14 +60,39 @@ export default function GamePage() {
   }, []);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      if (isLoaded) {
+        sendMessage('GameManager', 'GetEtatsJSON', '');
+        console.log('Envoi de GetEtatsJSON à Unity'); // Debug
+      }
+    }, 500); // toutes les 500 ms
+
+    return () => clearInterval(interval);
+  }, [isLoaded, sendMessage]);
+
+  const [etatsComposants, setEtatsComposants] = useState<
+    Record<string, number>
+  >({}); // stocke les info JSON
+
+  useEffect(() => {
     window.onUnitySendEtat = (json: string) => {
       try {
-        const data = JSON.parse(json);
-        if (data.id === 'Sensor_1') {
-          setSensorState(data.etat);
+        const data = JSON.parse(json); // data.items = [{ id: 'Sensor_1', etat: 1 }, ...]
+
+        if (Array.isArray(data.items)) {
+          // Construction d’un nouvel objet d’état
+          const nouveauxEtats: Record<string, number> = {};
+
+          data.items.forEach((comp: { id: string; etat: number }) => {
+            nouveauxEtats[comp.id] = comp.etat;
+          });
+
+          setEtatsComposants(nouveauxEtats); // mise à jour globale à chaque rafraîchissement
+        } else {
+          console.warn('Structure inattendue dans data.items:', data);
         }
       } catch (e) {
-        console.error('Erreur JSON Unity → JS :', e);
+        console.error('Erreur JSON Unity → JS:', e);
       }
     };
 
@@ -111,7 +136,14 @@ export default function GamePage() {
               },
             ]}
           />
-
+          <ul>
+            {/* uggly but hey it works */}
+            {Object.entries(etatsComposants).map(([id, etat]) => (
+              <li key={id}>
+                {id} : {etat}
+              </li>
+            ))}
+          </ul>
           <UnityWrapper
             unityProvider={unityProvider}
             isLoaded={isLoaded}
