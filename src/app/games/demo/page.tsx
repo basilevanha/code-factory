@@ -12,7 +12,7 @@ import Button from '@/components/atoms/Button';
 import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
 
-import BlocContactNO from '@/components/atoms/BlocContactNO';
+import BlocContactNO from '@/components/molecules/BlocContactNO';
 
 declare global {
   interface Window {
@@ -112,7 +112,9 @@ export default function GamePage() {
         </div>
         <div className="p-8">
           <BlocContactNO
-            sensors={composantsUnity.map((name) => ({ name, state: false }))}
+            composantsUnity={composantsUnity}
+            etatsComposants={etatsComposants}
+            inValue={1} //1 pour test
           />
         </div>
 
