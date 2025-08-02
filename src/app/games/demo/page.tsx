@@ -14,6 +14,9 @@ import UnityWrapper from '@/components/molecules/UnityWrapper';
 
 import BlocContactNO from '@/components/molecules/BlocContactNO';
 
+// Datas
+import { unityJsonObjects } from './test_datas';
+
 declare global {
   interface Window {
     onUnityReady?: (json: string) => void;
