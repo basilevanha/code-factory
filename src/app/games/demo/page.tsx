@@ -11,11 +11,8 @@ import { getUnityPaths } from '@/utils/unity';
 import Button from '@/components/atoms/Button';
 import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
-
+import LadderEditor from '@/components/molecules/LadderEditor';
 import BlocContactNO from '@/components/molecules/BlocContactNO';
-
-// Datas
-import { unityJsonObjects } from './test_datas';
 
 declare global {
   interface Window {
@@ -113,13 +110,14 @@ export default function GamePage() {
             Retour à l'accueil
           </Button>
         </div>
-        <div className="p-8">
+
+        {/*<div className="p-8">
           <BlocContactNO
             composantsUnity={composantsUnity}
             etatsComposants={etatsComposants}
             inValue={1} //1 pour test
           />
-        </div>
+        </div> */}
 
         <div className="flex w-full flex-col gap-8 md:flex-row">
           <Toolbar
@@ -141,14 +139,17 @@ export default function GamePage() {
               },
             ]}
           />
+          <LadderEditor />
+          {/*
           <ul>
-            {/* uggly but hey it works */}
+             uggly but hey it works
             {Object.entries(etatsComposants).map(([id, etat]) => (
               <li key={id}>
                 {id} : {etat}
               </li>
             ))}
-          </ul>
+          </ul> */}
+
           <UnityWrapper
             unityProvider={unityProvider}
             isLoaded={isLoaded}
