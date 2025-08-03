@@ -120,7 +120,7 @@ export default function GamePage() {
         </div> */}
 
         <div className="flex w-full flex-col gap-8 md:flex-row">
-          <Toolbar
+          {/*<Toolbar
             items={[
               {
                 type: 'text',
@@ -139,8 +139,8 @@ export default function GamePage() {
               },
             ]}
           />
-          <LadderEditor />
-          {/*
+          
+          
           <ul>
              uggly but hey it works
             {Object.entries(etatsComposants).map(([id, etat]) => (
@@ -149,6 +149,10 @@ export default function GamePage() {
               </li>
             ))}
           </ul> */}
+          <LadderEditor
+            composantsUnity={composantsUnity}
+            etatsComposants={etatsComposants}
+          />
 
           <UnityWrapper
             unityProvider={unityProvider}
