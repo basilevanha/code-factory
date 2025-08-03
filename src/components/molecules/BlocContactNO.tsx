@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 import { getColorByValue } from '@/utils/getColorByValue';
+import { text } from 'stream/consumers';
 
 type BlocContactNOProps = {
   composantsUnity: string[];
@@ -58,25 +59,14 @@ const BlocContactNO = ({
           ))}
         </select>
 
-        <span className="text-sm font-semibold text-gray-700"> --| |-- </span>
-
-        <div className="flex items-center gap-2">
-          <div
-            className={clsx(
-              'h-4 w-4 rounded-full transition-colors duration-100',
-              getColorByValue(capteurValue)
-            )}
-          />
-          <span className="text-sm text-gray-600">
-            {selected
-              ? capteurValue === undefined
-                ? 'Indéterminé'
-                : capteurValue === 1
-                  ? 'Actif'
-                  : 'Inactif'
-              : '—'}
-          </span>
-        </div>
+        <span
+          className={clsx(
+            'text-sm font-semibold transition-colors',
+            getColorByValue(capteurValue)
+          )}
+        >
+          --| |--
+        </span>
       </div>
     </div>
   );
