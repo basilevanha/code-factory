@@ -13,6 +13,7 @@ import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
 import LadderEditor from '@/components/molecules/LadderEditor';
 import BlocContactNO from '@/components/molecules/BlocContactNO';
+import runWorkflow from '@/components/molecules/LadderEditor';
 
 declare global {
   interface Window {
@@ -111,36 +112,25 @@ export default function GamePage() {
           </Button>
         </div>
 
-        {/*<div className="p-8">
-          <BlocContactNO
-            composantsUnity={composantsUnity}
-            etatsComposants={etatsComposants}
-            inValue={1} //1 pour test
-          />
-        </div> */}
+        <div className="flex h-full w-full gap-4">
+          {/* Colonne gauche : Toolbar + LadderEditor */}
+          <div className="flex flex-1 flex-col gap-4">
+            <Toolbar
+              items={[
+                {
+                  type: 'toggle',
+                  name: 'Conveyor on/off',
+                  onClick: handleConveyor,
+                },
+                {
+                  type: 'button',
+                  name: '📦 Spawwwwn',
+                  onClick: handleSpawn,
+                },
+              ]}
+            />
 
-        <div className="flex w-full flex-col gap-8 md:flex-row">
-          {/*<Toolbar
-            items={[
-              {
-                type: 'text',
-                name: 'Sensor_1',
-                value: sensorState ? '🟢' : '🔵',
-              },
-              {
-                type: 'toggle',
-                name: 'Conveyor on/off',
-                onClick: handleConveyor,
-              },
-              {
-                type: 'button',
-                name: '📦 Spawwwwn',
-                onClick: handleSpawn,
-              },
-            ]}
-          />
-          
-          
+            {/*
           <ul>
              uggly but hey it works
             {Object.entries(etatsComposants).map(([id, etat]) => (
@@ -149,16 +139,21 @@ export default function GamePage() {
               </li>
             ))}
           </ul> */}
-          <LadderEditor
-            composantsUnity={composantsUnity}
-            etatsComposants={etatsComposants}
-          />
-
-          <UnityWrapper
-            unityProvider={unityProvider}
-            isLoaded={isLoaded}
-            loadingProgression={loadingProgression}
-          />
+            <div className="flex-1">
+              <LadderEditor
+                composantsUnity={composantsUnity}
+                etatsComposants={etatsComposants}
+                sendMessage={sendMessage}
+              />
+            </div>
+          </div>
+          <div className="flex-1">
+            <UnityWrapper
+              unityProvider={unityProvider}
+              isLoaded={isLoaded}
+              loadingProgression={loadingProgression}
+            />
+          </div>
         </div>
       </div>
     </main>

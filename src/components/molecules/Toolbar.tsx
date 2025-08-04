@@ -27,7 +27,7 @@ type ToolbarProps = {
 const Toolbar = ({ items, className = '' }: ToolbarProps) => {
   return (
     <div
-      className={`flex min-w-max flex-col gap-5 rounded-lg bg-gray-200 p-4 ${className}`}
+      className={`flex min-w-max flex-row gap-5 rounded-lg bg-gray-200 p-4 ${className}`}
     >
       <h2 className="text-xl font-bold">Toolbar</h2>
 
