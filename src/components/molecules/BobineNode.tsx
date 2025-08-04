@@ -25,7 +25,12 @@ const BobineNode = ({ data }: NodeProps) => {
 
   // Prévenir le parent que la variable a changé
   useEffect(() => {
-    if (data?.onChange) data.onChange(selectedActionneur);
+    if (data) {
+      data.variable = selectedActionneur;
+      if (data.onChange) {
+        data.onChange(selectedActionneur);
+      }
+    }
   }, [selectedActionneur]);
 
   // L'état de sortie : actif si entrée === 1 et actionneur sélectionné
@@ -41,7 +46,7 @@ const BobineNode = ({ data }: NodeProps) => {
           onChange={setSelectedActionneur}
           placeholder="Sélectionnez actionneur"
           showSensor={false}
-          showMemoire={false}
+          showMemoire={true}
           showActionneur={true}
         />
       </div>

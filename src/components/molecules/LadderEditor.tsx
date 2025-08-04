@@ -14,7 +14,7 @@ import ReactFlow, {
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
-import { computeOutValues, propagateValues } from './LadderLogic';
+import { resolveLadder } from './LadderLogic';
 
 import ContactNONode from './ContactNOnode';
 import RailAlimNode from './RailAlimNode';
@@ -124,9 +124,8 @@ export default function LadderEditor({
   }, [composantsUnity, etatsComposants]);
 
   const runWorkflow = () => {
-    const outValues = computeOutValues(nodes);
-    const newNodes = propagateValues(nodes, edges, outValues);
-    setNodes(newNodes);
+    const resolvedNodes = resolveLadder(nodes, edges);
+    setNodes(resolvedNodes);
   };
 
   const onNodesChange: OnNodesChange = useCallback(

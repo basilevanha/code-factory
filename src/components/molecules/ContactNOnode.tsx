@@ -21,8 +21,11 @@ const ContactNode = ({ data, id }: NodeProps) => {
   }, [composantsUnity]);
 
   useEffect(() => {
-    if (data?.onChange) {
-      data.onChange(selectedSensor);
+    if (data) {
+      data.variable = selectedSensor;
+      if (data.onChange) {
+        data.onChange(selectedSensor);
+      }
     }
   }, [selectedSensor]);
 
