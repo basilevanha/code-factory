@@ -26,7 +26,7 @@ const RailAlimNode = ({ data }: NodeProps) => {
         <span
           className={clsx(
             'text-base font-bold transition-colors',
-            getColorByValue(outValue) //GET COLOR A MODIFIER
+            getColorByValue(outValue, true)
           )}
         >
           |‒‒

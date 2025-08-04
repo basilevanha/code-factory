@@ -79,7 +79,7 @@ const ContactNode = ({ data, id }: NodeProps) => {
         <span
           className={clsx(
             'text-sm font-semibold transition-colors',
-            getColorByValue(capteurValue) //GET COLOR A MODIFIER
+            getColorByValue(capteurValue, true)
           )}
         >
           --| |--
