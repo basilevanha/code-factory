@@ -6,7 +6,7 @@ const RailAlimNode = ({ data }: NodeProps) => {
   const outValue = 1; // Toujours actif
 
   return (
-    <div className="relative w-32 rounded-2xl border border-gray-300 bg-white p-4 shadow-md">
+    <div className="relative h-10 w-15 rounded-2xl border border-gray-300 bg-white shadow-md">
       {/* Sortie */}
       <Handle
         type="source"
@@ -17,15 +17,16 @@ const RailAlimNode = ({ data }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
+          top: '50%',
+          transform: 'translateY(-50%)',
         }}
       />
 
-      {/* Contenu central */}
-      <div className="flex flex-col items-center justify-center">
-        <span className="mt-1 text-xs text-gray-500">power</span>
+      {/* Contenu central parfaitement centré */}
+      <div className="flex h-full items-center justify-center">
         <span
           className={clsx(
-            'text-base font-bold transition-colors',
+            'text-sm font-bold transition-colors',
             getColorByValue(outValue, true)
           )}
         >

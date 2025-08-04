@@ -37,7 +37,20 @@ const ContactNode = ({ data, id }: NodeProps) => {
         : undefined;
 
   return (
-    <div className="relative w-56 rounded-2xl border border-gray-300 bg-white p-4 shadow-md">
+    <div className="relative h-10 w-30 rounded-2xl border border-gray-300 bg-white shadow-md">
+      {/* DropDown flottante au-dessus */}
+      <div className="absolute -top-8 left-1/2 z-10 w-[90%] -translate-x-1/2">
+        <DropDown_IC
+          composantsUnity={composantsUnity}
+          value={selectedSensor}
+          onChange={setSelectedSensor}
+          placeholder="???"
+          showSensor
+          showMemoire
+          showActionneur
+        />
+      </div>
+
       {/* Entrée */}
       <Handle
         type="target"
@@ -48,6 +61,8 @@ const ContactNode = ({ data, id }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
+          top: '50%',
+          transform: 'translateY(-50%)',
         }}
       />
 
@@ -61,21 +76,13 @@ const ContactNode = ({ data, id }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
+          top: '50%',
+          transform: 'translateY(-50%)',
         }}
       />
 
-      {/* Contenu central */}
-      <div className="flex flex-col items-center gap-3">
-        <DropDown_IC
-          composantsUnity={composantsUnity}
-          value={selectedSensor}
-          onChange={setSelectedSensor}
-          placeholder="???"
-          showSensor
-          showMemoire
-          showActionneur
-        />
-
+      {/* Contenu central parfaitement centré */}
+      <div className="flex h-full items-center justify-center">
         <span
           className={clsx(
             'text-sm font-semibold transition-colors',

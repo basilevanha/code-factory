@@ -32,7 +32,20 @@ const BobineNode = ({ data }: NodeProps) => {
   const outValue = inValue === 1 && selectedActionneur ? 1 : 0;
 
   return (
-    <div className="relative w-56 rounded-2xl border border-gray-300 bg-white p-4 shadow-md">
+    <div className="relative h-10 w-30 rounded-2xl border border-gray-300 bg-white shadow-md">
+      {/* DropDown flottante au-dessus */}
+      <div className="absolute -top-8 left-1/2 z-10 w-[90%] -translate-x-1/2">
+        <DropDown_IC
+          composantsUnity={composantsUnity}
+          value={selectedActionneur}
+          onChange={setSelectedActionneur}
+          placeholder="Sélectionnez actionneur"
+          showSensor={false}
+          showMemoire={false}
+          showActionneur={true}
+        />
+      </div>
+
       {/* Entrée */}
       <Handle
         type="target"
@@ -43,28 +56,20 @@ const BobineNode = ({ data }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
+          top: '50%',
+          transform: 'translateY(-50%)',
         }}
       />
 
-      {/* Contenu central */}
-      <div className="flex flex-col items-center gap-3">
-        <DropDown_IC
-          composantsUnity={composantsUnity}
-          value={selectedActionneur}
-          onChange={setSelectedActionneur}
-          placeholder="Sélectionnez actionneur"
-          showSensor={false}
-          showMemoire={false}
-          showActionneur={true}
-        />
-
+      {/* Contenu central parfaitement centré */}
+      <div className="flex h-full items-center justify-center">
         <span
           className={clsx(
             'text-sm font-semibold transition-colors',
             getColorByValue(outValue, true)
           )}
         >
-          --( )-- {/* Symbole bobine simple */}
+          --( )--
         </span>
       </div>
     </div>
