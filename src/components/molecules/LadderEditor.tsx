@@ -15,6 +15,7 @@ import ReactFlow, {
 
 import 'reactflow/dist/style.css';
 import { resolveLadder } from './LadderLogic';
+import { applyOutputs } from './ApplyOutputs';
 
 import ContactNONode from './ContactNOnode';
 import RailAlimNode from './RailAlimNode';
@@ -23,6 +24,11 @@ import BobineNode from './BobineNode';
 type LadderEditorProps = {
   composantsUnity: string[];
   etatsComposants: Record<string, number>;
+  sendMessage: (
+    objectName: string,
+    methodName: string,
+    parameter: string
+  ) => void;
 };
 
 const nodeTypes = {
@@ -34,6 +40,7 @@ const nodeTypes = {
 export default function LadderEditor({
   composantsUnity,
   etatsComposants,
+  sendMessage,
 }: LadderEditorProps) {
   const railId = 'rail-1';
   const contactId = 'contact-1';
@@ -123,16 +130,39 @@ export default function LadderEditor({
     );
   }, [composantsUnity, etatsComposants]);
 
+  type NodeData = {
+    variable?: string;
+    outValue?: number | null;
+    inValue?: number;
+    etatsComposants?: Record<string, number>;
+    [key: string]: unknown;
+  };
+
+  type NodeWithData = Node & {
+    type: string; // obligatoire
+    data: NodeData;
+  };
+
   const runWorkflow = () => {
     const resolvedNodes = resolveLadder(nodes, edges);
+
     setNodes(resolvedNodes);
+
+    // Filtrer uniquement les nodes qui ont un type défini et une variable pour applyOutputs
+    const nodesWithData = resolvedNodes.filter(
+      (node): node is NodeWithData =>
+        typeof node.type === 'string' &&
+        node.data !== undefined &&
+        typeof node.data.variable === 'string'
+    );
+
+    applyOutputs(nodesWithData, sendMessage);
   };
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     []
   );
-
   const onEdgesChange: OnEdgesChange = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     []

@@ -39,6 +39,12 @@ const ContactNode = ({ data, id }: NodeProps) => {
         ? 0
         : undefined;
 
+  useEffect(() => {
+    if (data) {
+      data.outValue = outValue;
+    }
+  }, [outValue]);
+
   return (
     <div className="relative h-10 w-30 rounded-2xl border border-gray-300 bg-white shadow-md">
       {/* DropDown flottante au-dessus */}

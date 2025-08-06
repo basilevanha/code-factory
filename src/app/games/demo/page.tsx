@@ -66,7 +66,7 @@ export default function GamePage() {
         sendMessage('GameManager', 'GetEtatsJSON', '');
         console.log('Envoi de GetEtatsJSON à Unity'); // Debug
       }
-    }, 500); // toutes les 500 ms
+    }, 100); // toutes les 100 ms
 
     return () => clearInterval(interval);
   }, [isLoaded, sendMessage]);

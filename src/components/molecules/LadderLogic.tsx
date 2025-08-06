@@ -8,42 +8,6 @@ const getConnectedTargets = (nodeId: string, edges: Edge[]): string[] => {
 };
 
 /**
- * Recalcule la sortie logique (outValue) d’un nœud à partir de son type.
- */
-const computeOutValue = (node: Node): number | undefined => {
-  const { type, data } = node;
-  if (!data) return undefined;
-
-  const { inValue, variable, etatsComposants } = data;
-
-  if (type === 'contactNO') {
-    const capteurValue = etatsComposants?.[variable] ?? undefined;
-    const result =
-      inValue === 1 && capteurValue === 1
-        ? 1
-        : inValue === 0 || capteurValue === 0
-          ? 0
-          : undefined;
-    console.log(
-      `contactNO [${node.id}] → inValue=${inValue}, capteur=${capteurValue}, out=${result}`
-    );
-    return result;
-  }
-
-  if (type === 'bobine') {
-    const result = inValue === 1 ? 1 : 0;
-    console.log(`bobine [${node.id}] → inValue=${inValue}, out=${result}`);
-    return result;
-  }
-
-  if (type === 'railAlim') {
-    return 1;
-  }
-
-  return undefined;
-};
-
-/**
  * Propagation d’un signal de 1 depuis les rails, uniquement sur les `inValue`.
  */
 export const resolveLadder = (nodes: Node[], edges: Edge[]): Node[] => {
@@ -66,7 +30,7 @@ export const resolveLadder = (nodes: Node[], edges: Edge[]): Node[] => {
     if (!currentNode) continue;
 
     // Recalcule et stocke outValue à chaque propagation
-    currentNode.data.outValue = computeOutValue(currentNode);
+    console.log(`→ Noeud ${currentNode.id} out=${currentNode.data.outValue}`);
 
     const targets = getConnectedTargets(currentId, edges);
     for (const targetId of targets) {

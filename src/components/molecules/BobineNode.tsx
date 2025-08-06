@@ -35,6 +35,11 @@ const BobineNode = ({ data }: NodeProps) => {
 
   // L'état de sortie : actif si entrée === 1 et actionneur sélectionné
   const outValue = inValue === 1 && selectedActionneur ? 1 : 0;
+  useEffect(() => {
+    if (data) {
+      data.outValue = outValue;
+    }
+  }, [outValue]);
 
   return (
     <div className="relative h-10 w-30 rounded-2xl border border-gray-300 bg-white shadow-md">
