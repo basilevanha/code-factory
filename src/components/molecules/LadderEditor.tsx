@@ -66,9 +66,21 @@ export default function LadderEditor({
       },
     },
     {
+      id: contactId + 1,
+      type: 'contactNO',
+      position: { x: 400, y: 100 },
+      data: {
+        variable: '',
+        composantsUnity,
+        etatsComposants,
+        inValue: 0,
+        onChange: () => {},
+      },
+    },
+    {
       id: bobineId,
       type: 'bobine',
-      position: { x: 400, y: 100 },
+      position: { x: 600, y: 100 },
       data: {
         variable: '',
         composantsUnity,
@@ -89,8 +101,16 @@ export default function LadderEditor({
       type: 'default',
     },
     {
-      id: 'edge-contact-bobine',
+      id: 'edge-contact-contact',
       source: contactId,
+      sourceHandle: 'out',
+      target: contactId + 1,
+      targetHandle: 'in',
+      type: 'default',
+    },
+    {
+      id: 'edge-contact-bobine',
+      source: contactId + 1,
       sourceHandle: 'out',
       target: bobineId,
       targetHandle: 'in',
