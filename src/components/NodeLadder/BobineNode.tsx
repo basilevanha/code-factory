@@ -1,4 +1,4 @@
-import { Handle, Position, NodeProps } from 'reactflow';
+import { Handle, Position, NodeProps, Edge, Node } from 'reactflow';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
@@ -32,14 +32,6 @@ const BobineNode = ({ data }: NodeProps) => {
       }
     }
   }, [selectedActionneur]);
-
-  // L'état de sortie : actif si entrée === 1 et actionneur sélectionné
-  const outValue = inValue === 1 && selectedActionneur ? 1 : 0;
-  useEffect(() => {
-    if (data) {
-      data.outValue = outValue;
-    }
-  }, [outValue]);
 
   return (
     <div className="relative h-10 w-30 rounded-2xl border border-gray-300 bg-white shadow-md">
@@ -76,7 +68,7 @@ const BobineNode = ({ data }: NodeProps) => {
         <span
           className={clsx(
             'text-sm font-semibold transition-colors',
-            getColorByValue(outValue, true)
+            '#9CA3AF' //getColorByValue(outValue, true)
           )}
         >
           --( )--
@@ -87,3 +79,13 @@ const BobineNode = ({ data }: NodeProps) => {
 };
 
 export default BobineNode;
+
+export const resolveBobine = (
+  node: Node,
+  _nodeMap: Map<string, Node>,
+  _edges: Edge[]
+): void => {
+  const inValue = node.data.inValue;
+  const selectedActionneur = node.data.selectedActionneur;
+  node.data.outValue = inValue === 1 && selectedActionneur ? 1 : 0;
+};

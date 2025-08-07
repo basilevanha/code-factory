@@ -1,10 +1,9 @@
-import { Handle, Position, NodeProps } from 'reactflow';
+import { Handle, Position, NodeProps, Node, Edge } from 'reactflow';
 import clsx from 'clsx';
 import { getColorByValue } from '@/utils/getColorByValue';
+import { useEffect } from 'react';
 
 const RailAlimNode = ({ data }: NodeProps) => {
-  const outValue = 1; // Toujours actif
-
   return (
     <div className="relative h-10 w-15 rounded-2xl border border-gray-300 bg-white shadow-md">
       {/* Sortie */}
@@ -13,7 +12,7 @@ const RailAlimNode = ({ data }: NodeProps) => {
         position={Position.Right}
         id="out"
         style={{
-          backgroundColor: getColorByValue(outValue),
+          backgroundColor: 'bg-green-500', //getColorByValue(outValue),
           width: 12,
           height: 12,
           borderRadius: '50%',
@@ -27,7 +26,7 @@ const RailAlimNode = ({ data }: NodeProps) => {
         <span
           className={clsx(
             'text-sm font-bold transition-colors',
-            getColorByValue(outValue, true)
+            '#22C55E' //getColorByValue(outValue, true)
           )}
         >
           |‒‒
@@ -38,3 +37,11 @@ const RailAlimNode = ({ data }: NodeProps) => {
 };
 
 export default RailAlimNode;
+
+export const resolveRailAlim = (
+  node: Node,
+  _nodeMap: Map<string, Node>,
+  _edges: Edge[]
+): void => {
+  node.data.outValue = 1;
+};

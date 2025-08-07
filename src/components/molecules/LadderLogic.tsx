@@ -1,4 +1,5 @@
 import { Edge, Node } from 'reactflow';
+import { blockResolvers } from '../NodeLadder/BlockResolvers';
 
 /**
  * Cherche les cibles connectées à un nœud donné.
@@ -29,7 +30,16 @@ export const resolveLadder = (nodes: Node[], edges: Edge[]): Node[] => {
     const currentNode = nodeMap.get(currentId);
     if (!currentNode) continue;
 
-    // Recalcule et stocke outValue à chaque propagation
+    // Appelle le résolveur spécifique selon le type du noeud
+    const resolver = currentNode.type && blockResolvers[currentNode.type];
+
+    if (resolver) {
+      resolver(currentNode, nodeMap, edges);
+    } else {
+      // Pas de résolveur spécifique, on peut éventuellement définir un fallback
+      console.warn(`Pas de resolver pour le type ${currentNode.type}`);
+      currentNode.data.outValue = 0; // valeur par défaut
+    }
     console.log(`→ Noeud ${currentNode.id} out=${currentNode.data.outValue}`);
 
     const targets = getConnectedTargets(currentId, edges);

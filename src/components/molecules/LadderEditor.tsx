@@ -17,9 +17,9 @@ import 'reactflow/dist/style.css';
 import { resolveLadder } from './LadderLogic';
 import { applyOutputs } from './ApplyOutputs';
 
-import ContactNONode from './ContactNOnode';
-import RailAlimNode from './RailAlimNode';
-import BobineNode from './BobineNode';
+import ContactNONode from '../NodeLadder/ContactNOnode';
+import RailAlimNode from '../NodeLadder/RailAlimNode';
+import BobineNode from '../NodeLadder/BobineNode';
 
 type LadderEditorProps = {
   composantsUnity: string[];

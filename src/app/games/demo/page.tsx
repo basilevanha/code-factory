@@ -12,7 +12,7 @@ import Button from '@/components/atoms/Button';
 import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
 import LadderEditor from '@/components/molecules/LadderEditor';
-import BlocContactNO from '@/components/molecules/BlocContactNO';
+import BlocContactNO from '@/components/archive/BlocContactNO';
 import runWorkflow from '@/components/molecules/LadderEditor';
 
 declare global {
