@@ -84,8 +84,10 @@ export const resolveBobine = (
   node: Node,
   _nodeMap: Map<string, Node>,
   _edges: Edge[]
-): void => {
+) => {
   const inValue = node.data.inValue;
-  const selectedActionneur = node.data.selectedActionneur;
-  node.data.outValue = inValue === 1 && selectedActionneur ? 1 : 0;
+
+  const isActive = inValue === 1;
+  node.data.outValue = isActive ? 1 : 0;
+  console.log(`Bobine ${node.id} ,outValue=${node.data.outValue}`);
 };

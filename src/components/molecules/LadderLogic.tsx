@@ -24,30 +24,26 @@ export const resolveLadder = (nodes: Node[], edges: Edge[]): Node[] => {
     }
   }
 
-  // Étape 2 : Propagation à partir des rails
+  const alreadyQueued = new Set<string>();
+
   while (queue.length > 0) {
     const currentId = queue.shift()!;
+    alreadyQueued.delete(currentId);
     const currentNode = nodeMap.get(currentId);
     if (!currentNode) continue;
 
-    // Appelle le résolveur spécifique selon le type du noeud
     const resolver = currentNode.type && blockResolvers[currentNode.type];
-
     if (resolver) {
       resolver(currentNode, nodeMap, edges);
-    } else {
-      // Pas de résolveur spécifique, on peut éventuellement définir un fallback
-      console.warn(`Pas de resolver pour le type ${currentNode.type}`);
-      currentNode.data.outValue = 0; // valeur par défaut
     }
-    console.log(`→ Noeud ${currentNode.id} out=${currentNode.data.outValue}`);
+
+    console.log(`→ Noeud ${currentNode.id} ,out=${currentNode.data.outValue}`);
 
     const targets = getConnectedTargets(currentId, edges);
     for (const targetId of targets) {
       const targetNode = nodeMap.get(targetId);
       if (!targetNode) continue;
 
-      // Si au moins une entrée en amont vaut 1, on active l’entrée de ce nœud
       const incomingEdges = edges.filter((e) => e.target === targetId);
       const newInValue = incomingEdges.some(
         (e) => nodeMap.get(e.source)?.data.outValue === 1
@@ -55,12 +51,16 @@ export const resolveLadder = (nodes: Node[], edges: Edge[]): Node[] => {
         ? 1
         : 0;
 
-      if (targetNode.data.inValue !== newInValue) {
+      const shouldEnqueue =
+        targetNode.data.inValue !== newInValue || !alreadyQueued.has(targetId);
+
+      if (shouldEnqueue) {
         console.log(
           `→ propagation vers ${targetNode.id}: inValue ${targetNode.data.inValue} → ${newInValue}`
         );
         targetNode.data.inValue = newInValue;
         queue.push(targetId);
+        alreadyQueued.add(targetId);
       }
     }
   }

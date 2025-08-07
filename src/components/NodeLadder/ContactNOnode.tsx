@@ -100,6 +100,18 @@ export const resolveContactNO = (
   _edges: Edge[]
 ): void => {
   const inValue = node.data.inValue;
-  const isActive = node.data.capteur === 1;
+
+  const variable = node.data.variable;
+  const etatsComposants: Record<string, number> =
+    node.data.etatsComposants || {};
+
+  const capteurValue = variable ? etatsComposants[variable] : 0;
+
+  const isActive = capteurValue === 1;
+
   node.data.outValue = inValue === 1 && isActive ? 1 : 0;
+
+  /*console.log(
+    `→ Noeud ${node.id}: in=${inValue}, capteur=${capteurValue}, out=${node.data.outValue}`
+  );*/
 };
