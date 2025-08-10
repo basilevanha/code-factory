@@ -37,9 +37,10 @@ npm run brotli
 ```
 
 ou
+to execute within the folder
 
 ```
-find ./public/unity -type f -name "\*.br" | while read -r file; do brotli --decompress "$file" -o "${file%.br}"; done
+find . -type f -name "*.br" | while read -r file; do brotli --decompress "$file" -o "${file%.br}"; done
 ```
 
 ## 📁 Project Structure (atomic design)
