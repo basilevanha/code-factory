@@ -98,7 +98,7 @@ export default function LadderEditor({
       sourceHandle: 'out',
       target: contactId,
       targetHandle: 'in',
-      type: 'default',
+      type: 'smoothstep',
     },
     {
       id: 'edge-contact-contact',
@@ -106,7 +106,7 @@ export default function LadderEditor({
       sourceHandle: 'out',
       target: contactId + 1,
       targetHandle: 'in',
-      type: 'default',
+      type: 'smoothstep',
     },
     {
       id: 'edge-contact-bobine',
@@ -114,7 +114,7 @@ export default function LadderEditor({
       sourceHandle: 'out',
       target: bobineId,
       targetHandle: 'in',
-      type: 'default',
+      type: 'smoothstep',
     },
   ];
 
@@ -202,6 +202,8 @@ export default function LadderEditor({
       </button>
 
       <ReactFlow
+        snapToGrid={true}
+        snapGrid={[40, 40]}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -209,6 +211,10 @@ export default function LadderEditor({
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         fitView
+        defaultEdgeOptions={{
+          type: 'smoothstep', // ← angles droits intégrés
+          style: { stroke: '#000', strokeWidth: 2 },
+        }}
       >
         <Background />
         <Controls />
