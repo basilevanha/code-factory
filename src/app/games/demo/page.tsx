@@ -12,8 +12,6 @@ import Button from '@/components/atoms/Button';
 import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
 import LadderEditor from '@/components/molecules/LadderEditor';
-import BlocContactNO from '@/components/archive/BlocContactNO';
-import runWorkflow from '@/components/molecules/LadderEditor';
 
 declare global {
   interface Window {
@@ -35,6 +33,11 @@ export default function GamePage() {
   const handleSpawn = () => {
     if (!isLoaded) return;
     sendMessage('Pipe', 'TriggerSpawn', '');
+  };
+
+  const handleReset = () => {
+    if (!isLoaded) return;
+    sendMessage('GameManager', 'ResetScene', '');
   };
 
   const handleConveyor = (isActive: boolean) => {
@@ -126,6 +129,11 @@ export default function GamePage() {
                   type: 'button',
                   name: '📦 Spawwwwn',
                   onClick: handleSpawn,
+                },
+                {
+                  type: 'button',
+                  name: 'Reset',
+                  onClick: handleReset,
                 },
               ]}
             />
