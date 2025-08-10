@@ -1,6 +1,6 @@
 type DropDownICProps = {
   composantsUnity: string[];
-  value: string;
+  value: string; // valeur sans préfixe
   onChange: (value: string) => void;
   placeholder?: string;
   showSensor?: boolean;
@@ -17,12 +17,12 @@ const DropDown_IC = ({
   showMemoire = true,
   showActionneur = true,
 }: DropDownICProps) => {
+  // Renvoie le type à partir du préfixe
   const getType = (name: string) => {
     const lower = name.toLowerCase();
-    if (lower.includes('sensor')) return 'sensor';
-    if (lower.includes('memoire') || lower.includes('m_')) return 'memoire';
-    if (lower.includes('actionneur') || lower.includes('a_'))
-      return 'actionneur';
+    if (lower.startsWith('i_')) return 'sensor';
+    if (lower.startsWith('m_')) return 'memoire';
+    if (lower.startsWith('q_')) return 'actionneur';
     return 'autre';
   };
 
@@ -34,21 +34,28 @@ const DropDown_IC = ({
     );
   };
 
-  // Commenté temporairement pour désactiver le filtre
-  // const optionsFiltrées = composantsUnity.filter((name) =>
-  //   typeIsVisible(getType(name))
-  // );
+  // Filtrer et trier les options affichées selon le type
+  const optionsFiltrees = composantsUnity
+    .filter((name) => typeIsVisible(getType(name)))
+    .sort((a, b) => a.localeCompare(b)); // tri alphabétique
 
-  const optionsFiltrées = composantsUnity; // Affiche tout sans filtrage
+  // Trouver l'option complète (avec préfixe) correspondant à la valeur sélectionnée (sans préfixe)
+  const selectedFullName =
+    optionsFiltrees.find((name) => name.substring(2) === value) || '';
 
   return (
     <select
       className="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
+      value={selectedFullName}
+      onChange={(e) => {
+        const fullName = e.target.value;
+        const shortName =
+          fullName.length > 2 ? fullName.substring(2) : fullName;
+        onChange(shortName);
+      }}
     >
       <option value="">{placeholder}</option>
-      {optionsFiltrées.map((name) => (
+      {optionsFiltrees.map((name) => (
         <option key={name} value={name}>
           {name}
         </option>
