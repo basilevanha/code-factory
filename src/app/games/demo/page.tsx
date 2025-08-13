@@ -48,6 +48,7 @@ export default function GamePage() {
 
   const [composantsUnity, setComposantsUnity] = useState<string[]>([]);
 
+  // Récupère la liste des composants Unity
   useEffect(() => {
     window.onUnityReady = (json: string) => {
       try {
@@ -63,6 +64,7 @@ export default function GamePage() {
     };
   }, []);
 
+  // Demande les états à Unity toutes les 100ms
   useEffect(() => {
     const interval = setInterval(() => {
       if (isLoaded) {
@@ -78,6 +80,7 @@ export default function GamePage() {
     Record<string, number>
   >({}); // stocke les info JSON
 
+  //écoute pour recevoir les états des composants Unity
   useEffect(() => {
     window.onUnitySendEtat = (json: string) => {
       try {
@@ -140,7 +143,7 @@ export default function GamePage() {
 
             {/*
           <ul>
-             uggly but hey it works
+             Affiche la liste des IC + états => uggly but hey! it works
             {Object.entries(etatsComposants).map(([id, etat]) => (
               <li key={id}>
                 {id} : {etat}
