@@ -36,7 +36,7 @@ Add unity builds in public/unity , then if the files are compressed (default bro
 npm run brotli
 ```
 
-ou
+or
 to execute within the folder
 
 ```

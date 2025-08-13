@@ -20,6 +20,7 @@ import { applyOutputs } from './ApplyOutputs';
 import ContactNONode from '../NodeLadder/ContactNOnode';
 import RailAlimNode from '../NodeLadder/RailAlimNode';
 import BobineNode from '../NodeLadder/BobineNode';
+import SRnode from '../NodeLadder/SRnode';
 
 type LadderEditorProps = {
   composantsUnity: string[];
@@ -35,6 +36,7 @@ const nodeTypes = {
   contactNO: ContactNONode,
   railAlim: RailAlimNode,
   bobine: BobineNode,
+  SR: SRnode,
 };
 
 export default function LadderEditor({
@@ -45,18 +47,19 @@ export default function LadderEditor({
   const railId = 'rail-1';
   const contactId = 'contact-1';
   const bobineId = 'bobine-1';
+  const srNodeId = 'sr-1';
 
   const baseNodes: Node[] = [
     {
       id: railId,
       type: 'railAlim',
-      position: { x: 0, y: 100 },
+      position: { x: 0, y: 80 },
       data: {},
     },
     {
       id: contactId,
       type: 'contactNO',
-      position: { x: 150, y: 100 },
+      position: { x: 150, y: 80 },
       data: {
         variable: '',
         composantsUnity,
@@ -68,7 +71,7 @@ export default function LadderEditor({
     {
       id: contactId + 1,
       type: 'contactNO',
-      position: { x: 400, y: 100 },
+      position: { x: 400, y: 80 },
       data: {
         variable: '',
         composantsUnity,
@@ -80,7 +83,19 @@ export default function LadderEditor({
     {
       id: bobineId,
       type: 'bobine',
-      position: { x: 600, y: 100 },
+      position: { x: 600, y: 80 },
+      data: {
+        variable: '',
+        composantsUnity,
+        etatsComposants,
+        inValue: 0,
+        onChange: () => {},
+      },
+    },
+    {
+      id: srNodeId,
+      type: 'SR',
+      position: { x: 200, y: 120 },
       data: {
         variable: '',
         composantsUnity,
