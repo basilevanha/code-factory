@@ -10,6 +10,7 @@ const ContactNFNode = ({ data, id }: NodeProps) => {
   const etatsComposants: Record<string, number | undefined> =
     data?.etatsComposants || {};
   const inValue: number | null | undefined = data?.inValue;
+  const outValue: number | null | undefined = data?.outValue;
 
   const [selectedSensor, setSelectedSensor] = useState(data?.variable || '');
 
@@ -68,7 +69,7 @@ const ContactNFNode = ({ data, id }: NodeProps) => {
         position={Position.Right}
         id="out"
         style={{
-          backgroundColor: 'bg-gray-400', // //getColorByValue(outValue)
+          backgroundColor: getColorByValue(outValue),
           width: 12,
           height: 12,
           borderRadius: '50%',
