@@ -117,30 +117,29 @@ export default function GamePage() {
             Retour à l'accueil
           </Button>
         </div>
+        <Toolbar
+          items={[
+            {
+              type: 'toggle',
+              name: 'RUN PLC',
+              onClick: handleConveyor,
+            },
+            {
+              type: 'button',
+              name: '📦 Spawwwwn',
+              onClick: handleSpawn,
+            },
+            {
+              type: 'button',
+              name: 'Reset',
+              onClick: handleReset,
+            },
+          ]}
+        />
 
         <div className="flex h-full w-full gap-4">
           {/* Colonne gauche : Toolbar + LadderEditor */}
           <div className="flex flex-1 flex-col gap-4">
-            <Toolbar
-              items={[
-                {
-                  type: 'toggle',
-                  name: 'Conveyor on/off',
-                  onClick: handleConveyor,
-                },
-                {
-                  type: 'button',
-                  name: '📦 Spawwwwn',
-                  onClick: handleSpawn,
-                },
-                {
-                  type: 'button',
-                  name: 'Reset',
-                  onClick: handleReset,
-                },
-              ]}
-            />
-
             {/*
           <ul>
              Affiche la liste des IC + états => uggly but hey! it works

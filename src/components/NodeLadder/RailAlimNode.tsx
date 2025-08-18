@@ -12,7 +12,7 @@ const RailAlimNode = ({ data }: NodeProps) => {
         position={Position.Right}
         id="out"
         style={{
-          backgroundColor: 'bg-green-500', //getColorByValue(outValue),
+          backgroundColor: getColorByValue(1),
           width: 12,
           height: 12,
           borderRadius: '50%',

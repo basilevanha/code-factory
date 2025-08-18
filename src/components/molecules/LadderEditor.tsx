@@ -18,9 +18,13 @@ import { resolveLadder } from './LadderLogic';
 import { applyOutputs } from './ApplyOutputs';
 
 import ContactNONode from '../NodeLadder/ContactNOnode';
+import ContactNFNode from '../NodeLadder/ContactNFnode';
 import RailAlimNode from '../NodeLadder/RailAlimNode';
 import BobineNode from '../NodeLadder/BobineNode';
 import SRnode from '../NodeLadder/SRnode';
+
+import ToolbarLadder from './ToolbarLadder';
+import { createNode } from './NodeManager';
 
 type LadderEditorProps = {
   composantsUnity: string[];
@@ -34,6 +38,7 @@ type LadderEditorProps = {
 
 const nodeTypes = {
   contactNO: ContactNONode,
+  contactNF: ContactNFNode,
   railAlim: RailAlimNode,
   bobine: BobineNode,
   SR: SRnode,
@@ -47,7 +52,6 @@ export default function LadderEditor({
   const railId = 'rail-1';
   const contactId = 'contact-1';
   const bobineId = 'bobine-1';
-  const srNodeId = 'sr-1';
 
   const baseNodes: Node[] = [
     {
@@ -68,34 +72,11 @@ export default function LadderEditor({
         onChange: () => {},
       },
     },
-    {
-      id: contactId + 1,
-      type: 'contactNO',
-      position: { x: 400, y: 80 },
-      data: {
-        variable: '',
-        composantsUnity,
-        etatsComposants,
-        inValue: 0,
-        onChange: () => {},
-      },
-    },
+
     {
       id: bobineId,
       type: 'bobine',
-      position: { x: 600, y: 80 },
-      data: {
-        variable: '',
-        composantsUnity,
-        etatsComposants,
-        inValue: 0,
-        onChange: () => {},
-      },
-    },
-    {
-      id: srNodeId,
-      type: 'SR',
-      position: { x: 200, y: 120 },
+      position: { x: 350, y: 80 },
       data: {
         variable: '',
         composantsUnity,
@@ -115,17 +96,10 @@ export default function LadderEditor({
       targetHandle: 'in',
       type: 'smoothstep',
     },
-    {
-      id: 'edge-contact-contact',
-      source: contactId,
-      sourceHandle: 'out',
-      target: contactId + 1,
-      targetHandle: 'in',
-      type: 'smoothstep',
-    },
+
     {
       id: 'edge-contact-bobine',
-      source: contactId + 1,
+      source: contactId,
       sourceHandle: 'out',
       target: bobineId,
       targetHandle: 'in',
@@ -150,7 +124,11 @@ export default function LadderEditor({
 
     setNodes((nds) =>
       nds.map((node) => {
-        if (node.type === 'contactNO' || node.type === 'bobine') {
+        if (
+          node.type === 'contactNO' ||
+          node.type === 'contactNF' ||
+          node.type === 'bobine'
+        ) {
           return {
             ...node,
             data: {
@@ -176,6 +154,11 @@ export default function LadderEditor({
   type NodeWithData = Node & {
     type: string; // obligatoire
     data: NodeData;
+  };
+
+  const addNode = (type: string) => {
+    const newNode = createNode(type, nodes, composantsUnity, etatsComposants);
+    setNodes((nds) => [...nds, newNode]);
   };
 
   const runWorkflow = () => {
@@ -216,6 +199,7 @@ export default function LadderEditor({
         ▶️ Calculer workflow
       </button>
 
+      <ToolbarLadder onAddNode={addNode} />
       <ReactFlow
         snapToGrid={true}
         snapGrid={[40, 40]}
