@@ -62,6 +62,13 @@ coding-factory/
 
 ---
 
+## To add new Ladder Bloc
+
+1. create an new visual and logic function within NoldeLadder
+2. add the new "blockResolver type" in blocResolver
+3. add the new nodeTypes in LadderResolver
+4. use it as much as you like !
+
 ## 📦 Deployment
 
 The app is ready for deployment on Vercel or any Node.js-compatible platform.
