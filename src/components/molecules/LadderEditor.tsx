@@ -22,6 +22,8 @@ import ContactNFNode from '../NodeLadder/ContactNFnode';
 import RailAlimNode from '../NodeLadder/RailAlimNode';
 import BobineNode from '../NodeLadder/BobineNode';
 import SRnode from '../NodeLadder/SRnode';
+import TonNode from '../NodeLadder/TonNode';
+import ToffNode from '../NodeLadder/ToffNode';
 
 import ToolbarLadder from './ToolbarLadder';
 import { createNode } from './NodeManager';
@@ -42,6 +44,8 @@ const nodeTypes = {
   railAlim: RailAlimNode,
   bobine: BobineNode,
   SR: SRnode,
+  Ton: TonNode,
+  Toff: ToffNode,
 };
 
 export default function LadderEditor({
@@ -124,11 +128,7 @@ export default function LadderEditor({
 
     setNodes((nds) =>
       nds.map((node) => {
-        if (
-          node.type === 'contactNO' ||
-          node.type === 'contactNF' ||
-          node.type === 'bobine'
-        ) {
+        if (node.type !== 'railAlim') {
           return {
             ...node,
             data: {
@@ -161,8 +161,14 @@ export default function LadderEditor({
     setNodes((nds) => [...nds, newNode]);
   };
 
+  let lastRunTime: number | null = null;
+
   const runWorkflow = () => {
-    const resolvedNodes = resolveLadder(nodes, edges);
+    const now = Date.now();
+    const deltaTime = lastRunTime !== null ? now - lastRunTime : 0; // ms
+    lastRunTime = now;
+
+    const resolvedNodes = resolveLadder(nodes, edges, deltaTime);
 
     setNodes(resolvedNodes);
 

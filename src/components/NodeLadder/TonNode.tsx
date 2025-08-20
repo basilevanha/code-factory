@@ -1,17 +1,26 @@
+//TonNode.tsx
 import { Handle, Position, NodeProps, Edge, Node } from 'reactflow';
 import { getColorByValue } from '@/utils/getColorByValue';
+import { useState, useEffect } from 'react';
 
 const TONNode = ({ data, id }: NodeProps) => {
-  const inValue: number | null | undefined = data?.inValue; // Entrée IN
-  const spValue: number | null | undefined = data?.spValue; // Setpoint (durée)
-  const qValue: number | null | undefined = data?.qValue; // Sortie Q
-  const etValue: number | null | undefined = data?.etValue; // Sortie ET
+  const inValue: number | undefined = data?.inValue;
+  const qValue: number | undefined = data?.qValue;
+  const etValue: number | undefined = data?.etValue;
+
+  // SP modifiable par l'utilisateur
+  const [spValue, setSpValue] = useState<number>(data?.spValue ?? 1000);
+
+  // Synchronise le SP dans node.data pour le resolver
+  useEffect(() => {
+    data.spValue = spValue;
+  }, [spValue]);
 
   const label = data?.label || `TON-${id}`;
 
   return (
-    <div className="relative h-28 w-36 rounded-2xl border border-gray-300 bg-white shadow-md">
-      {/* Identifiant texte au-dessus */}
+    <div className="relative h-44 w-44 rounded-2xl border border-gray-300 bg-white p-2 shadow-md">
+      {/* Label */}
       <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold">
         {label}
       </div>
@@ -26,30 +35,12 @@ const TONNode = ({ data, id }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
-          top: '30%',
+          top: '20%',
           transform: 'translateY(-50%)',
         }}
       />
-      <div className="absolute top-[30%] left-3 -translate-y-1/2 text-xs font-bold">
+      <div className="absolute top-[20%] left-3 -translate-y-1/2 text-xs font-bold">
         IN
-      </div>
-
-      {/* Entrée SP */}
-      <Handle
-        type="target"
-        position={Position.Left}
-        id="sp"
-        style={{
-          backgroundColor: getColorByValue(spValue),
-          width: 12,
-          height: 12,
-          borderRadius: '50%',
-          top: '70%',
-          transform: 'translateY(-50%)',
-        }}
-      />
-      <div className="absolute top-[70%] left-3 -translate-y-1/2 text-xs font-bold">
-        SP
       </div>
 
       {/* Sortie Q */}
@@ -62,29 +53,35 @@ const TONNode = ({ data, id }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
-          top: '30%',
+          top: '20%',
           transform: 'translateY(-50%)',
         }}
       />
-      <div className="absolute top-[30%] right-3 -translate-y-1/2 text-xs font-bold">
+      <div className="absolute top-[20%] right-3 -translate-y-1/2 text-xs font-bold">
         Q
       </div>
 
-      {/* Sortie ET */}
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="et"
-        style={{
-          backgroundColor: getColorByValue(etValue),
-          width: 12,
-          height: 12,
-          borderRadius: '50%',
-          top: '70%',
-          transform: 'translateY(-50%)',
-        }}
-      />
-      <div className="absolute top-[70%] right-3 -translate-y-1/2 text-xs font-bold">
+      {/* SP */}
+      <div className="absolute top-[45%] left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-xs">
+        <label className="font-bold">SP (ms)</label>
+        <input
+          type="number"
+          className="w-24 rounded border border-gray-300 text-center text-xs"
+          value={spValue}
+          onChange={(e) => setSpValue(Number(e.target.value))}
+        />
+      </div>
+
+      {/* ET */}
+      <div className="absolute top-[70%] left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-xs">
+        <label className="font-bold">ET (s)</label>
+        <div className="w-24 rounded border border-gray-300 bg-gray-100 text-center text-xs">
+          {etValue != null ? (etValue / 1000).toFixed(1) : '0.0'}{' '}
+          {/* converti ms → s */}
+        </div>
+      </div>
+
+      <div className="absolute top-[90%] right-3 -translate-y-1/2 text-xs font-bold">
         ET
       </div>
     </div>
@@ -93,33 +90,45 @@ const TONNode = ({ data, id }: NodeProps) => {
 
 export default TONNode;
 
-/**
- * Résolution logique du bloc TON
- */
 export const resolveTON = (
   node: Node,
   _nodeMap: Map<string, Node>,
   _edges: Edge[],
-  deltaTime: number
+  _deltaTime: number
 ): void => {
   const inVal = node.data.inValue || 0;
-  const spVal = node.data.spValue || 0; // durée cible en secondes (ou ms selon ton choix)
+  const spVal = node.data.spValue || 0; // durée en ms
 
-  if (!node.data.timer) {
-    node.data.timer = 0; // initialisation
+  if (node.data.startTime === undefined) {
+    node.data.startTime = null; // moment où IN passe à 1
   }
+
+  console.log(`[TON-${node.id}] IN=${inVal}, SP=${spVal}`);
 
   if (inVal === 1) {
-    node.data.timer += deltaTime;
-    if (node.data.timer >= spVal) {
-      node.data.qValue = 1;
-    } else {
-      node.data.qValue = 0;
+    if (node.data.startTime === null) {
+      // Premier cycle où IN est à 1 → on enregistre le temps
+      node.data.startTime = Date.now();
+      console.log(
+        `[TON-${node.id}] Front montant détecté → startTime=${node.data.startTime}`
+      );
     }
+
+    // Temps écoulé depuis le front montant
+    const elapsed = Date.now() - node.data.startTime;
+    node.data.etValue = elapsed;
+    node.data.qValue = elapsed >= spVal ? 1 : 0;
+
+    console.log(
+      `[TON-${node.id}] elapsed=${elapsed}ms, ET=${node.data.etValue}, Q=${node.data.qValue}`
+    );
   } else {
-    node.data.timer = 0;
+    // Reset complet
+    node.data.startTime = null;
+    node.data.etValue = 0;
     node.data.qValue = 0;
+    console.log(`[TON-${node.id}] Reset → ET=0, Q=0`);
   }
 
-  node.data.etValue = node.data.timer; // ET = temps écoulé
+  node.data.outValue = node.data.qValue;
 };

@@ -12,6 +12,8 @@ export default function ToolbarLadder({ onAddNode }: ToolbarLadderProps) {
       <Button onClick={() => onAddNode('contactNF')}>-|/|-</Button>
       <Button onClick={() => onAddNode('bobine')}>-( )-</Button>
       <Button onClick={() => onAddNode('SR')}>SR</Button>
+      <Button onClick={() => onAddNode('Ton')}>Ton</Button>
+      <Button onClick={() => onAddNode('Toff')}>Toff</Button>
     </div>
   );
 }

@@ -11,7 +11,11 @@ const getConnectedTargets = (nodeId: string, edges: Edge[]): string[] => {
 /**
  * Propagation d’un signal de 1 depuis les rails, uniquement sur les `inValue`.
  */
-export const resolveLadder = (nodes: Node[], edges: Edge[]): Node[] => {
+export const resolveLadder = (
+  nodes: Node[],
+  edges: Edge[],
+  deltaTime: number
+): Node[] => {
   const nodeMap = new Map(nodes.map((n) => [n.id, { ...n }]));
   const queue: string[] = [];
 
@@ -34,7 +38,14 @@ export const resolveLadder = (nodes: Node[], edges: Edge[]): Node[] => {
 
     const resolver = currentNode.type && blockResolvers[currentNode.type];
     if (resolver) {
-      resolver(currentNode, nodeMap, edges);
+      console.log(
+        `[DEBUG] Résolveur trouvé pour type=${currentNode.type}, id=${currentNode.id}`
+      );
+      resolver(currentNode, nodeMap, edges, deltaTime);
+    } else {
+      console.log(
+        `[DEBUG] Aucun résolveur pour type=${currentNode.type}, id=${currentNode.id}`
+      );
     }
 
     console.log(`→ Noeud ${currentNode.id} ,out=${currentNode.data.outValue}`);
