@@ -29,7 +29,7 @@ export default function GamePage() {
   // Initialise Unity avec les chemins fournis et extrait les fonctions utiles
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
     useUnityContext(unityPaths);
-
+  const [runPLC, setRunPLC] = useState(false);
   const handleSpawn = () => {
     if (!isLoaded) return;
     sendMessage('Pipe', 'TriggerSpawn', '');
@@ -69,7 +69,7 @@ export default function GamePage() {
     const interval = setInterval(() => {
       if (isLoaded) {
         sendMessage('GameManager', 'GetEtatsJSON', '');
-        console.log('Envoi de GetEtatsJSON à Unity'); // Debug
+        //console.log('Envoi de GetEtatsJSON à Unity'); // Debug
       }
     }, 100); // toutes les 100 ms
 
@@ -122,7 +122,10 @@ export default function GamePage() {
             {
               type: 'toggle',
               name: 'RUN PLC',
-              onClick: handleConveyor,
+              onClick: (value: boolean) => {
+                console.log('Toggle RUN PLC changé:', value);
+                setRunPLC(value);
+              },
             },
             {
               type: 'button',
@@ -154,6 +157,7 @@ export default function GamePage() {
                 composantsUnity={composantsUnity}
                 etatsComposants={etatsComposants}
                 sendMessage={sendMessage}
+                runPLC={runPLC}
               />
             </div>
           </div>

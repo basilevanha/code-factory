@@ -73,6 +73,6 @@ export const resolveLadder = (
     }
   }
 
-  console.log('Résultat final :', Array.from(nodeMap.values()));
+  //console.log('Résultat final :', Array.from(nodeMap.values()));
   return Array.from(nodeMap.values());
 };

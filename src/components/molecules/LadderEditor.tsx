@@ -1,5 +1,5 @@
 // LadderEditor.tsx
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -36,6 +36,7 @@ type LadderEditorProps = {
     methodName: string,
     parameter: string
   ) => void;
+  runPLC: boolean;
 };
 
 const nodeTypes = {
@@ -52,6 +53,7 @@ export default function LadderEditor({
   composantsUnity,
   etatsComposants,
   sendMessage,
+  runPLC,
 }: LadderEditorProps) {
   const railId = 'rail-1';
   const contactId = 'contact-1';
@@ -76,7 +78,6 @@ export default function LadderEditor({
         onChange: () => {},
       },
     },
-
     {
       id: bobineId,
       type: 'bobine',
@@ -100,7 +101,6 @@ export default function LadderEditor({
       targetHandle: 'in',
       type: 'smoothstep',
     },
-
     {
       id: 'edge-contact-bobine',
       source: contactId,
@@ -115,6 +115,17 @@ export default function LadderEditor({
   const [edges, setEdges] = useState<Edge[]>([]);
   const [initialized, setInitialized] = useState(false);
 
+  const nodesRef = useRef(nodes);
+  const edgesRef = useRef(edges);
+
+  useEffect(() => {
+    nodesRef.current = nodes;
+  }, [nodes]);
+
+  useEffect(() => {
+    edgesRef.current = edges;
+  }, [edges]);
+
   useEffect(() => {
     if (!initialized && composantsUnity?.length) {
       setNodes(baseNodes);
@@ -122,26 +133,6 @@ export default function LadderEditor({
       setInitialized(true);
     }
   }, [composantsUnity, initialized]);
-
-  useEffect(() => {
-    if (nodes.length === 0) return;
-
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.type !== 'railAlim') {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              composantsUnity,
-              etatsComposants,
-            },
-          };
-        }
-        return node;
-      })
-    );
-  }, [composantsUnity, etatsComposants]);
 
   type NodeData = {
     variable?: string;
@@ -152,12 +143,17 @@ export default function LadderEditor({
   };
 
   type NodeWithData = Node & {
-    type: string; // obligatoire
+    type: string;
     data: NodeData;
   };
 
   const addNode = (type: string) => {
-    const newNode = createNode(type, nodes, composantsUnity, etatsComposants);
+    const newNode = createNode(
+      type,
+      nodesRef.current,
+      composantsUnity,
+      etatsComposants
+    );
     setNodes((nds) => [...nds, newNode]);
   };
 
@@ -165,14 +161,31 @@ export default function LadderEditor({
 
   const runWorkflow = () => {
     const now = Date.now();
-    const deltaTime = lastRunTime !== null ? now - lastRunTime : 0; // ms
+    const deltaTime = lastRunTime !== null ? now - lastRunTime : 0;
     lastRunTime = now;
 
-    const resolvedNodes = resolveLadder(nodes, edges, deltaTime);
+    // Injection des dernières valeurs Unity dans les nodes
+    const nodesWithLatestState = nodesRef.current.map((node) => {
+      if (node.type !== 'railAlim') {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            composantsUnity,
+            etatsComposants,
+          },
+        };
+      }
+      return node;
+    });
 
+    const resolvedNodes = resolveLadder(
+      nodesWithLatestState,
+      edgesRef.current,
+      deltaTime
+    );
     setNodes(resolvedNodes);
 
-    // Filtrer uniquement les nodes qui ont un type défini et une variable pour applyOutputs
     const nodesWithData = resolvedNodes.filter(
       (node): node is NodeWithData =>
         typeof node.type === 'string' &&
@@ -182,6 +195,15 @@ export default function LadderEditor({
 
     applyOutputs(nodesWithData, sendMessage);
   };
+
+  // Boucle automatique si runPLC actif et à chaque nouvelle valeur Unity
+  useEffect(() => {
+    if (!runPLC) return;
+    if (!etatsComposants || Object.keys(etatsComposants).length === 0) return;
+
+    //console.log('[DEBUG] runPLC actif -> déclenchement runWorkflow');
+    runWorkflow();
+  }, [etatsComposants, runPLC]);
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -197,14 +219,7 @@ export default function LadderEditor({
   }, []);
 
   return (
-    <div style={{ width: '100%', height: '600px' }}>
-      <button
-        className="mb-4 rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
-        onClick={runWorkflow}
-      >
-        ▶️ Calculer workflow
-      </button>
-
+    <div style={{ width: '100%', height: '85%' }}>
       <ToolbarLadder onAddNode={addNode} />
       <ReactFlow
         snapToGrid={true}
@@ -217,7 +232,7 @@ export default function LadderEditor({
         nodeTypes={nodeTypes}
         fitView
         defaultEdgeOptions={{
-          type: 'smoothstep', // ← angles droits intégrés
+          type: 'smoothstep',
           style: { stroke: '#000', strokeWidth: 2 },
         }}
       >
