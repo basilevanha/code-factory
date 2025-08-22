@@ -38,9 +38,6 @@ export const resolveLadder = (
 
     const resolver = currentNode.type && blockResolvers[currentNode.type];
     if (resolver) {
-      console.log(
-        `[DEBUG] Résolveur trouvé pour type=${currentNode.type}, id=${currentNode.id}`
-      );
       resolver(currentNode, nodeMap, edges, deltaTime);
     } else {
       console.log(
