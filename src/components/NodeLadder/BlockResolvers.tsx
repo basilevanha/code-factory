@@ -5,7 +5,7 @@ import { resolveBobine } from './BobineNode';
 import { resolveRailAlim } from './RailAlimNode';
 import { resolveSR } from './SRnode';
 import { resolveTON } from './TonNode';
-//import { resolveTOff } from './ToffNode';
+import { resolveTOff } from './ToffNode';
 import { resolveContactNF } from './ContactNFnode';
 // Ajoute ici d’autres resolvers si besoin
 type Resolver = (
@@ -22,6 +22,6 @@ export const blockResolvers: Record<string, Resolver> = {
   railAlim: resolveRailAlim,
   SR: resolveSR,
   Ton: resolveTON, //need to create a tempoBlocResolver???
-  //ToffNode: resolveTOff,
+  Toff: resolveTOff,
   // Ajoute les autres types ici
 };
