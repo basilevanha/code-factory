@@ -9,12 +9,7 @@ const TONNode = ({ data, id }: NodeProps) => {
   const etValue: number | undefined = data?.etValue;
 
   // SP modifiable par l'utilisateur
-  const [spValue, setSpValue] = useState<number>(data?.spValue ?? 1000);
-
-  // Synchronise le SP dans node.data pour le resolver
-  useEffect(() => {
-    data.spValue = spValue;
-  }, [spValue]);
+  const [spValue, setSpValue] = useState<number>(data?.spValue ?? 1.0);
 
   const label = data?.label || `TON-${id}`;
 
@@ -63,9 +58,10 @@ const TONNode = ({ data, id }: NodeProps) => {
 
       {/* SP */}
       <div className="absolute top-[45%] left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-xs">
-        <label className="font-bold">SP (ms)</label>
+        <label className="font-bold">SP [s]</label>
         <input
           type="number"
+          step="0.1"
           className="w-24 rounded border border-gray-300 text-center text-xs"
           value={spValue}
           onChange={(e) => setSpValue(Number(e.target.value))}
@@ -74,7 +70,7 @@ const TONNode = ({ data, id }: NodeProps) => {
 
       {/* ET */}
       <div className="absolute top-[70%] left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-xs">
-        <label className="font-bold">ET (s)</label>
+        <label className="font-bold">ET [s]</label>
         <div className="w-24 rounded border border-gray-300 bg-gray-100 text-center text-xs">
           {etValue != null ? (etValue / 1000).toFixed(1) : '0.0'}{' '}
           {/* converti ms → s */}
