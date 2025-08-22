@@ -13,6 +13,11 @@ const TONNode = ({ data, id }: NodeProps) => {
 
   const label = data?.label || `TON-${id}`;
 
+  // Synchronisation dans node.data
+  useEffect(() => {
+    data.spValue = spValue * 1000;
+  }, [spValue]);
+
   return (
     <div className="relative h-44 w-44 rounded-2xl border border-gray-300 bg-white p-2 shadow-md">
       {/* Label */}
