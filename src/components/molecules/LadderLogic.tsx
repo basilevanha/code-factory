@@ -19,7 +19,7 @@ export const resolveLadder = (
   const nodeMap = new Map(nodes.map((n) => [n.id, { ...n }]));
   const queue: string[] = [];
 
-  // Étape 1 : Initialisation
+  // Step 1 : start at the power rails
   for (const node of nodeMap.values()) {
     node.data.inValue = 0;
     if (node.type === 'railAlim') {
