@@ -73,7 +73,7 @@ export default function LadderEditor({
       type: 'contactNO',
       position: { x: 150, y: 80 },
       data: {
-        variable: '',
+        variable: 'I_Sensor_1',
         composantsUnity,
         etatsComposants,
         inValue: 0,
@@ -85,7 +85,7 @@ export default function LadderEditor({
       type: 'bobine',
       position: { x: 350, y: 80 },
       data: {
-        variable: '',
+        variable: 'Q_Conv_1',
         composantsUnity,
         etatsComposants,
         inValue: 0,

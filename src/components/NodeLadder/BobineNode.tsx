@@ -41,7 +41,7 @@ const BobineNode = ({ data }: NodeProps) => {
           composantsUnity={composantsUnity}
           value={selectedActionneur}
           onChange={setSelectedActionneur}
-          placeholder="Sélectionnez actionneur"
+          placeholder="???"
           showSensor={false}
           showMemoire={true}
           showActionneur={true}

@@ -147,6 +147,8 @@ export default function GamePage() {
     };
   }, []);
 
+  const [showMissionPopup, setShowMissionPopup] = useState(true);
+
   return (
     <main className="min-h-screen bg-white px-6 py-16 text-gray-900">
       <div className="mx-auto flex max-w-6xl flex-col gap-8">
@@ -167,15 +169,16 @@ export default function GamePage() {
               },
               value: runPLC,
             },
-            {
-              type: 'button',
-              name: '📦 Spawwwwn',
-              onClick: handleSpawn,
-            },
+
             {
               type: 'button',
               name: 'Reset',
               onClick: handleReset,
+            },
+            {
+              type: 'button',
+              name: 'Objectif',
+              onClick: () => setShowMissionPopup(true),
             },
           ]}
         />
@@ -210,14 +213,74 @@ export default function GamePage() {
             />
           </div>
         </div>
+
+        {showMissionPopup && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="relative w-full max-w-2xl rounded-2xl bg-white p-6 text-center shadow-xl">
+              <h2 className="mb-4 text-2xl font-bold text-blue-600">
+                Objectif
+              </h2>
+              <p className="mb-4 text-gray-700">
+                Votre tâche consiste à construire le programme en Ladder pour
+                acheminer la caisse sur la palette.
+              </p>
+
+              {/* Image ou vidéo */}
+              <div className="mb-4">
+                <video
+                  src="/videos/TutoVideo.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  className="mx-auto w-full max-w-lg rounded-lg"
+                />
+                {/* Ou image : <img src="/images/mission.png" alt="Mission" className="mx-auto rounded-lg max-h-48" /> */}
+              </div>
+
+              <Button
+                className="w-full justify-center bg-green-600 text-white hover:bg-green-700"
+                onClick={() => setShowMissionPopup(false)}
+              >
+                J’ai compris
+              </Button>
+            </div>
+          </div>
+        )}
+
         {showSuccess && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
+            <div className="relative max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
               <h2 className="mb-2 text-xl font-bold text-green-600">
-                🎉 Succès !
+                🎉 BRAVO !
               </h2>
-              <p className="mb-4">{successMessage}</p>
-              <Button onClick={() => setShowSuccess(false)}>Fermer</Button>
+              <p className="mb-6">{successMessage}</p>
+
+              {/* Boutons l'un sous l'autre */}
+              <div className="flex flex-col gap-3">
+                <Button
+                  className="w-full justify-center"
+                  onClick={() => {
+                    setShowSuccess(false);
+                    setRunPLC(false);
+                  }}
+                >
+                  Rejouer
+                </Button>
+                <Button
+                  className="w-full justify-center bg-green-600 text-white hover:bg-green-700"
+                  onClick={() => {
+                    setShowSuccess(false);
+                    setRunPLC(false);
+                    window.open(
+                      'https://forms.gle/kWR9gLiVGJDYixf8A',
+                      '_blank',
+                      'noopener,noreferrer'
+                    );
+                  }}
+                >
+                  Niveau suivant
+                </Button>
+              </div>
             </div>
           </div>
         )}
