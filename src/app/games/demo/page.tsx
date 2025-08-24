@@ -17,6 +17,7 @@ declare global {
   interface Window {
     onUnityReady?: (json: string) => void;
     onUnitySendEtat?: (json: string) => void;
+    onLevelSuccess?: (json: string) => void;
   }
 }
 
@@ -123,6 +124,29 @@ export default function GamePage() {
     prevRunPLC.current = runPLC;
   }, [runPLC]);
 
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    window.onLevelSuccess = (json: string) => {
+      try {
+        const data = JSON.parse(json);
+        console.log('Succès Unity reçu:', data);
+
+        if (data.success) {
+          setSuccessMessage(data.message || 'Niveau terminé !');
+          setShowSuccess(true);
+        }
+      } catch (e) {
+        console.error('Erreur JSON onLevelSuccess:', e);
+      }
+    };
+
+    return () => {
+      delete window.onLevelSuccess;
+    };
+  }, []);
+
   return (
     <main className="min-h-screen bg-white px-6 py-16 text-gray-900">
       <div className="mx-auto flex max-w-6xl flex-col gap-8">
@@ -186,6 +210,17 @@ export default function GamePage() {
             />
           </div>
         </div>
+        {showSuccess && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
+              <h2 className="mb-2 text-xl font-bold text-green-600">
+                🎉 Succès !
+              </h2>
+              <p className="mb-4">{successMessage}</p>
+              <Button onClick={() => setShowSuccess(false)}>Fermer</Button>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
