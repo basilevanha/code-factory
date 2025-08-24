@@ -12,6 +12,7 @@ type ToolbarItem =
       type: 'toggle';
       name: string;
       onClick: (value: boolean) => void;
+      value: boolean;
     }
   | {
       type: 'text';
@@ -42,7 +43,7 @@ const Toolbar = ({ items, className = '' }: ToolbarProps) => {
 
         if (item.type === 'toggle') {
           return (
-            <Toggle key={index} onClick={item.onClick}>
+            <Toggle key={index} value={item.value} onClick={item.onClick}>
               {item.name}
             </Toggle>
           );
