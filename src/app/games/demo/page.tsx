@@ -1,7 +1,7 @@
 'use client';
 
 // React
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useUnityContext } from 'react-unity-webgl';
 
 // Utilities
@@ -108,6 +108,21 @@ export default function GamePage() {
     };
   }, []);
 
+  const prevRunPLC = useRef(runPLC);
+
+  useEffect(() => {
+    if (!prevRunPLC.current && runPLC) {
+      // front montant (0 → 1)
+      handleSpawn();
+    } else if (prevRunPLC.current && !runPLC) {
+      // front descendant (1 → 0)
+      handleReset();
+    }
+
+    // mise à jour de la valeur précédente
+    prevRunPLC.current = runPLC;
+  }, [runPLC]);
+
   return (
     <main className="min-h-screen bg-white px-6 py-16 text-gray-900">
       <div className="mx-auto flex max-w-6xl flex-col gap-8">
@@ -126,6 +141,7 @@ export default function GamePage() {
                 console.log('Toggle RUN PLC changé:', value);
                 setRunPLC(value);
               },
+              value: runPLC,
             },
             {
               type: 'button',
@@ -158,6 +174,7 @@ export default function GamePage() {
                 etatsComposants={etatsComposants}
                 sendMessage={sendMessage}
                 runPLC={runPLC}
+                setRunPLC={setRunPLC}
               />
             </div>
           </div>

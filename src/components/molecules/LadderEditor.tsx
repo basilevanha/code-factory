@@ -37,6 +37,7 @@ type LadderEditorProps = {
     parameter: string
   ) => void;
   runPLC: boolean;
+  setRunPLC: (value: boolean) => void;
 };
 
 const nodeTypes = {
@@ -54,6 +55,7 @@ export default function LadderEditor({
   etatsComposants,
   sendMessage,
   runPLC,
+  setRunPLC,
 }: LadderEditorProps) {
   const railId = 'rail-1';
   const contactId = 'contact-1';
@@ -204,18 +206,19 @@ export default function LadderEditor({
     //console.log('[DEBUG] runPLC actif -> déclenchement runWorkflow');
     runWorkflow();
   }, [etatsComposants, runPLC]);
+  const onNodesChange: OnNodesChange = useCallback((changes) => {
+    setNodes((nds) => applyNodeChanges(changes, nds));
+    setRunPLC(false); // toggle OFF dès qu'un node change
+  }, []);
 
-  const onNodesChange: OnNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-  const onEdgesChange: OnEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
+  const onEdgesChange: OnEdgesChange = useCallback((changes) => {
+    setEdges((eds) => applyEdgeChanges(changes, eds));
+    setRunPLC(false); // toggle OFF dès qu'un edge change
+  }, []);
 
   const onConnect = useCallback((connection: Connection) => {
     setEdges((eds) => addEdge(connection, eds));
+    setRunPLC(false); // toggle OFF dès qu'une nouvelle connexion est créée
   }, []);
 
   return (
