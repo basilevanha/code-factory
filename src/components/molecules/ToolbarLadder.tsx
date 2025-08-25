@@ -8,20 +8,36 @@ type ToolbarLadderProps = {
 export default function ToolbarLadder({ onAddNode }: ToolbarLadderProps) {
   return (
     <div>
-      Ajoute un bloc Ladder en cliquant dessus. Pour effacer un bloc ou une
-      connection, clique dessus et sur ton clavier appuie sur "del" ou "suppr".
+      Ajoute un bloc Ladder en cliquant dessus.
       <div className="flex gap-2 rounded bg-white p-2 shadow">
         <Button
-          tooltip="Bloc contact Normalement Ouvert (NO)"
+          tooltip="Bloc contact à ouverture"
           onClick={() => onAddNode('contactNO')}
         >
           -| |-
         </Button>
-        <Button onClick={() => onAddNode('contactNF')}>-|/|-</Button>
-        <Button onClick={() => onAddNode('bobine')}>-( )-</Button>
+        <Button
+          tooltip="Bloc contact à fermeture"
+          onClick={() => onAddNode('contactNF')}
+        >
+          -|/|-
+        </Button>
+        <Button tooltip="Bloc bobine" onClick={() => onAddNode('bobine')}>
+          -( )-
+        </Button>
         {/* <Button onClick={() => onAddNode('SR')}>SR</Button> */}
-        <Button onClick={() => onAddNode('Ton')}>Ton</Button>
-        <Button onClick={() => onAddNode('Toff')}>Toff</Button>
+        <Button
+          tooltip="Bloc Temporistion à l’enclenchement"
+          onClick={() => onAddNode('Ton')}
+        >
+          Ton
+        </Button>
+        <Button
+          tooltip="Bloc Temporistion à l’ouverture"
+          onClick={() => onAddNode('Toff')}
+        >
+          Toff
+        </Button>
       </div>
     </div>
   );
