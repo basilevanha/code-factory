@@ -1,10 +1,11 @@
 // Components
 import Toggle from '@/components/atoms/Toggle';
-import Button from '@/components/atoms/Button';
+import Button, { IconName } from '@/components/atoms/Button';
 
 type ToolbarItem =
   | {
       type: 'button';
+      icon?: IconName;
       name: string;
       onClick: () => void;
     }
@@ -12,6 +13,7 @@ type ToolbarItem =
       type: 'toggle';
       name: string;
       onClick: (value: boolean) => void;
+      value: boolean;
     }
   | {
       type: 'text';
@@ -27,10 +29,8 @@ type ToolbarProps = {
 const Toolbar = ({ items, className = '' }: ToolbarProps) => {
   return (
     <div
-      className={`flex min-w-max flex-col gap-5 rounded-lg bg-gray-200 p-4 ${className}`}
+      className={`flex min-w-max flex-row gap-5 rounded-lg bg-gray-200 p-4 ${className}`}
     >
-      <h2 className="text-xl font-bold">Toolbar</h2>
-
       {items.map((item, index) => {
         if (item.type === 'text') {
           return (
@@ -42,7 +42,7 @@ const Toolbar = ({ items, className = '' }: ToolbarProps) => {
 
         if (item.type === 'toggle') {
           return (
-            <Toggle key={index} onClick={item.onClick}>
+            <Toggle key={index} value={item.value} onClick={item.onClick}>
               {item.name}
             </Toggle>
           );
@@ -50,7 +50,7 @@ const Toolbar = ({ items, className = '' }: ToolbarProps) => {
 
         if (item.type === 'button') {
           return (
-            <Button key={index} onClick={item.onClick}>
+            <Button key={index} onClick={item.onClick} icon={item.icon}>
               {item.name}
             </Button>
           );

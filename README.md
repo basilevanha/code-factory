@@ -36,7 +36,12 @@ Add unity builds in public/unity , then if the files are compressed (default bro
 npm run brotli
 ```
 
----
+or
+to execute within the folder
+
+```
+find . -type f -name "*.br" | while read -r file; do brotli --decompress "$file" -o "${file%.br}"; done
+```
 
 ## 📁 Project Structure (atomic design)
 
@@ -56,6 +61,13 @@ coding-factory/
 ```
 
 ---
+
+## To add new Ladder Bloc
+
+1. create an new visual and logic function within NoldeLadder
+2. add the new "blockResolver type" in blocResolver
+3. add the new nodeTypes in LadderResolver
+4. use it as much as you like !
 
 ## 📦 Deployment
 

@@ -1,18 +1,14 @@
-import { useState, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 type ToggleProps = {
-  defaultChecked?: boolean;
+  value: boolean; // état contrôlé depuis l’extérieur
   onClick?: (checked: boolean) => void;
   children?: ReactNode;
 };
 
-const Toggle = ({ defaultChecked = false, onClick, children }: ToggleProps) => {
-  const [checked, setChecked] = useState(defaultChecked);
-
+const Toggle = ({ value, onClick, children }: ToggleProps) => {
   const handleToggle = () => {
-    const newValue = !checked;
-    setChecked(newValue);
-    onClick?.(newValue);
+    onClick?.(!value);
   };
 
   return (
@@ -24,12 +20,12 @@ const Toggle = ({ defaultChecked = false, onClick, children }: ToggleProps) => {
       <div className="relative">
         <div
           className={`h-6 w-10 rounded-full transition-colors duration-300 ${
-            checked ? 'bg-blue-600' : 'bg-gray-300'
+            value ? 'bg-blue-600' : 'bg-gray-300'
           }`}
         />
         <div
           className={`absolute top-0.5 left-0.5 h-5 w-5 transform rounded-full bg-white shadow-md transition-transform duration-300 ${
-            checked ? 'translate-x-4' : ''
+            value ? 'translate-x-4' : ''
           }`}
         />
       </div>
