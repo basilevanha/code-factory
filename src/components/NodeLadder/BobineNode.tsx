@@ -68,7 +68,7 @@ const BobineNode = ({ data }: NodeProps) => {
         <span
           className={clsx(
             'text-sm font-semibold transition-colors',
-            '#9CA3AF' //getColorByValue(outValue, true)
+            getColorByValue(inValue, true)
           )}
         >
           --( )--

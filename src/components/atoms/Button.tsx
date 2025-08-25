@@ -3,19 +3,32 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronLeft,
+  Target,
+  RefreshCcw,
+  PlusCircleIcon,
   type LucideIcon,
 } from 'lucide-react';
 import Link from 'next/link';
 import { ReactNode, MouseEvent } from 'react';
 import clsx from 'clsx';
 
-type IconName = 'play' | 'chevron-down' | 'chevron-right' | 'chevron-left';
+export type IconName =
+  | 'play'
+  | 'chevron-down'
+  | 'chevron-right'
+  | 'chevron-left'
+  | 'target'
+  | 'refresh'
+  | 'plus-circle';
 
 const iconMap: Record<IconName, LucideIcon> = {
   play: Play,
   'chevron-down': ChevronDown,
   'chevron-right': ChevronRight,
   'chevron-left': ChevronLeft,
+  target: Target,
+  refresh: RefreshCcw,
+  'plus-circle': PlusCircleIcon,
 };
 
 type ButtonProps = {
@@ -25,6 +38,7 @@ type ButtonProps = {
   className?: string;
   disabled?: boolean;
   href?: string;
+  tooltip?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   type?: 'button' | 'submit' | 'reset';
 };
@@ -36,6 +50,7 @@ const Button = ({
   className = '',
   disabled = false,
   href,
+  tooltip,
   onClick,
   type = 'button',
 }: ButtonProps) => {
@@ -68,6 +83,7 @@ const Button = ({
       onClick={onClick}
       disabled={disabled}
       className={baseStyles}
+      title={tooltip}
     >
       {iconElement && iconPosition === 'left' && iconElement}
       {children}

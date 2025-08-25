@@ -161,6 +161,18 @@ export default function GamePage() {
         <Toolbar
           items={[
             {
+              type: 'button',
+              name: 'Revoir les objectifs',
+              icon: 'target',
+              onClick: () => setShowMissionPopup(true),
+            },
+            {
+              type: 'button',
+              name: 'Réinitialiser la scène',
+              icon: 'refresh',
+              onClick: handleReset,
+            },
+            {
               type: 'toggle',
               name: 'RUN PLC',
               onClick: (value: boolean) => {
@@ -168,17 +180,6 @@ export default function GamePage() {
                 setRunPLC(value);
               },
               value: runPLC,
-            },
-
-            {
-              type: 'button',
-              name: 'Reset',
-              onClick: handleReset,
-            },
-            {
-              type: 'button',
-              name: 'Objectif',
-              onClick: () => setShowMissionPopup(true),
             },
           ]}
         />
