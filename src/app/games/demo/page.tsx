@@ -221,7 +221,7 @@ export default function GamePage() {
               <h2 className="mb-4 text-2xl font-bold text-blue-600">
                 Objectif
               </h2>
-              <p className="mb-4 text-gray-700">
+              <p className="mb-4 text-left text-gray-700">
                 Votre tâche consiste à construire le programme en Ladder pour
                 acheminer la caisse sur la palette.
                 <br />
