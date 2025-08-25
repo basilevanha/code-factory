@@ -225,9 +225,9 @@ export default function GamePage() {
                 Votre tâche consiste à construire le programme en Ladder pour
                 acheminer la caisse sur la palette.
                 <br />
-                Tips: <br />
-                Pour charger la programme dans la scène, active "Run PLC".{' '}
                 <br />
+                Tips: <br />
+                Pour charger la programme dans la scène, active "Run PLC".
                 <br />
                 Ajoute un bloc Ladder en cliquant dessus. <br />
                 Pour effacer un bloc ou une connection, clique dessus et sur ton
