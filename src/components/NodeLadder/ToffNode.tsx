@@ -1,14 +1,37 @@
 // TOffNode.tsx
 import { Handle, Position, NodeProps, Node, Edge } from 'reactflow';
 import { getColorByValue } from '@/utils/getColorByValue';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
+
+const SPInput = memo(function SPInput({
+  value,
+  onChange,
+  onCommit,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  onCommit?: () => void;
+}) {
+  return (
+    <input
+      type="number"
+      step="0.1"
+      className="nodrag nopan w-24 rounded border border-gray-300 text-center text-xs"
+      value={value}
+      onChange={(e) => onChange(Number(e.currentTarget.value))}
+      onBlur={onCommit}
+      onPointerDown={(e) => e.stopPropagation()} // évite que React Flow “mange” les events
+    />
+  );
+});
 
 const TOffNode = ({ data, id }: NodeProps) => {
   const inValue: number | undefined = data?.inValue;
   const qValue: number | undefined = data?.qValue;
   const etValue: number | undefined = data?.etValue;
 
-  const [spValue, setSpValue] = useState<number>(data?.spValue ?? 1.0); // durée en s
+  const [spValue, setSpValue] = useState<number>(1.0);
+  const handleChange = useCallback((v: number) => setSpValue(v), []);
 
   // Synchronisation dans node.data
   useEffect(() => {
@@ -63,13 +86,7 @@ const TOffNode = ({ data, id }: NodeProps) => {
       {/* SP */}
       <div className="absolute top-[45%] left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-xs">
         <label className="font-bold">SP [s]</label>
-        <input
-          type="number"
-          step="0.1"
-          className="w-24 rounded border border-gray-300 text-center text-xs"
-          value={spValue}
-          onChange={(e) => setSpValue(Number(e.target.value))}
-        />
+        <SPInput value={spValue} onChange={handleChange} />
       </div>
 
       {/* ET */}
