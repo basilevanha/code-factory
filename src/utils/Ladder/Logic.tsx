@@ -1,5 +1,5 @@
 import { Edge, Node } from 'reactflow';
-import { blockResolvers } from '../NodeLadder/BlockResolvers';
+import { blockResolvers } from '@/utils/Ladder/resolvers';
 
 /**
  * Cherche les cibles connectées à un nœud donné.

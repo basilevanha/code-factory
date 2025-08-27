@@ -37,11 +37,3 @@ const RailAlimNode = ({ data }: NodeProps) => {
 };
 
 export default RailAlimNode;
-
-export const resolveRailAlim = (
-  node: Node,
-  _nodeMap: Map<string, Node>,
-  _edges: Edge[]
-): void => {
-  node.data.outValue = 1;
-};
