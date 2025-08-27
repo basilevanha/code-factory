@@ -54,8 +54,7 @@ const Button = ({
   onClick,
   type = 'button',
 }: ButtonProps) => {
-  const IconComponent = icon ? iconMap[icon] : null;
-
+  // Styles de base + possibilité d’ajouter des styles custom via `className`
   const baseStyles = clsx(
     'inline-flex items-center gap-2 rounded-2xl px-6 py-2 font-semibold shadow-md transition',
     'text-white bg-blue-600 hover:bg-blue-700',
@@ -63,6 +62,8 @@ const Button = ({
     className
   );
 
+  // Gestion de l’icône
+  const IconComponent = icon ? iconMap[icon] : null;
   const iconElement = IconComponent ? <IconComponent size={16} /> : null;
 
   // Si `href` est fourni → Link

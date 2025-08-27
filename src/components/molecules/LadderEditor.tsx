@@ -14,8 +14,8 @@ import ReactFlow, {
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
-import { resolveLadder } from './LadderLogic';
-import { applyOutputs } from './ApplyOutputs';
+import { resolveLadder } from '../../utils/Ladder/Logic';
+import { applyOutputs } from '../../utils/Ladder/ApplyOutputs';
 
 import ContactNONode from '../NodeLadder/ContactNOnode';
 import ContactNFNode from '../NodeLadder/ContactNFnode';
@@ -26,7 +26,7 @@ import TonNode from '../NodeLadder/TonNode';
 import ToffNode from '../NodeLadder/ToffNode';
 
 import ToolbarLadder from './ToolbarLadder';
-import { createNode } from './NodeManager';
+import { createNode } from '../../utils/Ladder/NodeManager';
 
 type LadderEditorProps = {
   composantsUnity: string[];

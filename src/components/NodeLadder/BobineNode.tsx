@@ -79,15 +79,3 @@ const BobineNode = ({ data }: NodeProps) => {
 };
 
 export default BobineNode;
-
-export const resolveBobine = (
-  node: Node,
-  _nodeMap: Map<string, Node>,
-  _edges: Edge[]
-) => {
-  const inValue = node.data.inValue;
-
-  const isActive = inValue === 1;
-  node.data.outValue = isActive ? 1 : 0;
-  console.log(`Bobine ${node.id} ,outValue=${node.data.outValue}`);
-};

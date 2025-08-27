@@ -1,7 +1,29 @@
 //TonNode.tsx
 import { Handle, Position, NodeProps, Edge, Node } from 'reactflow';
 import { getColorByValue } from '@/utils/getColorByValue';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
+
+const SPInput = memo(function SPInput({
+  value,
+  onChange,
+  onCommit,
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  onCommit?: () => void;
+}) {
+  return (
+    <input
+      type="number"
+      step="0.1"
+      className="nodrag nopan w-24 rounded border border-gray-300 text-center text-xs"
+      value={value}
+      onChange={(e) => onChange(Number(e.currentTarget.value))}
+      onBlur={onCommit}
+      onPointerDown={(e) => e.stopPropagation()} // évite que React Flow “mange” les events
+    />
+  );
+});
 
 const TONNode = ({ data, id }: NodeProps) => {
   const inValue: number | undefined = data?.inValue;
@@ -10,6 +32,7 @@ const TONNode = ({ data, id }: NodeProps) => {
 
   // SP modifiable par l'utilisateur
   const [spValue, setSpValue] = useState<number>(data?.spValue ?? 1.0);
+  const handleChange = useCallback((v: number) => setSpValue(v), []);
 
   const label = data?.label || `TON-${id}`;
 
@@ -64,13 +87,7 @@ const TONNode = ({ data, id }: NodeProps) => {
       {/* SP */}
       <div className="absolute top-[45%] left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center text-xs">
         <label className="font-bold">SP [s]</label>
-        <input
-          type="number"
-          step="0.1"
-          className="w-24 rounded border border-gray-300 text-center text-xs"
-          value={spValue}
-          onChange={(e) => setSpValue(Number(e.target.value))}
-        />
+        <SPInput value={spValue} onChange={handleChange} />
       </div>
 
       {/* ET */}
@@ -90,46 +107,3 @@ const TONNode = ({ data, id }: NodeProps) => {
 };
 
 export default TONNode;
-
-export const resolveTON = (
-  node: Node,
-  _nodeMap: Map<string, Node>,
-  _edges: Edge[],
-  _deltaTime: number
-): void => {
-  const inVal = node.data.inValue || 0;
-  const spVal = node.data.spValue || 0; // durée en ms
-
-  if (node.data.startTime === undefined) {
-    node.data.startTime = null; // moment où IN passe à 1
-  }
-
-  console.log(`[TON-${node.id}] IN=${inVal}, SP=${spVal}`);
-
-  if (inVal === 1) {
-    if (node.data.startTime === null) {
-      // Premier cycle où IN est à 1 → on enregistre le temps
-      node.data.startTime = Date.now();
-      console.log(
-        `[TON-${node.id}] Front montant détecté → startTime=${node.data.startTime}`
-      );
-    }
-
-    // Temps écoulé depuis le front montant
-    const elapsed = Date.now() - node.data.startTime;
-    node.data.etValue = elapsed;
-    node.data.qValue = elapsed >= spVal ? 1 : 0;
-
-    console.log(
-      `[TON-${node.id}] elapsed=${elapsed}ms, ET=${node.data.etValue}, Q=${node.data.qValue}`
-    );
-  } else {
-    // Reset complet
-    node.data.startTime = null;
-    node.data.etValue = 0;
-    node.data.qValue = 0;
-    console.log(`[TON-${node.id}] Reset → ET=0, Q=0`);
-  }
-
-  node.data.outValue = node.data.qValue;
-};

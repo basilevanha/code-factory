@@ -73,28 +73,3 @@ const SRNode = ({ data, id }: NodeProps) => {
 };
 
 export default SRNode;
-
-/**
- * Résolution logique du bloc SR
- */
-export const resolveSR = (
-  node: Node,
-  _nodeMap: Map<string, Node>,
-  _edges: Edge[]
-): void => {
-  const inSet = node.data.inSetValue || 0;
-  const inReset = node.data.inResetValue || 0;
-
-  // Mémorisation de l'état
-  if (inSet === 1) {
-    node.data.outValue = 1;
-  }
-  if (inReset === 1) {
-    node.data.outValue = 0;
-  }
-
-  // Si état non initialisé, on commence à 0
-  if (node.data.outValue === undefined) {
-    node.data.outValue = 0;
-  }
-};

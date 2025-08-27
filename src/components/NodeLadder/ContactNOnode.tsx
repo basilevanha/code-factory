@@ -30,8 +30,9 @@ const ContactNode = ({ data, id }: NodeProps) => {
     }
   }, [selectedSensor]);
 
-  const selected = composantsUnity.find((name) => name === selectedSensor);
-  const capteurValue = selected ? etatsComposants[selected] : undefined;
+  const capteurValue = selectedSensor
+    ? etatsComposants[selectedSensor]
+    : undefined;
 
   return (
     <div className="relative h-10 w-30 rounded-2xl border border-gray-300 bg-white shadow-md">
@@ -94,25 +95,3 @@ const ContactNode = ({ data, id }: NodeProps) => {
 };
 
 export default ContactNode;
-
-export const resolveContactNO = (
-  node: Node,
-  _nodeMap: Map<string, Node>,
-  _edges: Edge[]
-): void => {
-  const inValue = node.data.inValue;
-
-  const variable = node.data.variable;
-  const etatsComposants: Record<string, number> =
-    node.data.etatsComposants || {};
-
-  const capteurValue = variable ? etatsComposants[variable] : 0;
-
-  const isActive = capteurValue === 1;
-
-  node.data.outValue = inValue === 1 && isActive ? 1 : 0;
-
-  /*console.log(
-    `→ Noeud ${node.id}: in=${inValue}, capteur=${capteurValue}, out=${node.data.outValue}`
-  );*/
-};
