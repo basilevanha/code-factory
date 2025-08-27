@@ -126,6 +126,8 @@ export default function GamePage() {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const maxLevel = 2;
 
   useEffect(() => {
     window.onLevelSuccess = (json: string) => {
@@ -134,6 +136,7 @@ export default function GamePage() {
         console.log('Succès Unity reçu:', data);
 
         if (data.success) {
+          setCurrentLevel(data.level || 1); // on met à jour le niveau actuel
           setSuccessMessage(data.message || 'Niveau terminé !');
           setShowSuccess(true);
         }
@@ -148,6 +151,11 @@ export default function GamePage() {
   }, []);
 
   const [showMissionPopup, setShowMissionPopup] = useState(true);
+
+  const [currentVideo, setCurrentVideo] = useState(0);
+  const videos = ['/videos/TutoVideo-1.mp4', '/videos/TutoVideo-2.mp4'];
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <main className="min-h-screen bg-white px-6 py-16 text-gray-900">
@@ -164,13 +172,13 @@ export default function GamePage() {
               type: 'button',
               name: 'Revoir les objectifs',
               icon: 'target',
-              onClick: () => setShowMissionPopup(true),
-            },
-            {
-              type: 'button',
-              name: 'Réinitialiser la scène',
-              icon: 'refresh',
-              onClick: handleReset,
+              onClick: () => {
+                console.log(
+                  '   currentLevel avant ouverture popup :',
+                  currentLevel
+                );
+                setShowMissionPopup(true);
+              },
             },
             {
               type: 'toggle',
@@ -215,47 +223,6 @@ export default function GamePage() {
           </div>
         </div>
 
-        {showMissionPopup && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="relative w-full max-w-2xl rounded-2xl bg-white p-6 text-center shadow-xl">
-              <h2 className="mb-4 text-2xl font-bold text-blue-600">
-                Objectif
-              </h2>
-              <p className="mb-4 text-left text-gray-700">
-                Votre tâche consiste à construire le programme en Ladder pour
-                acheminer la caisse sur la palette.
-                <br />
-                <br />
-                Tips: <br />
-                Pour charger la programme dans la scène, active "Run PLC".
-                <br />
-                Ajoute un bloc Ladder en cliquant dessus. <br />
-                Pour effacer un bloc ou une connection, clique dessus et sur ton
-                clavier appuie "suppr".
-              </p>
-
-              {/* Image ou vidéo */}
-              <div className="mb-4">
-                <video
-                  src="/videos/TutoVideo.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  className="mx-auto w-full max-w-lg rounded-lg"
-                />
-                {/* Ou image : <img src="/images/mission.png" alt="Mission" className="mx-auto rounded-lg max-h-48" /> */}
-              </div>
-
-              <Button
-                className="w-full justify-center bg-green-600 text-white hover:bg-green-700"
-                onClick={() => setShowMissionPopup(false)}
-              >
-                J’ai compris
-              </Button>
-            </div>
-          </div>
-        )}
-
         {showSuccess && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <div className="relative max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
@@ -264,7 +231,6 @@ export default function GamePage() {
               </h2>
               <p className="mb-6">{successMessage}</p>
 
-              {/* Boutons l'un sous l'autre */}
               <div className="flex flex-col gap-3">
                 <Button
                   className="w-full justify-center"
@@ -280,16 +246,116 @@ export default function GamePage() {
                   onClick={() => {
                     setShowSuccess(false);
                     setRunPLC(false);
-                    window.open(
-                      'https://forms.gle/kWR9gLiVGJDYixf8A',
-                      '_blank',
-                      'noopener,noreferrer'
-                    );
+                    handleReset();
+
+                    if (currentLevel >= maxLevel) {
+                      window.open(
+                        'https://forms.gle/kWR9gLiVGJDYixf8A',
+                        '_blank',
+                        'noopener,noreferrer'
+                      );
+                    } else {
+                      const nextLevel = currentLevel + 1;
+                      console.log('➡️ Passage au niveau :', nextLevel);
+
+                      // ⚡ Mettre à jour React
+                      setCurrentLevel(nextLevel);
+
+                      // ⚡ Demander à Unity
+                      sendMessage(
+                        'GameManager',
+                        'LoadLevelFromReact',
+                        nextLevel.toString()
+                      );
+
+                      // ⚡ Ouvrir la popup après un petit délai (laisser Unity init)
+                      setTimeout(() => {
+                        setShowMissionPopup(true);
+                      }, 150);
+                    }
                   }}
                 >
-                  Niveau suivant
+                  {currentLevel >= maxLevel
+                    ? 'Donne moi ton avis !'
+                    : 'Niveau suivant'}
                 </Button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {showMissionPopup && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="relative w-full max-w-2xl rounded-2xl bg-white p-6 text-center shadow-xl">
+              <h2 className="mb-4 text-2xl font-bold text-blue-600">
+                Objectif
+              </h2>
+
+              {currentLevel === 1 ? (
+                <>
+                  <p className="mb-4 text-left text-gray-700">
+                    <b>
+                      Complète le programme pour acheminer la caisse sur la
+                      palette.
+                    </b>
+                    <br />
+                    <br />
+                    <u>Conseils:</u>
+                    <br />
+                    <span className={currentVideo === 0 ? 'font-bold' : ''}>
+                      Le nom des composants s'affiche en passant la souris
+                      dessus.
+                    </span>
+                    <br />
+                    <span className={currentVideo === 1 ? 'font-bold' : ''}>
+                      Pour charger la programme dans l'automate, active "Run
+                      PLC", activer le PLC fait apparaitre une caisse
+                    </span>
+                  </p>
+
+                  <div className="mb-4">
+                    <video
+                      src={videos[currentVideo]}
+                      autoPlay
+                      muted
+                      className="mx-auto w-4/5 max-w-lg rounded-lg"
+                      onEnded={() =>
+                        setCurrentVideo((currentVideo + 1) % videos.length)
+                      }
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="mb-4 text-left text-gray-700">
+                    <b>Ajoute de nouveaux blocs Ladder</b> dans le programme
+                    pour acheminer la caisse sur la palette.
+                    <br />
+                    <br />
+                    <u>Conseils:</u>
+                    <br />
+                    <span className="font-bold">
+                      Connecte les blocs entre eux pour construire la logique.
+                    </span>
+                  </p>
+
+                  <div className="mb-4">
+                    <video
+                      src="/videos/TutoVideo-3.mp4"
+                      autoPlay
+                      muted
+                      className="mx-auto w-4/5 max-w-lg rounded-lg"
+                    />
+                  </div>
+                </>
+              )}
+
+              <Button
+                className="w-full justify-center bg-green-600 text-white hover:bg-green-700"
+                onClick={() => setShowMissionPopup(false)}
+              >
+                J’ai compris
+              </Button>
             </div>
           </div>
         )}
