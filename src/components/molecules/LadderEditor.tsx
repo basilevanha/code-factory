@@ -112,6 +112,7 @@ export default function LadderEditor({
       type: 'smoothstep',
     },
   ];
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
@@ -130,11 +131,19 @@ export default function LadderEditor({
 
   useEffect(() => {
     if (!initialized && composantsUnity?.length) {
-      setNodes(baseNodes);
+      setNodes(
+        baseNodes.map((n) => ({
+          ...n,
+          data: {
+            ...n.data,
+            selected: n.id === selectedNodeId,
+          },
+        }))
+      );
       setEdges(baseEdges);
       setInitialized(true);
     }
-  }, [composantsUnity, initialized]);
+  }, [composantsUnity, initialized, selectedNodeId]);
 
   type NodeData = {
     variable?: string;
@@ -221,6 +230,10 @@ export default function LadderEditor({
     setRunPLC(false); // toggle OFF dès qu'une nouvelle connexion est créée
   }, []);
 
+  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
+    setSelectedNodeId(node.id);
+  }, []);
+
   return (
     <div style={{ width: '100%', height: '85%' }}>
       <ToolbarLadder onAddNode={addNode} />
@@ -232,8 +245,10 @@ export default function LadderEditor({
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
         fitView
+        deleteKeyCode={['Backspace', 'Delete']}
         defaultEdgeOptions={{
           type: 'smoothstep',
           style: { stroke: '#000', strokeWidth: 2 },

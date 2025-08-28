@@ -1,7 +1,8 @@
 import { Handle, Position, NodeProps, Edge, Node } from 'reactflow';
 import { getColorByValue } from '@/utils/getColorByValue';
+import clsx from 'clsx';
 
-const SRNode = ({ data, id }: NodeProps) => {
+const SRNode = ({ data, id, selected }: NodeProps) => {
   const inSetValue: number | null | undefined = data?.inSetValue;
   const inResetValue: number | null | undefined = data?.inResetValue;
   const outValue: number | null | undefined = data?.outValue;
@@ -9,7 +10,14 @@ const SRNode = ({ data, id }: NodeProps) => {
   const label = data?.label || `SR-${id}`;
 
   return (
-    <div className="relative h-40 w-32 rounded-2xl border border-gray-300 bg-white shadow-md">
+    <div
+      className={clsx(
+        'relative h-10 w-30 rounded-2xl border bg-white shadow-md transition-colors',
+        selected
+          ? 'border-2 border-blue-500 ring-2 ring-blue-300'
+          : 'border-gray-300'
+      )}
+    >
       {/* Identifiant texte au-dessus */}
       <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold">
         {label}

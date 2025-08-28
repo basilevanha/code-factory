@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import DropDown_IC from '@/components/atoms/DropDown_IC';
 import { getColorByValue } from '@/utils/getColorByValue';
 
-const BobineNode = ({ data }: NodeProps) => {
+const BobineNode = ({ data, selected }: NodeProps) => {
   const composantsUnity: string[] = data?.composantsUnity || [];
   const etatsComposants: Record<string, number | undefined> =
     data?.etatsComposants || {};
@@ -34,7 +34,14 @@ const BobineNode = ({ data }: NodeProps) => {
   }, [selectedActionneur]);
 
   return (
-    <div className="relative h-10 w-30 rounded-2xl border border-gray-300 bg-white shadow-md">
+    <div
+      className={clsx(
+        'relative h-10 w-30 rounded-2xl border bg-white shadow-md transition-colors',
+        selected
+          ? 'border-2 border-blue-500 ring-2 ring-blue-300'
+          : 'border-gray-300'
+      )}
+    >
       {/* DropDown flottante au-dessus */}
       <div className="absolute -top-8 left-1/2 z-10 w-[90%] -translate-x-1/2">
         <DropDown_IC
@@ -47,7 +54,6 @@ const BobineNode = ({ data }: NodeProps) => {
           showActionneur={true}
         />
       </div>
-
       {/* Entrée */}
       <Handle
         type="target"
@@ -62,7 +68,6 @@ const BobineNode = ({ data }: NodeProps) => {
           transform: 'translateY(-50%)',
         }}
       />
-
       {/* Contenu central parfaitement centré */}
       <div className="flex h-full items-center justify-center">
         <span

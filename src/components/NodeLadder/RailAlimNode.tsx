@@ -3,9 +3,16 @@ import clsx from 'clsx';
 import { getColorByValue } from '@/utils/getColorByValue';
 import { useEffect } from 'react';
 
-const RailAlimNode = ({ data }: NodeProps) => {
+const RailAlimNode = ({ data, selected }: NodeProps) => {
   return (
-    <div className="relative h-10 w-15 rounded-2xl border border-gray-300 bg-white shadow-md">
+    <div
+      className={clsx(
+        'relative h-10 w-30 rounded-2xl border bg-white shadow-md transition-colors',
+        selected
+          ? 'border-2 border-blue-500 ring-2 ring-blue-300'
+          : 'border-gray-300'
+      )}
+    >
       {/* Sortie */}
       <Handle
         type="source"

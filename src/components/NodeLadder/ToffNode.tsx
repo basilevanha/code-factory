@@ -2,6 +2,7 @@
 import { Handle, Position, NodeProps, Node, Edge } from 'reactflow';
 import { getColorByValue } from '@/utils/getColorByValue';
 import { useState, useEffect, memo, useCallback } from 'react';
+import clsx from 'clsx';
 
 const SPInput = memo(function SPInput({
   value,
@@ -25,7 +26,7 @@ const SPInput = memo(function SPInput({
   );
 });
 
-const TOffNode = ({ data, id }: NodeProps) => {
+const TOffNode = ({ data, id, selected }: NodeProps) => {
   const inValue: number | undefined = data?.inValue;
   const qValue: number | undefined = data?.qValue;
   const etValue: number | undefined = data?.etValue;
@@ -41,7 +42,14 @@ const TOffNode = ({ data, id }: NodeProps) => {
   const label = data?.label || `TOF-${id}`;
 
   return (
-    <div className="relative h-44 w-44 rounded-2xl border border-gray-300 bg-white p-2 shadow-md">
+    <div
+      className={clsx(
+        'relative h-44 w-30 rounded-2xl border bg-white shadow-md transition-colors',
+        selected
+          ? 'border-2 border-blue-500 ring-2 ring-blue-300'
+          : 'border-gray-300'
+      )}
+    >
       {/* Label */}
       <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold">
         {label}
@@ -95,10 +103,6 @@ const TOffNode = ({ data, id }: NodeProps) => {
         <div className="w-24 rounded border border-gray-300 bg-gray-100 text-center text-xs">
           {etValue != null ? (etValue / 1000).toFixed(1) : '0.0'}
         </div>
-      </div>
-
-      <div className="absolute top-[90%] right-3 -translate-y-1/2 text-xs font-bold">
-        ET
       </div>
     </div>
   );

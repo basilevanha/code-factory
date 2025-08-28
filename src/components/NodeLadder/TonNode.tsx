@@ -2,6 +2,7 @@
 import { Handle, Position, NodeProps, Edge, Node } from 'reactflow';
 import { getColorByValue } from '@/utils/getColorByValue';
 import { useState, useEffect, memo, useCallback } from 'react';
+import clsx from 'clsx';
 
 const SPInput = memo(function SPInput({
   value,
@@ -25,7 +26,7 @@ const SPInput = memo(function SPInput({
   );
 });
 
-const TONNode = ({ data, id }: NodeProps) => {
+const TONNode = ({ data, id, selected }: NodeProps) => {
   const inValue: number | undefined = data?.inValue;
   const qValue: number | undefined = data?.qValue;
   const etValue: number | undefined = data?.etValue;
@@ -42,7 +43,14 @@ const TONNode = ({ data, id }: NodeProps) => {
   }, [spValue]);
 
   return (
-    <div className="relative h-44 w-44 rounded-2xl border border-gray-300 bg-white p-2 shadow-md">
+    <div
+      className={clsx(
+        'relative h-44 w-30 rounded-2xl border bg-white shadow-md transition-colors',
+        selected
+          ? 'border-2 border-blue-500 ring-2 ring-blue-300'
+          : 'border-gray-300'
+      )}
+    >
       {/* Label */}
       <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold">
         {label}
@@ -97,10 +105,6 @@ const TONNode = ({ data, id }: NodeProps) => {
           {etValue != null ? (etValue / 1000).toFixed(1) : '0.0'}{' '}
           {/* converti ms → s */}
         </div>
-      </div>
-
-      <div className="absolute top-[90%] right-3 -translate-y-1/2 text-xs font-bold">
-        ET
       </div>
     </div>
   );
