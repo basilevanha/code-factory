@@ -10,7 +10,7 @@ const RailAlimNode = ({ data, selected }: NodeProps) => {
         'relative h-10 w-30 rounded-2xl border bg-white shadow-md transition-colors',
         selected
           ? 'border-2 border-blue-500 ring-2 ring-blue-300'
-          : 'border-gray-300'
+          : 'border-none bg-transparent shadow-none'
       )}
     >
       {/* Sortie */}
@@ -20,24 +20,35 @@ const RailAlimNode = ({ data, selected }: NodeProps) => {
         id="out"
         style={{
           backgroundColor: getColorByValue(1),
-          width: 12,
-          height: 12,
+          width: 8,
+          height: 8,
           borderRadius: '50%',
           top: '50%',
           transform: 'translateY(-50%)',
         }}
       />
 
-      {/* Contenu central parfaitement centré */}
-      <div className="flex h-full items-center justify-center">
-        <span
-          className={clsx(
-            'text-sm font-bold transition-colors',
-            '#22C55E' //getColorByValue(outValue, true)
-          )}
-        >
-          |‒‒
-        </span>
+      <div className="flex h-full w-full items-center">
+        {/* espace vide à gauche */}
+        <div className="flex-1" />
+
+        {/* symbole central */}
+        <div className="flex flex-shrink-0 items-center justify-center px-0">
+          <span
+            className="text-xl font-bold transition-colors"
+            style={{ color: '#22C55E' }}
+          >
+            |
+          </span>
+        </div>
+
+        {/* bras droit */}
+        <div className="flex flex-1 items-center">
+          <div
+            className="w-full border-t-4"
+            style={{ borderColor: '#22C55E' }}
+          />
+        </div>
       </div>
     </div>
   );

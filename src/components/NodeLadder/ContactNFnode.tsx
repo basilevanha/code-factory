@@ -40,7 +40,7 @@ const ContactNFNode = ({ data, id, selected }: NodeProps) => {
         'relative h-10 w-30 rounded-2xl border bg-white shadow-md transition-colors',
         selected
           ? 'border-2 border-blue-500 ring-2 ring-blue-300'
-          : 'border-gray-300'
+          : 'border-none bg-transparent shadow-none'
       )}
     >
       {/* DropDown flottante au-dessus */}
@@ -76,23 +76,39 @@ const ContactNFNode = ({ data, id, selected }: NodeProps) => {
         id="out"
         style={{
           backgroundColor: getColorByValue(outValue),
-          width: 12,
-          height: 12,
+          width: 8,
+          height: 8,
           borderRadius: '50%',
           top: '50%',
           transform: 'translateY(-50%)',
         }}
       />
-      {/* Contenu central parfaitement centré */}
-      <div className="flex h-full items-center justify-center">
-        <span
-          className={clsx(
-            'text-sm font-semibold transition-colors',
-            getColorByValue(capteurValue, true)
-          )}
-        >
-          --|/|--
-        </span>
+      <div className="flex h-full w-full items-center">
+        {/* bras gauche */}
+        <div className="flex flex-1 items-center">
+          <div
+            className="w-full border-t-4"
+            style={{ borderColor: getColorByValue(inValue) }}
+          />
+        </div>
+
+        {/* symbole central */}
+        <div className="flex flex-shrink-0 items-center justify-center px-0">
+          <span
+            className="text-xl font-bold transition-colors"
+            style={{ color: getColorByValue(capteurValue) }}
+          >
+            |/|
+          </span>
+        </div>
+
+        {/* bras droit */}
+        <div className="flex flex-1 items-center">
+          <div
+            className="w-full border-t-4"
+            style={{ borderColor: getColorByValue(capteurValue) }}
+          />
+        </div>
       </div>
     </div>
   );

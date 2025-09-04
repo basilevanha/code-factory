@@ -21,7 +21,7 @@ declare global {
   }
 }
 
-const gamePath = '/unity/demo';
+const gamePath = '/unity/BasicConveyor';
 
 export default function GamePage() {
   const [sensorState, setSensorState] = useState<number | null>(null);
