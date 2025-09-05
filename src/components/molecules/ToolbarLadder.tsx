@@ -25,7 +25,7 @@ export default function ToolbarLadder({ onAddNode }: ToolbarLadderProps) {
         <Button tooltip="Bloc bobine" onClick={() => onAddNode('bobine')}>
           -( )-
         </Button>
-        {/* <Button onClick={() => onAddNode('SR')}>SR</Button> */}
+        <Button onClick={() => onAddNode('SR')}>SR</Button>
         <Button
           tooltip="Bloc Temporistion à l’enclenchement"
           onClick={() => onAddNode('Ton')}

@@ -54,21 +54,27 @@ export const resolveSR = (
   _nodeMap: Map<string, Node>,
   _edges: Edge[]
 ): void => {
-  const inSet = node.data.inSetValue || 0;
-  const inReset = node.data.inResetValue || 0;
+  const inputs = node.data.inputs || {};
 
-  // Mémorisation de l'état
-  if (inSet === 1) {
-    node.data.outValue = 1;
-  }
-  if (inReset === 1) {
-    node.data.outValue = 0;
-  }
+  const inSet = inputs['set'] ?? 0;
+  const inReset = inputs['reset'] ?? 0;
 
-  // Si état non initialisé, on commence à 0
+  // Initialisation si nécessaire
   if (node.data.outValue === undefined) {
     node.data.outValue = 0;
   }
+
+  // Logique SR : Set prioritaire
+  if (inSet === 1) {
+    node.data.outValue = 1;
+  } else if (inReset === 1) {
+    node.data.outValue = 0;
+  }
+
+  /* Debug
+  console.log(
+    `[SR] ${node.id} → set=${inSet}, reset=${inReset}, out=${node.data.outValue}`
+  );*/
 };
 
 export const resolveTOff = (

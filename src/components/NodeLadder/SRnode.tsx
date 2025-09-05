@@ -3,8 +3,9 @@ import { getColorByValue } from '@/utils/getColorByValue';
 import clsx from 'clsx';
 
 const SRNode = ({ data, id, selected }: NodeProps) => {
-  const inSetValue: number | null | undefined = data?.inSetValue;
-  const inResetValue: number | null | undefined = data?.inResetValue;
+  const inSetValue: number | null | undefined = data?.inputs?.set;
+  const inResetValue: number | null | undefined = data?.inputs?.reset;
+
   const outValue: number | null | undefined = data?.outValue;
 
   const label = data?.label || `SR-${id}`;
@@ -12,7 +13,7 @@ const SRNode = ({ data, id, selected }: NodeProps) => {
   return (
     <div
       className={clsx(
-        'relative h-10 w-30 rounded-2xl border bg-white shadow-md transition-colors',
+        'relative h-40 w-30 rounded-2xl border bg-white shadow-md transition-colors',
         selected
           ? 'border-2 border-blue-500 ring-2 ring-blue-300'
           : 'border-gray-300'
