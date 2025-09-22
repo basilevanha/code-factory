@@ -159,7 +159,7 @@ export default function GamePage() {
 
   return (
     <main className="min-h-screen bg-white px-6 py-16 text-gray-900">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8">
+      <div className="mx-auto flex flex-col gap-8">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <h1 className="text-3xl font-semibold">Niveau 1 – Démonstration</h1>
           <Button href="/" icon="chevron-left">
@@ -192,7 +192,7 @@ export default function GamePage() {
           ]}
         />
 
-        <div className="flex h-full w-full gap-4">
+        <div className="flex w-full gap-4">
           {/* Colonne gauche : Toolbar + LadderEditor */}
           <div className="flex flex-1 flex-col gap-4">
             {/*
@@ -214,7 +214,7 @@ export default function GamePage() {
               />
             </div>
           </div>
-          <div className="flex-1">
+          <div className="max-w-[35vw] flex-1">
             <UnityWrapper
               unityProvider={unityProvider}
               isLoaded={isLoaded}

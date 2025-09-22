@@ -4,7 +4,7 @@ import GameCard from '@/components/molecules/GameCard';
 export default function Home() {
   return (
     <main className="min-h-screen bg-white px-6 py-16 text-gray-900">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto">
         <h1 className="mb-4 text-3xl font-semibold">
           Bienvenue sur Coding Factory 🎉
         </h1>
