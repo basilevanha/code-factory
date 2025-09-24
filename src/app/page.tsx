@@ -14,16 +14,16 @@ export default function Home() {
 
         <ul className="space-y-4">
           <GameCard
-            title="Jeu démonstration"
+            title="Niveau 1 - Convoyeur Basique"
             description="Découvre les mécaniques de base."
             href="/games/demo"
             icon="▶️"
           />
           <GameCard
-            title="Niveau 2"
-            description="En construction..."
-            disabled
-            icon="🛠️"
+            title="Niveau 2 - Packaging de bouteilles"
+            description="Un pas en plus vers l'automatisation."
+            href="/games/demo2"
+            icon="▶️"
           />
           <GameCard
             title="Niveau 3"
