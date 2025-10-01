@@ -17,6 +17,7 @@ import 'reactflow/dist/style.css';
 import { resolveLadder } from '../../utils/Ladder/Logic';
 import { applyOutputs } from '../../utils/Ladder/ApplyOutputs';
 
+//simplifiable?????????******************************************************************
 import ContactNONode from '../NodeLadder/ContactNOnode';
 import ContactNFNode from '../NodeLadder/ContactNFnode';
 import RailAlimNode from '../NodeLadder/RailAlimNode';
@@ -24,8 +25,12 @@ import BobineNode from '../NodeLadder/BobineNode';
 import SRnode from '../NodeLadder/SRnode';
 import TonNode from '../NodeLadder/TonNode';
 import ToffNode from '../NodeLadder/ToffNode';
-
+//*************************************************************************** */
 import ToolbarLadder from './ToolbarLadder';
+import { ladderize } from './LadderLayout';
+import { addNodeWithAutoConnection } from './AutoConnection';
+import { useUndoRedo } from './UndoRedo';
+
 import { createNode } from '../../utils/Ladder/NodeManager';
 
 type LadderEditorProps = {
@@ -57,6 +62,7 @@ export default function LadderEditor({
   runPLC,
   setRunPLC,
 }: LadderEditorProps) {
+  //node de départ
   const railId = 'rail-1';
   const contactId = 'contact-1';
   const bobineId = 'bobine-1';
@@ -159,79 +165,24 @@ export default function LadderEditor({
   };
 
   const addNode = (type: string) => {
-    if (!selectedNodeId) {
-      console.warn('Aucun node sélectionné');
-      {
-        const newNode = createNode(
-          type,
-          nodesRef.current,
-          composantsUnity,
-          etatsComposants
-        );
-        setNodes((nds) => [...nds, newNode]);
-      }
-      return;
-    }
-
-    // 1. Créer le nouveau node
-    const newNode = createNode(
+    const { newNode, newEdges } = addNodeWithAutoConnection(
       type,
+      selectedNodeId,
       nodesRef.current,
+      edgesRef.current,
       composantsUnity,
       etatsComposants
     );
 
-    // 2. Trouver le node sélectionné
-    const selected = nodesRef.current.find((n) => n.id === selectedNodeId);
-    if (!selected) return;
+    let updatedNodes = [...nodesRef.current, newNode];
+    updatedNodes = ladderize(updatedNodes, newEdges);
 
-    // 3. Chercher un edge sortant du node sélectionné
-    const outgoingEdge = edgesRef.current.find(
-      (e) => e.source === selectedNodeId
-    );
-
-    let newEdges = [...edgesRef.current];
-
-    if (outgoingEdge) {
-      // Cas "insertion entre selected et son successeur"
-      const successeurId = outgoingEdge.target;
-      newEdges = newEdges.filter((e) => e.id !== outgoingEdge.id); // Supprimer l’ancienne connexion
-      // Ajouter les 2 nouvelles connexions
-      newEdges.push({
-        id: `edge-${selectedNodeId}-${newNode.id}`,
-        source: selectedNodeId,
-        sourceHandle: 'out',
-        target: newNode.id,
-        targetHandle: 'in',
-        type: 'smoothstep',
-      });
-      newEdges.push({
-        id: `edge-${newNode.id}-${successeurId}`,
-        source: newNode.id,
-        sourceHandle: 'out',
-        target: successeurId,
-        targetHandle: 'in',
-        type: 'smoothstep',
-      });
-    } else {
-      // Cas "ajout à la fin"
-      newEdges.push({
-        id: `edge-${selectedNodeId}-${newNode.id}`,
-        source: selectedNodeId,
-        sourceHandle: 'out',
-        target: newNode.id,
-        targetHandle: 'in',
-        type: 'smoothstep',
-      });
-    }
-
-    const posX = (selected.position.x ?? 0) + 200;
-    const posY = selected.position.y ?? 80;
-    newNode.position = { x: posX, y: posY };
-    setNodes((nds) => [...nds, newNode]);
+    setNodes(updatedNodes);
     setEdges(newEdges);
     setSelectedNodeId(newNode.id);
   };
+
+  const selected = nodesRef.current.find((n) => n.id === selectedNodeId);
 
   let lastRunTime: number | null = null;
 
@@ -280,21 +231,28 @@ export default function LadderEditor({
     //console.log('[DEBUG] runPLC actif -> déclenchement runWorkflow');
     runWorkflow();
   }, [etatsComposants, runPLC]);
-  const onNodesChange: OnNodesChange = useCallback((changes) => {
-    setNodes((nds) => applyNodeChanges(changes, nds));
-    setRunPLC(false); // toggle OFF dès qu'un node change
-  }, []);
 
+  const onNodesChange: OnNodesChange = useCallback((changes) => {
+    setNodes((nds) => {
+      const updated = applyNodeChanges(changes, nds);
+      return ladderize(updated, edgesRef.current);
+    });
+    setRunPLC(false);
+  }, []);
   const onEdgesChange: OnEdgesChange = useCallback((changes) => {
     setEdges((eds) => applyEdgeChanges(changes, eds));
     setRunPLC(false); // toggle OFF dès qu'un edge change
   }, []);
-
   const onConnect = useCallback((connection: Connection) => {
-    setEdges((eds) => addEdge(connection, eds));
-    setRunPLC(false); // toggle OFF dès qu'une nouvelle connexion est créée
-  }, []);
+    setEdges((eds) => {
+      const updatedEdges = addEdge(connection, eds);
+      setNodes((nds) => ladderize(nds, updatedEdges));
+      return updatedEdges;
+    });
 
+    // Stop le PLC dès qu'une nouvelle connexion est créée
+    setRunPLC(false);
+  }, []);
   const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
     setSelectedNodeId(node.id);
   }, []);
