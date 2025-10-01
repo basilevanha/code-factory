@@ -159,13 +159,78 @@ export default function LadderEditor({
   };
 
   const addNode = (type: string) => {
+    if (!selectedNodeId) {
+      console.warn('Aucun node sélectionné');
+      {
+        const newNode = createNode(
+          type,
+          nodesRef.current,
+          composantsUnity,
+          etatsComposants
+        );
+        setNodes((nds) => [...nds, newNode]);
+      }
+      return;
+    }
+
+    // 1. Créer le nouveau node
     const newNode = createNode(
       type,
       nodesRef.current,
       composantsUnity,
       etatsComposants
     );
+
+    // 2. Trouver le node sélectionné
+    const selected = nodesRef.current.find((n) => n.id === selectedNodeId);
+    if (!selected) return;
+
+    // 3. Chercher un edge sortant du node sélectionné
+    const outgoingEdge = edgesRef.current.find(
+      (e) => e.source === selectedNodeId
+    );
+
+    let newEdges = [...edgesRef.current];
+
+    if (outgoingEdge) {
+      // Cas "insertion entre selected et son successeur"
+      const successeurId = outgoingEdge.target;
+      newEdges = newEdges.filter((e) => e.id !== outgoingEdge.id); // Supprimer l’ancienne connexion
+      // Ajouter les 2 nouvelles connexions
+      newEdges.push({
+        id: `edge-${selectedNodeId}-${newNode.id}`,
+        source: selectedNodeId,
+        sourceHandle: 'out',
+        target: newNode.id,
+        targetHandle: 'in',
+        type: 'smoothstep',
+      });
+      newEdges.push({
+        id: `edge-${newNode.id}-${successeurId}`,
+        source: newNode.id,
+        sourceHandle: 'out',
+        target: successeurId,
+        targetHandle: 'in',
+        type: 'smoothstep',
+      });
+    } else {
+      // Cas "ajout à la fin"
+      newEdges.push({
+        id: `edge-${selectedNodeId}-${newNode.id}`,
+        source: selectedNodeId,
+        sourceHandle: 'out',
+        target: newNode.id,
+        targetHandle: 'in',
+        type: 'smoothstep',
+      });
+    }
+
+    const posX = (selected.position.x ?? 0) + 200;
+    const posY = selected.position.y ?? 80;
+    newNode.position = { x: posX, y: posY };
     setNodes((nds) => [...nds, newNode]);
+    setEdges(newEdges);
+    setSelectedNodeId(newNode.id);
   };
 
   let lastRunTime: number | null = null;
