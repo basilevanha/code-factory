@@ -25,6 +25,7 @@ export const createNode = (
       etatsComposants,
       inValue: 0,
       onChange: () => {},
+      rungHeight: type === 'SR' ? 2 : 1,
     } as NodeData,
   };
 };
