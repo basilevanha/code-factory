@@ -67,15 +67,14 @@ export default function GamePage() {
 
   // Demande les états à Unity toutes les 100ms
   useEffect(() => {
+    if (!isLoaded || !runPLC) return;
+
     const interval = setInterval(() => {
-      if (isLoaded) {
-        sendMessage('GameManager', 'GetEtatsJSON', '');
-        //console.log('Envoi de GetEtatsJSON à Unity'); // Debug
-      }
-    }, 100); // toutes les 100 ms
+      sendMessage('GameManager', 'GetEtatsJSON', '');
+    }, 100); // toutes les 10 ms
 
     return () => clearInterval(interval);
-  }, [isLoaded, sendMessage]);
+  }, [isLoaded, runPLC, sendMessage]);
 
   const [etatsComposants, setEtatsComposants] = useState<
     Record<string, number>
