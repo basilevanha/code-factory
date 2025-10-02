@@ -62,8 +62,8 @@ const ContactNFNode = ({ data, id, selected }: NodeProps) => {
         id="in"
         style={{
           backgroundColor: getColorByValue(inValue),
-          width: 12,
-          height: 12,
+          width: 8,
+          height: 8,
           borderRadius: '50%',
           top: '50%',
           transform: 'translateY(-50%)',

@@ -34,11 +34,11 @@ const SRNode = ({ data, id, selected }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
-          top: '38%',
+          top: '12%',
           transform: 'translateY(-50%)',
         }}
       />
-      <div className="absolute top-[38%] left-3 -translate-y-1/2 text-xs font-bold">
+      <div className="absolute top-[12%] left-3 -translate-y-1/2 text-xs font-bold">
         S
       </div>
 
@@ -52,11 +52,11 @@ const SRNode = ({ data, id, selected }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
-          top: '88%',
+          top: '75%',
           transform: 'translateY(-50%)',
         }}
       />
-      <div className="absolute top-[88%] left-3 -translate-y-1/2 text-xs font-bold">
+      <div className="absolute top-[75%] left-3 -translate-y-1/2 text-xs font-bold">
         R
       </div>
 
@@ -70,11 +70,11 @@ const SRNode = ({ data, id, selected }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
-          top: '35%',
+          top: '12%',
           transform: 'translateY(-50%)',
         }}
       />
-      <div className="absolute top-[35%] right-3 -translate-y-1/2 text-xs font-bold">
+      <div className="absolute top-[12%] right-3 -translate-y-1/2 text-xs font-bold">
         Out
       </div>
     </div>
