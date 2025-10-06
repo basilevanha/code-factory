@@ -1,4 +1,4 @@
-import { Handle, Position, NodeProps, Edge, Node } from 'reactflow';
+import { Handle, Position, NodeProps, useReactFlow } from 'reactflow';
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
@@ -6,29 +6,34 @@ import DropDown_IC from '@/components/atoms/DropDown_IC';
 import { getColorByValue } from '@/utils/getColorByValue';
 
 const ContactNode = ({ data, id, selected }: NodeProps) => {
+  const { setNodes } = useReactFlow();
+
   const composantsUnity: string[] = data?.composantsUnity || [];
   const etatsComposants: Record<string, number | undefined> =
     data?.etatsComposants || {};
   const inValue: number | null | undefined = data?.inValue;
   const outValue: number | null | undefined = data?.outValue;
 
+  // Valeur sélectionnée (persistée dans ReactFlow)
   const [selectedSensor, setSelectedSensor] = useState(data?.variable || '');
 
-  // Met à jour selectedSensor si la liste change ET que l’élément sélectionné n’existe plus
+  // Si la liste change et que l’élément sélectionné n’existe plus → reset
   useEffect(() => {
     if (!composantsUnity.includes(selectedSensor)) {
       setSelectedSensor('');
     }
   }, [composantsUnity]);
 
+  // Synchronise la variable dans le state global ReactFlow
   useEffect(() => {
-    if (data) {
-      data.variable = selectedSensor;
-      if (data.onChange) {
-        data.onChange(selectedSensor);
-      }
-    }
-  }, [selectedSensor]);
+    setNodes((nds) =>
+      nds.map((n) =>
+        n.id === id
+          ? { ...n, data: { ...n.data, variable: selectedSensor } }
+          : n
+      )
+    );
+  }, [selectedSensor, id, setNodes]);
 
   const capteurValue = selectedSensor
     ? etatsComposants[selectedSensor]
@@ -43,7 +48,7 @@ const ContactNode = ({ data, id, selected }: NodeProps) => {
           : 'border-none bg-transparent shadow-none'
       )}
     >
-      {/* DropDown flottante au-dessus */}
+      {/* Dropdown flottante */}
       <div className="absolute -top-8 left-1/2 z-10 w-[90%] -translate-x-1/2">
         <DropDown_IC
           composantsUnity={composantsUnity}
@@ -86,6 +91,7 @@ const ContactNode = ({ data, id, selected }: NodeProps) => {
         }}
       />
 
+      {/* Corps du contact */}
       <div className="flex h-full w-full items-center">
         {/* bras gauche */}
         <div className="flex flex-1 items-center">
