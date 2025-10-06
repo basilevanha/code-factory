@@ -1,0 +1,224 @@
+{
+  "nodes": [
+    {
+      "id": "rail-1",
+      "type": "railAlim",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "selected": false,
+        "composantsUnity": [
+          "Q_Conv_1",
+          "I_Sensor_1"
+        ],
+        "etatsComposants": {}
+      },
+      "positionAbsolute": {
+        "x": 0,
+        "y": 0
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 40
+    },
+    {
+      "id": "contact-1",
+      "type": "contactNO",
+      "position": {
+        "x": 200,
+        "y": 0
+      },
+      "data": {
+        "variable": "Sensor_1",
+        "composantsUnity": [
+          "Q_Conv_1",
+          "I_Sensor_1"
+        ],
+        "etatsComposants": {},
+        "inValue": 0,
+        "selected": false
+      },
+      "positionAbsolute": {
+        "x": 200,
+        "y": 0
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 40,
+      "selected": false
+    },
+    {
+      "id": "contactNF-6",
+      "type": "contactNF",
+      "position": {
+        "x": 400,
+        "y": 0
+      },
+      "data": {
+        "variable": "Sensor_1",
+        "composantsUnity": [
+          "Q_Conv_1",
+          "I_Sensor_1"
+        ],
+        "etatsComposants": {},
+        "inValue": 0,
+        "rungHeight": 1
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 40,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 400,
+        "y": 0
+      }
+    },
+    {
+      "id": "contactNO-5",
+      "type": "contactNO",
+      "position": {
+        "x": 600,
+        "y": 0
+      },
+      "data": {
+        "variable": "",
+        "composantsUnity": [
+          "Q_Conv_1",
+          "I_Sensor_1"
+        ],
+        "etatsComposants": {},
+        "inValue": 0,
+        "rungHeight": 1
+      },
+      "draggable": false,
+      "positionAbsolute": {
+        "x": 600,
+        "y": 0
+      },
+      "width": 120,
+      "height": 40,
+      "selected": false
+    },
+    {
+      "id": "Ton-4",
+      "type": "Ton",
+      "position": {
+        "x": 800,
+        "y": 0
+      },
+      "data": {
+        "variable": "",
+        "composantsUnity": [
+          "Q_Conv_1",
+          "I_Sensor_1"
+        ],
+        "etatsComposants": {},
+        "inValue": 0,
+        "rungHeight": 1,
+        "spValue": 1000000
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 176,
+      "positionAbsolute": {
+        "x": 800,
+        "y": 0
+      }
+    },
+    {
+      "id": "bobine-1",
+      "type": "bobine",
+      "position": {
+        "x": 1000,
+        "y": 0
+      },
+      "data": {
+        "variable": "Conv_1",
+        "composantsUnity": [
+          "Q_Conv_1",
+          "I_Sensor_1"
+        ],
+        "etatsComposants": {},
+        "inValue": 0,
+        "selected": false
+      },
+      "positionAbsolute": {
+        "x": 1000,
+        "y": 0
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 40,
+      "selected": true
+    }
+  ],
+  "edges": [
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#000",
+        "strokeWidth": 2
+      },
+      "id": "edge-rail-contact",
+      "source": "rail-1",
+      "sourceHandle": "out",
+      "target": "contact-1",
+      "targetHandle": "in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#000",
+        "strokeWidth": 2
+      },
+      "id": "edge-Ton-4-bobine-1",
+      "source": "Ton-4",
+      "sourceHandle": "out",
+      "target": "bobine-1",
+      "targetHandle": "in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#000",
+        "strokeWidth": 2
+      },
+      "id": "edge-contactNO-5-Ton-4",
+      "source": "contactNO-5",
+      "sourceHandle": "out",
+      "target": "Ton-4",
+      "targetHandle": "in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#000",
+        "strokeWidth": 2
+      },
+      "id": "edge-contact-1-contactNF-6",
+      "source": "contact-1",
+      "sourceHandle": "out",
+      "target": "contactNF-6",
+      "targetHandle": "in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#000",
+        "strokeWidth": 2
+      },
+      "id": "edge-contactNF-6-contactNO-5",
+      "source": "contactNF-6",
+      "sourceHandle": "out",
+      "target": "contactNO-5",
+      "targetHandle": "in"
+    }
+  ],
+  "viewport": {
+    "x": 28.318181818181813,
+    "y": 139,
+    "zoom": 0.5056818181818182
+  }
+}

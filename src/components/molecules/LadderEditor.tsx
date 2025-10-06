@@ -11,6 +11,7 @@ import ReactFlow, {
   OnEdgesChange,
   applyNodeChanges,
   applyEdgeChanges,
+  SelectionMode,
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -71,13 +72,13 @@ export default function LadderEditor({
     {
       id: railId,
       type: 'railAlim',
-      position: { x: 0, y: 80 },
+      position: { x: 0, y: 0 },
       data: {},
     },
     {
       id: contactId,
       type: 'contactNO',
-      position: { x: 150, y: 80 },
+      position: { x: 150, y: 0 },
       data: {
         variable: 'I_Sensor_1',
         composantsUnity,
@@ -89,7 +90,7 @@ export default function LadderEditor({
     {
       id: bobineId,
       type: 'bobine',
-      position: { x: 350, y: 80 },
+      position: { x: 350, y: 0 },
       data: {
         variable: 'Q_Conv_1',
         composantsUnity,
@@ -118,6 +119,92 @@ export default function LadderEditor({
       type: 'smoothstep',
     },
   ];
+
+  const [rfInstance, setRfInstance] = useState<
+    import('reactflow').ReactFlowInstance | null
+  >(null);
+
+  const savedViewportRef = useRef<{
+    x: number;
+    y: number;
+    zoom: number;
+  } | null>(null);
+
+  const onInit = useCallback(
+    (instance: import('reactflow').ReactFlowInstance) => {
+      setRfInstance(instance);
+      if (
+        savedViewportRef.current &&
+        typeof instance.setViewport === 'function'
+      ) {
+        instance.setViewport(savedViewportRef.current);
+        savedViewportRef.current = null;
+      }
+    },
+    []
+  );
+
+  // Sauvegarde sur le serveur
+  const saveLadder = useCallback(async () => {
+    if (!rfInstance) return;
+
+    // Inclure toutes les data des nodes
+    const flow = {
+      ...rfInstance.toObject(),
+      nodes: nodesRef.current.map((n) => ({
+        ...n,
+        data: { ...n.data }, // <-- conserve toutes les propriétés dynamiques
+      })),
+    };
+
+    try {
+      const response = await fetch('/api/ladder/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(flow),
+      });
+
+      if (response.ok) {
+        console.log('✅ Ladder sauvegardé sur le serveur');
+      } else {
+        console.error('❌ Erreur lors de la sauvegarde du ladder');
+      }
+    } catch (error) {
+      console.error('❌ Erreur réseau lors de la sauvegarde :', error);
+    }
+  }, [rfInstance]);
+
+  // Chargement depuis le serveur
+  const loadLadder = useCallback(async () => {
+    try {
+      const response = await fetch('/api/ladder/load');
+      if (!response.ok) throw new Error('Erreur de chargement serveur');
+      const flow = await response.json();
+
+      const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
+      const nodesWithData = (flow.nodes || []).map((node: Node) => ({
+        ...node,
+        data: {
+          ...node.data, // conserver toutes les données sauvegardées
+          composantsUnity, // réinjecter les composants actuels
+          etatsComposants, // réinjecter les états actuels
+          onChange: () => {}, // réinjecter la fonction onChange
+        },
+      }));
+
+      setNodes(nodesWithData);
+      setEdges(flow.edges || []);
+
+      if (rfInstance) rfInstance.setViewport({ x, y, zoom });
+      console.log('✅ Ladder chargé depuis le serveur');
+    } catch (error) {
+      console.error(
+        '❌ Impossible de charger le ladder depuis le serveur :',
+        error
+      );
+    }
+  }, [composantsUnity, etatsComposants, rfInstance]);
+
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -239,10 +326,12 @@ export default function LadderEditor({
     });
     setRunPLC(false);
   }, []);
+
   const onEdgesChange: OnEdgesChange = useCallback((changes) => {
     setEdges((eds) => applyEdgeChanges(changes, eds));
     setRunPLC(false); // toggle OFF dès qu'un edge change
   }, []);
+
   const onConnect = useCallback((connection: Connection) => {
     setEdges((eds) => {
       const updatedEdges = addEdge(connection, eds);
@@ -253,16 +342,22 @@ export default function LadderEditor({
     // Stop le PLC dès qu'une nouvelle connexion est créée
     setRunPLC(false);
   }, []);
+
   const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
     setSelectedNodeId(node.id);
   }, []);
 
   return (
     <div style={{ width: '100%', height: '85%' }}>
-      <ToolbarLadder onAddNode={addNode} />
+      <ToolbarLadder
+        onAddNode={addNode}
+        onSave={saveLadder}
+        onLoad={loadLadder}
+      />
       <ReactFlow
         snapToGrid={true}
         snapGrid={[40, 40]}
+        onInit={onInit}
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
@@ -270,6 +365,10 @@ export default function LadderEditor({
         onConnect={onConnect}
         onNodeClick={onNodeClick}
         nodeTypes={nodeTypes}
+        panOnScroll
+        selectionOnDrag
+        panOnDrag={[1, 2]}
+        selectionMode={SelectionMode.Partial}
         fitView
         deleteKeyCode={['Backspace', 'Delete']}
         defaultEdgeOptions={{

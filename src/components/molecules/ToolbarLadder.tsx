@@ -3,9 +3,15 @@ import Button from '@/components/atoms/Button';
 
 type ToolbarLadderProps = {
   onAddNode: (type: string) => void;
+  onSave?: () => void;
+  onLoad?: () => void;
 };
 
-export default function ToolbarLadder({ onAddNode }: ToolbarLadderProps) {
+export default function ToolbarLadder({
+  onAddNode,
+  onSave,
+  onLoad,
+}: ToolbarLadderProps) {
   return (
     <div>
       Ajoute un bloc Ladder en cliquant dessus.
@@ -38,6 +44,17 @@ export default function ToolbarLadder({ onAddNode }: ToolbarLadderProps) {
         >
           Toff
         </Button>
+        {onSave && (
+          <Button tooltip="Sauvegarder le programme" onClick={onSave}>
+            💾
+          </Button>
+        )}
+
+        {onLoad && (
+          <Button tooltip="Charger un programme" onClick={onLoad}>
+            📂
+          </Button>
+        )}
       </div>
     </div>
   );
