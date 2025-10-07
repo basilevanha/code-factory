@@ -63,63 +63,6 @@ export default function LadderEditor({
   runPLC,
   setRunPLC,
 }: LadderEditorProps) {
-  //node de départ
-  const railId = 'rail-1';
-  const contactId = 'contact-1';
-  const bobineId = 'bobine-1';
-
-  const baseNodes: Node[] = [
-    {
-      id: railId,
-      type: 'railAlim',
-      position: { x: 0, y: 0 },
-      data: {},
-    },
-    {
-      id: contactId,
-      type: 'contactNO',
-      position: { x: 150, y: 0 },
-      data: {
-        variable: 'I_Sensor_1',
-        composantsUnity,
-        etatsComposants,
-        inValue: 0,
-        onChange: () => {},
-      },
-    },
-    {
-      id: bobineId,
-      type: 'bobine',
-      position: { x: 350, y: 0 },
-      data: {
-        variable: 'Q_Conv_1',
-        composantsUnity,
-        etatsComposants,
-        inValue: 0,
-        onChange: () => {},
-      },
-    },
-  ];
-
-  const baseEdges: Edge[] = [
-    {
-      id: 'edge-rail-contact',
-      source: railId,
-      sourceHandle: 'out',
-      target: contactId,
-      targetHandle: 'in',
-      type: 'smoothstep',
-    },
-    {
-      id: 'edge-contact-bobine',
-      source: contactId,
-      sourceHandle: 'out',
-      target: bobineId,
-      targetHandle: 'in',
-      type: 'smoothstep',
-    },
-  ];
-
   const [rfInstance, setRfInstance] = useState<
     import('reactflow').ReactFlowInstance | null
   >(null);
@@ -174,36 +117,53 @@ export default function LadderEditor({
     }
   }, [rfInstance]);
 
-  // Chargement depuis le serveur
   const loadLadder = useCallback(async () => {
+    if (!composantsUnity || composantsUnity.length === 0) {
+      console.warn(
+        '⚠️ composantsUnity pas encore chargé, impossible de restaurer le ladder'
+      );
+      return;
+    }
+
     try {
       const response = await fetch('/api/ladder/load');
       if (!response.ok) throw new Error('Erreur de chargement serveur');
       const flow = await response.json();
 
       const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
-      const nodesWithData = (flow.nodes || []).map((node: Node) => ({
-        ...node,
-        data: {
-          ...node.data, // conserver toutes les données sauvegardées
-          composantsUnity, // réinjecter les composants actuels
-          etatsComposants, // réinjecter les états actuels
-          onChange: () => {}, // réinjecter la fonction onChange
-        },
-      }));
+
+      // 🔧 Fonction pour retrouver la bonne variable avec préfixe
+      const findFullName = (shortName: string) => {
+        return (
+          composantsUnity.find((name) => name.substring(2) === shortName) || ''
+        );
+      };
+
+      const nodesWithData = (flow.nodes || []).map((node: Node) => {
+        const shortVar = node.data?.variable || '';
+        const fullVar = findFullName(shortVar);
+
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            variable: shortVar, // ton dropdown gère déjà la suppression de préfixe
+            composantsUnity,
+            etatsComposants,
+            onChange: () => {},
+          },
+        };
+      });
 
       setNodes(nodesWithData);
       setEdges(flow.edges || []);
+      savedViewportRef.current = { x, y, zoom };
 
-      if (rfInstance) rfInstance.setViewport({ x, y, zoom });
       console.log('✅ Ladder chargé depuis le serveur');
     } catch (error) {
-      console.error(
-        '❌ Impossible de charger le ladder depuis le serveur :',
-        error
-      );
+      console.error('❌ Impossible de charger le ladder :', error);
     }
-  }, [composantsUnity, etatsComposants, rfInstance]);
+  }, [composantsUnity, etatsComposants]);
 
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
@@ -223,20 +183,18 @@ export default function LadderEditor({
   }, [edges]);
 
   useEffect(() => {
+    // ✅ Dès que les composants Unity sont chargés et que ce n’est pas encore initialisé :
     if (!initialized && composantsUnity?.length) {
-      setNodes(
-        baseNodes.map((n) => ({
-          ...n,
-          data: {
-            ...n.data,
-            selected: n.id === selectedNodeId,
-          },
-        }))
-      );
-      setEdges(baseEdges);
-      setInitialized(true);
+      (async () => {
+        try {
+          await loadLadder(); // ← charge la scène depuis le serveur
+          setInitialized(true);
+        } catch (error) {
+          console.error('❌ Erreur lors du chargement du ladder :', error);
+        }
+      })();
     }
-  }, [composantsUnity, initialized, selectedNodeId]);
+  }, [composantsUnity, initialized, loadLadder]);
 
   type NodeData = {
     variable?: string;

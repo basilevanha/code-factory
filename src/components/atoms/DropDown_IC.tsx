@@ -39,20 +39,11 @@ const DropDown_IC = ({
     .filter((name) => typeIsVisible(getType(name)))
     .sort((a, b) => a.localeCompare(b)); // tri alphabétique
 
-  // Trouver l'option complète (avec préfixe) correspondant à la valeur sélectionnée (sans préfixe)
-  const selectedFullName =
-    optionsFiltrees.find((name) => name.substring(2) === value) || '';
-
   return (
     <select
       className="w-full rounded-xl border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-      value={selectedFullName}
-      onChange={(e) => {
-        const fullName = e.target.value;
-        const shortName =
-          fullName.length > 2 ? fullName.substring(2) : fullName;
-        onChange(shortName);
-      }}
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
     >
       <option value="">{placeholder}</option>
       {optionsFiltrees.map((name) => (

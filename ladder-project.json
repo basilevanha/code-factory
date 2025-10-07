@@ -9,11 +9,21 @@
       },
       "data": {
         "selected": false,
+        "inValue": 1,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 1,
+        "variable": "",
+        "fullVariable": "",
         "composantsUnity": [
           "Q_Conv_1",
           "I_Sensor_1"
         ],
-        "etatsComposants": {}
+        "etatsComposants": {
+          "Q_Conv_1": 1,
+          "I_Sensor_1": 1
+        }
       },
       "positionAbsolute": {
         "x": 0,
@@ -31,14 +41,22 @@
         "y": 0
       },
       "data": {
-        "variable": "Sensor_1",
+        "variable": "I_Sensor_1",
         "composantsUnity": [
           "Q_Conv_1",
           "I_Sensor_1"
         ],
-        "etatsComposants": {},
-        "inValue": 0,
-        "selected": false
+        "etatsComposants": {
+          "Q_Conv_1": 1,
+          "I_Sensor_1": 0
+        },
+        "inValue": 1,
+        "selected": false,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 0,
+        "fullVariable": ""
       },
       "positionAbsolute": {
         "x": 200,
@@ -50,108 +68,39 @@
       "selected": false
     },
     {
-      "id": "contactNF-6",
-      "type": "contactNF",
-      "position": {
-        "x": 400,
-        "y": 0
-      },
-      "data": {
-        "variable": "Sensor_1",
-        "composantsUnity": [
-          "Q_Conv_1",
-          "I_Sensor_1"
-        ],
-        "etatsComposants": {},
-        "inValue": 0,
-        "rungHeight": 1
-      },
-      "draggable": false,
-      "width": 120,
-      "height": 40,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 400,
-        "y": 0
-      }
-    },
-    {
-      "id": "contactNO-5",
-      "type": "contactNO",
-      "position": {
-        "x": 600,
-        "y": 0
-      },
-      "data": {
-        "variable": "",
-        "composantsUnity": [
-          "Q_Conv_1",
-          "I_Sensor_1"
-        ],
-        "etatsComposants": {},
-        "inValue": 0,
-        "rungHeight": 1
-      },
-      "draggable": false,
-      "positionAbsolute": {
-        "x": 600,
-        "y": 0
-      },
-      "width": 120,
-      "height": 40,
-      "selected": false
-    },
-    {
-      "id": "Ton-4",
-      "type": "Ton",
-      "position": {
-        "x": 800,
-        "y": 0
-      },
-      "data": {
-        "variable": "",
-        "composantsUnity": [
-          "Q_Conv_1",
-          "I_Sensor_1"
-        ],
-        "etatsComposants": {},
-        "inValue": 0,
-        "rungHeight": 1,
-        "spValue": 1000000
-      },
-      "draggable": false,
-      "width": 120,
-      "height": 176,
-      "positionAbsolute": {
-        "x": 800,
-        "y": 0
-      }
-    },
-    {
       "id": "bobine-1",
       "type": "bobine",
       "position": {
-        "x": 1000,
+        "x": 400,
         "y": 0
       },
       "data": {
-        "variable": "Conv_1",
+        "variable": "Q_Conv_1",
         "composantsUnity": [
           "Q_Conv_1",
           "I_Sensor_1"
         ],
-        "etatsComposants": {},
-        "inValue": 0,
-        "selected": false
+        "etatsComposants": {
+          "Q_Conv_1": 1,
+          "I_Sensor_1": 0
+        },
+        "inValue": 1,
+        "selected": false,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 1,
+        "fullVariable": ""
       },
       "positionAbsolute": {
-        "x": 1000,
+        "x": 360,
         "y": 0
       },
       "draggable": false,
       "width": 120,
       "height": 40,
-      "selected": true
+      "selected": true,
+      "dragging": false
     }
   ],
   "edges": [
@@ -173,52 +122,16 @@
         "stroke": "#000",
         "strokeWidth": 2
       },
-      "id": "edge-Ton-4-bobine-1",
-      "source": "Ton-4",
-      "sourceHandle": "out",
-      "target": "bobine-1",
-      "targetHandle": "in"
-    },
-    {
-      "type": "smoothstep",
-      "style": {
-        "stroke": "#000",
-        "strokeWidth": 2
-      },
-      "id": "edge-contactNO-5-Ton-4",
-      "source": "contactNO-5",
-      "sourceHandle": "out",
-      "target": "Ton-4",
-      "targetHandle": "in"
-    },
-    {
-      "type": "smoothstep",
-      "style": {
-        "stroke": "#000",
-        "strokeWidth": 2
-      },
-      "id": "edge-contact-1-contactNF-6",
       "source": "contact-1",
       "sourceHandle": "out",
-      "target": "contactNF-6",
-      "targetHandle": "in"
-    },
-    {
-      "type": "smoothstep",
-      "style": {
-        "stroke": "#000",
-        "strokeWidth": 2
-      },
-      "id": "edge-contactNF-6-contactNO-5",
-      "source": "contactNF-6",
-      "sourceHandle": "out",
-      "target": "contactNO-5",
-      "targetHandle": "in"
+      "target": "bobine-1",
+      "targetHandle": "in",
+      "id": "reactflow__edge-contact-1out-bobine-1in"
     }
   ],
   "viewport": {
-    "x": 28.318181818181813,
-    "y": 139,
-    "zoom": 0.5056818181818182
+    "x": 76.61447811447812,
+    "y": 162.90125261912902,
+    "zoom": 0.705168673918674
   }
 }
