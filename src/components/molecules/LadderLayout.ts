@@ -104,9 +104,9 @@ export function ladderize(
     height: number,
     nodeId: string
   ) => {
-    console.log(
+    /*console.log(
       `📝 markRungs(${nodeId} @ col=${col}, row=${row}, height=${height})`
-    );
+    );*/
     rungOccupied[col] = rungOccupied[col] || {};
     for (let r = row; r < row + height; r++) {
       rungOccupied[col][r] = nodeId;
@@ -129,9 +129,9 @@ export function ladderize(
     const targetRow =
       currentRow >= 0 && positioned.length > 0 ? currentRow : row;
 
-    console.log(
+    /*console.log(
       `📌 placeNode(${node.id}) @ target col=${targetCol}, row=${targetRow}, height=${height}`
-    );
+    );*/
 
     const shifted = new Set<string>();
 
@@ -160,14 +160,14 @@ export function ladderize(
 
     let offsetRow = 0;
     successors.forEach((succ) => {
-      console.log(`   ↳ Successeur de ${node.id} : ${succ.id}`);
+      //console.log(`   ↳ Successeur de ${node.id} : ${succ.id}`);
 
       if (shifted.has(succ.id)) {
         const currentCol = Math.round(succ.position.x / xStep);
         const currentRow = Math.round(succ.position.y / yStep);
-        console.log(
+        /*console.log(
           `   ⚠️ ${succ.id} déjà shifté à col=${currentCol}, row=${currentRow}`
-        );
+        );*/
         placeNode(succ, currentCol, currentRow);
       } else {
         placeNode(succ, targetCol + 1, targetRow + offsetRow); // ✅ targetCol au lieu de col
