@@ -1,9 +1,17 @@
 // utils/getColorByValue.ts
+
+declare global {
+  interface Window {
+    runPLCState?: boolean;
+  }
+}
 export const getColorByValue = (
   value?: number | null,
   asClassName: boolean = false
 ): string => {
-  if (value === undefined || value === null) {
+  const runPLC = window.runPLCState ?? true; // par défaut ON si non défini
+
+  if (!runPLC) {
     return asClassName ? 'bg-gray-400' : '#9CA3AF';
   }
 

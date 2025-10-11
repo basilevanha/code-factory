@@ -36,7 +36,7 @@ const RailAlimNode = ({ data, selected }: NodeProps) => {
         <div className="flex flex-shrink-0 items-center justify-center px-0">
           <span
             className="text-xl font-bold transition-colors"
-            style={{ color: '#22C55E' }}
+            style={{ color: getColorByValue(1) }}
           >
             |
           </span>
@@ -46,7 +46,7 @@ const RailAlimNode = ({ data, selected }: NodeProps) => {
         <div className="flex flex-1 items-center">
           <div
             className="w-full border-t-4"
-            style={{ borderColor: '#22C55E' }}
+            style={{ borderColor: getColorByValue(1) }}
           />
         </div>
       </div>

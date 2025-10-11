@@ -132,16 +132,8 @@ export default function LadderEditor({
 
       const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
 
-      // 🔧 Fonction pour retrouver la bonne variable avec préfixe
-      const findFullName = (shortName: string) => {
-        return (
-          composantsUnity.find((name) => name.substring(2) === shortName) || ''
-        );
-      };
-
       const nodesWithData = (flow.nodes || []).map((node: Node) => {
         const shortVar = node.data?.variable || '';
-        const fullVar = findFullName(shortVar);
 
         return {
           ...node,
@@ -346,6 +338,7 @@ export default function LadderEditor({
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeClick={onNodeClick}
+        onPaneClick={() => setSelectedNodeId(null)}
         nodeTypes={nodeTypes}
         panOnScroll
         selectionOnDrag
@@ -355,7 +348,7 @@ export default function LadderEditor({
         deleteKeyCode={['Backspace', 'Delete']}
         defaultEdgeOptions={{
           type: 'smoothstep',
-          style: { stroke: '#000', strokeWidth: 2 },
+          style: { stroke: '#9CA3AF', strokeWidth: 2 },
         }}
       >
         <Background />

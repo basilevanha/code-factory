@@ -65,7 +65,7 @@ const TOffNode = ({ data, id, selected }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
-          top: '20%',
+          top: '12%',
           transform: 'translateY(-50%)',
         }}
       />
@@ -83,7 +83,7 @@ const TOffNode = ({ data, id, selected }: NodeProps) => {
           width: 12,
           height: 12,
           borderRadius: '50%',
-          top: '20%',
+          top: '12%',
           transform: 'translateY(-50%)',
         }}
       />

@@ -20,10 +20,7 @@
           "Q_Conv_1",
           "I_Sensor_1"
         ],
-        "etatsComposants": {
-          "Q_Conv_1": 1,
-          "I_Sensor_1": 1
-        }
+        "etatsComposants": {}
       },
       "positionAbsolute": {
         "x": 0,
@@ -46,10 +43,7 @@
           "Q_Conv_1",
           "I_Sensor_1"
         ],
-        "etatsComposants": {
-          "Q_Conv_1": 1,
-          "I_Sensor_1": 0
-        },
+        "etatsComposants": {},
         "inValue": 1,
         "selected": false,
         "inputs": {
@@ -80,10 +74,7 @@
           "Q_Conv_1",
           "I_Sensor_1"
         ],
-        "etatsComposants": {
-          "Q_Conv_1": 1,
-          "I_Sensor_1": 0
-        },
+        "etatsComposants": {},
         "inValue": 1,
         "selected": false,
         "inputs": {
@@ -93,13 +84,13 @@
         "fullVariable": ""
       },
       "positionAbsolute": {
-        "x": 360,
+        "x": 400,
         "y": 0
       },
       "draggable": false,
       "width": 120,
       "height": 40,
-      "selected": true,
+      "selected": false,
       "dragging": false
     }
   ],
@@ -107,19 +98,19 @@
     {
       "type": "smoothstep",
       "style": {
-        "stroke": "#000",
+        "stroke": "#9CA3AF",
         "strokeWidth": 2
       },
-      "id": "edge-rail-contact",
       "source": "rail-1",
       "sourceHandle": "out",
       "target": "contact-1",
-      "targetHandle": "in"
+      "targetHandle": "in",
+      "id": "reactflow__edge-rail-1out-contact-1in"
     },
     {
       "type": "smoothstep",
       "style": {
-        "stroke": "#000",
+        "stroke": "#9CA3AF",
         "strokeWidth": 2
       },
       "source": "contact-1",
@@ -130,8 +121,8 @@
     }
   ],
   "viewport": {
-    "x": 76.61447811447812,
-    "y": 162.90125261912902,
-    "zoom": 0.705168673918674
+    "x": 39.954545454545496,
+    "y": 211.26573426573427,
+    "zoom": 1.5367132867132867
   }
 }
