@@ -277,6 +277,30 @@ export default function LadderEditor({
     runWorkflow();
   }, [etatsComposants, runPLC]);
 
+  useEffect(() => {
+    // mets à jour la variable globale (utilisée par getColorByValue)
+    window.runPLCState = runPLC;
+
+    if (runPLC) return; // seulement quand on passe à false
+
+    setNodes((prevNodes) =>
+      prevNodes.map((node) => {
+        const data = { ...node.data };
+
+        // valeurs à remettre à zéro pour reset visuel et logique
+        if ('inValue' in data) data.inValue = 0;
+        if ('outValue' in data) data.outValue = 0;
+        if ('qValue' in data) data.qValue = 0;
+        if ('etValue' in data) data.etValue = 0;
+        if ('memoire' in data) data.memoire = 0;
+
+        return { ...node, data };
+      })
+    );
+
+    console.log('Ladder reset local (runPLC=0)');
+  }, [runPLC]);
+
   const onNodesChange: OnNodesChange = useCallback((changes) => {
     setNodes((nds) => {
       const updated = applyNodeChanges(changes, nds);
