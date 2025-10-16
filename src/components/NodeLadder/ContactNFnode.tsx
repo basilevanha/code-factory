@@ -96,7 +96,7 @@ const ContactNFNode = ({ data, id, selected }: NodeProps) => {
         <div className="flex flex-shrink-0 items-center justify-center px-0">
           <span
             className="text-xl font-bold transition-colors"
-            style={{ color: getColorByValue(capteurValue) }}
+            style={{ color: getColorByValue(capteurValue ? 0 : 1) }}
           >
             |/|
           </span>
@@ -106,7 +106,7 @@ const ContactNFNode = ({ data, id, selected }: NodeProps) => {
         <div className="flex flex-1 items-center">
           <div
             className="w-full border-t-4"
-            style={{ borderColor: getColorByValue(capteurValue) }}
+            style={{ borderColor: getColorByValue(outValue) }}
           />
         </div>
       </div>

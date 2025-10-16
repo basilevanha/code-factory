@@ -15,10 +15,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body
         className={
-          inter.className + 'flex min-h-screen flex-col bg-gray-100 p-5'
+          inter.className +
+          'flex min-h-screen flex-col bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 p-5'
         }
       >
         {children}

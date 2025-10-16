@@ -139,7 +139,7 @@ export default function LadderEditor({
           ...node,
           data: {
             ...node.data,
-            variable: shortVar, // ton dropdown gère déjà la suppression de préfixe
+            variable: shortVar,
             composantsUnity,
             etatsComposants,
             onChange: () => {},
