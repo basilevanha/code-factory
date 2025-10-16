@@ -15,20 +15,22 @@ export default function GameCard({
 }: GameCardProps) {
   const Wrapper = href && !disabled ? 'a' : 'div';
 
+  // Détermine la classe selon l'état
+  const baseClass = `block rounded-xl p-4 transition-all border border-slate-700 ${
+    disabled
+      ? 'cursor-not-allowed bg-slate-800 text-slate-500'
+      : 'cursor-pointer bg-slate-800 text-slate-100 hover:bg-slate-700 hover:shadow-[0_0_15px_5px_rgba(96,165,250,0.6)]'
+  }`;
+
+  const titleClass = `mb-1 text-lg font-semibold ${disabled ? '' : 'text-blue-400'}`;
+
   return (
     <li>
-      <Wrapper
-        {...(href && !disabled ? { href } : {})}
-        className={`block rounded-md border p-4 transition ${
-          disabled
-            ? 'cursor-not-allowed border-gray-100 bg-gray-50 text-gray-400'
-            : 'border-gray-200 text-gray-900 hover:bg-gray-50'
-        }`}
-      >
-        <div className={`font-medium ${disabled ? '' : 'text-blue-600'}`}>
+      <Wrapper {...(href && !disabled ? { href } : {})} className={baseClass}>
+        <div className={titleClass}>
           {icon} {title}
         </div>
-        <p className="text-sm text-gray-500">{description}</p>
+        <p className="text-sm text-slate-300">{description}</p>
       </Wrapper>
     </li>
   );
