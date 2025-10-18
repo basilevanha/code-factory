@@ -6,6 +6,7 @@ import {
   Target,
   RefreshCcw,
   PlusCircleIcon,
+  HelpCircle, // ← Ajoutez cette ligne
   type LucideIcon,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -19,7 +20,8 @@ export type IconName =
   | 'chevron-left'
   | 'target'
   | 'refresh'
-  | 'plus-circle';
+  | 'plus-circle'
+  | 'help-circle'; // ← Ajoutez cette ligne
 
 const iconMap: Record<IconName, LucideIcon> = {
   play: Play,
@@ -29,6 +31,7 @@ const iconMap: Record<IconName, LucideIcon> = {
   target: Target,
   refresh: RefreshCcw,
   'plus-circle': PlusCircleIcon,
+  'help-circle': HelpCircle, // ← Ajoutez cette ligne
 };
 
 type ButtonProps = {
@@ -54,7 +57,6 @@ const Button = ({
   onClick,
   type = 'button',
 }: ButtonProps) => {
-  // Styles de base + possibilité d’ajouter des styles custom via `className`
   const baseStyles = clsx(
     'inline-flex items-center gap-2 rounded-2xl px-6 py-2 font-semibold shadow-md transition',
     'text-white bg-blue-600 hover:bg-blue-700',
@@ -62,11 +64,9 @@ const Button = ({
     className
   );
 
-  // Gestion de l’icône
   const IconComponent = icon ? iconMap[icon] : null;
   const iconElement = IconComponent ? <IconComponent size={16} /> : null;
 
-  // Si `href` est fourni → Link
   if (href) {
     return (
       <Link href={href} className={baseStyles} aria-disabled={disabled}>
@@ -77,7 +77,6 @@ const Button = ({
     );
   }
 
-  // Sinon → bouton
   return (
     <button
       type={type}
