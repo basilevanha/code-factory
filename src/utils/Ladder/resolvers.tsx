@@ -24,7 +24,7 @@ export const resolveBobine = (
 
   const isActive = inValue === 1;
   node.data.outValue = isActive ? 1 : 0;
-  console.log(`Bobine ${node.id} ,outValue=${node.data.outValue}`);
+  //console.log(`Bobine ${node.id} ,outValue=${node.data.outValue}`);
 };
 
 export const resolveContactNO = (
@@ -126,15 +126,15 @@ export const resolveTON = (
     node.data.startTime = null; // moment où IN passe à 1
   }
 
-  console.log(`[TON-${node.id}] IN=${inVal}, SP=${spVal}`);
+  //console.log(`[TON-${node.id}] IN=${inVal}, SP=${spVal}`);
 
   if (inVal === 1) {
     if (node.data.startTime === null) {
       // Premier cycle où IN est à 1 → on enregistre le temps
       node.data.startTime = Date.now();
-      console.log(
+      /* console.log(
         `[TON-${node.id}] Front montant détecté → startTime=${node.data.startTime}`
-      );
+      );*/
     }
 
     // Temps écoulé depuis le front montant
@@ -142,15 +142,15 @@ export const resolveTON = (
     node.data.etValue = elapsed;
     node.data.qValue = elapsed >= spVal ? 1 : 0;
 
-    console.log(
+    /*console.log(
       `[TON-${node.id}] elapsed=${elapsed}ms, ET=${node.data.etValue}, Q=${node.data.qValue}`
-    );
+    );*/
   } else {
     // Reset complet
     node.data.startTime = null;
     node.data.etValue = 0;
     node.data.qValue = 0;
-    console.log(`[TON-${node.id}] Reset → ET=0, Q=0`);
+    //console.log(`[TON-${node.id}] Reset → ET=0, Q=0`);
   }
 
   node.data.outValue = node.data.qValue;
@@ -187,7 +187,7 @@ export const blockResolvers: Record<string, Resolver> = {
   bobine: resolveBobine,
   railAlim: resolveRailAlim,
   SR: resolveSR,
-  Ton: resolveTON, //need to create a tempoBlocResolver???
+  Ton: resolveTON,
   Toff: resolveTOff,
   // Ajoute les autres types ici
 };
