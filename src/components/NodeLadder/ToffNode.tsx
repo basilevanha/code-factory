@@ -31,7 +31,9 @@ const TOffNode = ({ data, id, selected }: NodeProps) => {
   const qValue: number | undefined = data?.qValue;
   const etValue: number | undefined = data?.etValue;
 
-  const [spValue, setSpValue] = useState<number>(1.0);
+  const [spValue, setSpValue] = useState<number>(
+    data?.spValue != null ? data.spValue / 1000 : 1.0
+  );
   const handleChange = useCallback((v: number) => setSpValue(v), []);
 
   // Synchronisation dans node.data

@@ -32,7 +32,9 @@ const TONNode = ({ data, id, selected }: NodeProps) => {
   const etValue: number | undefined = data?.etValue;
 
   // SP modifiable par l'utilisateur
-  const [spValue, setSpValue] = useState<number>(data?.spValue ?? 1.0);
+  const [spValue, setSpValue] = useState<number>(
+    data?.spValue != null ? data.spValue / 1000 : 1.0
+  );
   const handleChange = useCallback((v: number) => setSpValue(v), []);
 
   const label = data?.label || `TON-${id}`;
