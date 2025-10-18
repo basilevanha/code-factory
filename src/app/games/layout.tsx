@@ -21,11 +21,7 @@ export default function GamesLayout({
     <main className="flex min-h-screen flex-col bg-white">
       {/* Header / barre de progression */}
       <header className="top-0 z-50 bg-gray-900 p-2">
-        <ProgressBar
-          totalSteps={5}
-          currentStep={currentStep}
-          onStepClick={handleStepClick}
-        />
+        <ProgressBar totalSteps={5} onStepClick={handleStepClick} />
       </header>
 
       {/* Contenu de la page stepX */}

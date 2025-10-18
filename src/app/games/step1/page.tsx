@@ -12,6 +12,7 @@ import Button from '@/components/atoms/Button';
 import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
 import LadderEditor from '@/components/molecules/LadderEditor';
+import SuccessPopup from '@/components/molecules/SuccesPopup';
 
 declare global {
   interface Window {
@@ -126,7 +127,6 @@ export default function GamePage() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [currentLevel, setCurrentLevel] = useState(1);
-  const maxLevel = 2;
 
   useEffect(() => {
     window.onLevelSuccess = (json: string) => {
@@ -135,8 +135,6 @@ export default function GamePage() {
         console.log('Succès Unity reçu:', data);
 
         if (data.success) {
-          setCurrentLevel(data.level || 1); // on met à jour le niveau actuel
-          setSuccessMessage(data.message || 'Niveau terminé !');
           setShowSuccess(true);
         }
       } catch (e) {
@@ -207,66 +205,14 @@ export default function GamePage() {
           </div>
         </div>
 
-        {showSuccess && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="relative max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
-              <h2 className="mb-2 text-xl font-bold text-green-600">
-                🎉 BRAVO !
-              </h2>
-              <p className="mb-6">{successMessage}</p>
-
-              <div className="flex flex-col gap-3">
-                <Button
-                  className="w-full justify-center"
-                  onClick={() => {
-                    setShowSuccess(false);
-                    setRunPLC(false);
-                  }}
-                >
-                  Rejouer
-                </Button>
-                <Button
-                  className="w-full justify-center bg-green-600 text-white hover:bg-green-700"
-                  onClick={() => {
-                    setShowSuccess(false);
-                    setRunPLC(false);
-                    handleReset();
-
-                    if (currentLevel >= maxLevel) {
-                      window.open(
-                        'https://forms.gle/kWR9gLiVGJDYixf8A',
-                        '_blank',
-                        'noopener,noreferrer'
-                      );
-                    } else {
-                      const nextLevel = currentLevel + 1;
-                      console.log('➡️ Passage au niveau :', nextLevel);
-
-                      // ⚡ Mettre à jour React
-                      setCurrentLevel(nextLevel);
-
-                      // ⚡ Demander à Unity
-                      sendMessage(
-                        'GameManager',
-                        'LoadLevelFromReact',
-                        nextLevel.toString()
-                      );
-
-                      // ⚡ Ouvrir la popup après un petit délai (laisser Unity init)
-                      setTimeout(() => {
-                        setShowMissionPopup(true);
-                      }, 150);
-                    }
-                  }}
-                >
-                  {currentLevel >= maxLevel
-                    ? 'Donne moi ton avis !'
-                    : 'Niveau suivant'}
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
+        <SuccessPopup
+          show={showSuccess}
+          message={successMessage}
+          onReplay={() => {
+            setRunPLC(false);
+          }}
+          onClose={() => setShowSuccess(false)}
+        />
       </div>
     </main>
   );

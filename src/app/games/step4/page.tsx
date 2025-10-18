@@ -22,7 +22,7 @@ declare global {
   }
 }
 
-const gamePath = '/unity/BasicConveyor-1';
+const gamePath = '/unity/BasicConveyor-2';
 
 export default function GamePage() {
   const [sensorState, setSensorState] = useState<number | null>(null);
@@ -156,7 +156,7 @@ export default function GamePage() {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
-    <main className="rounded-lg bg-white px-6 py-2 text-gray-900">
+    <main className="bg-white px-6 py-2 text-gray-900">
       <div className="mx-auto flex flex-col gap-4">
         <Toolbar
           items={[
@@ -165,10 +165,6 @@ export default function GamePage() {
               name: 'Revoir les objectifs',
               icon: 'target',
               onClick: () => {
-                console.log(
-                  '   currentLevel avant ouverture popup :',
-                  currentLevel
-                );
                 setShowMissionPopup(true);
               },
             },
