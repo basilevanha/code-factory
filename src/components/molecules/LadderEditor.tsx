@@ -17,6 +17,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 import { resolveLadder } from '../../utils/Ladder/Logic';
 import { applyOutputs } from '../../utils/Ladder/ApplyOutputs';
+import { getColorByValue } from '../../utils/getColorByValue';
 
 //simplifiable?????????******************************************************************
 import ContactNONode from '../NodeLadder/ContactNOnode';
@@ -249,7 +250,21 @@ export default function LadderEditor({
       deltaTime
     );
     setNodes(resolvedNodes);
-
+    setEdges((prevEdges) =>
+      prevEdges.map((edge) => {
+        const sourceNode = resolvedNodes.find((n) => n.id === edge.source);
+        return {
+          ...edge,
+          style: {
+            ...edge.style,
+            stroke: sourceNode
+              ? getColorByValue(sourceNode.data.outValue)
+              : '#9CA3AF',
+            strokeWidth: 3, // optionnel : rendre les edges plus visibles
+          },
+        };
+      })
+    );
     const nodesWithData = resolvedNodes.filter(
       (node): node is NodeWithData =>
         typeof node.type === 'string' &&
@@ -270,27 +285,44 @@ export default function LadderEditor({
   }, [etatsComposants, runPLC]);
 
   useEffect(() => {
-    // mets à jour la variable globale (utilisée par getColorByValue)
+    // Mets à jour la variable globale (utilisée par getColorByValue)
     window.runPLCState = runPLC;
 
-    if (runPLC) return; // seulement quand on passe à false
+    // 🔹 Reset nodes et edges quand PLC OFF
+    if (!runPLC) {
+      setNodes((prevNodes) =>
+        prevNodes.map((node) => {
+          const data = { ...node.data };
 
-    setNodes((prevNodes) =>
-      prevNodes.map((node) => {
-        const data = { ...node.data };
+          // valeurs à remettre à zéro pour reset visuel et logique
+          if ('inValue' in data) data.inValue = 0;
+          if ('outValue' in data) data.outValue = 0;
+          if ('qValue' in data) data.qValue = 0;
+          if ('etValue' in data) data.etValue = 0;
+          if ('memoire' in data) data.memoire = 0;
 
-        // valeurs à remettre à zéro pour reset visuel et logique
-        if ('inValue' in data) data.inValue = 0;
-        if ('outValue' in data) data.outValue = 0;
-        if ('qValue' in data) data.qValue = 0;
-        if ('etValue' in data) data.etValue = 0;
-        if ('memoire' in data) data.memoire = 0;
+          return { ...node, data };
+        })
+      );
 
-        return { ...node, data };
-      })
-    );
+      setEdges((prevEdges) =>
+        prevEdges.map((edge) => {
+          const sourceNode = nodesRef.current.find((n) => n.id === edge.source);
+          return {
+            ...edge,
+            style: {
+              ...edge.style,
+              stroke: sourceNode
+                ? getColorByValue(sourceNode.data.outValue)
+                : '#9CA3AF',
+              strokeWidth: 3,
+            },
+          };
+        })
+      );
 
-    console.log('Ladder reset local (runPLC=0)');
+      console.log('Ladder reset local (runPLC=0)');
+    }
   }, [runPLC]);
 
   const onNodesChange: OnNodesChange = useCallback((changes) => {

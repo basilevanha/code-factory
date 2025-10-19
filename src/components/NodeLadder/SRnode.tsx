@@ -8,19 +8,24 @@ const SRNode = ({ data, id, selected }: NodeProps) => {
 
   const outValue: number | null | undefined = data?.outValue;
 
-  const label = data?.label || `SR-${id}`;
+  const label = data?.label || `${id}`;
 
   return (
     <div
       className={clsx(
-        'relative h-40 w-30 rounded-2xl border bg-white shadow-md transition-colors',
+        'relative h-40 w-30 rounded-2xl shadow-md transition-all',
         selected
-          ? 'border-2 border-blue-500 ring-2 ring-blue-300'
-          : 'border-gray-300'
+          ? 'border border-blue-400 ring-2 ring-blue-300' // bordure fine + ring pour sélection
+          : '' // non sélectionné, on gère le style inline
       )}
+      style={{
+        backgroundColor: '#ffffff',
+        borderWidth: selected ? '2px' : '6px', // fine si sélectionné, large sinon
+        borderColor: selected ? '#3B82F6' : getColorByValue(outValue, false), // couleur selon la sortie
+      }}
     >
       {/* Identifiant texte au-dessus */}
-      <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold">
+      <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm font-semibold text-gray-100">
         {label}
       </div>
 

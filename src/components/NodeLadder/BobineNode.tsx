@@ -36,7 +36,7 @@ const BobineNode = ({ data, selected }: NodeProps) => {
   return (
     <div
       className={clsx(
-        'relative h-10 w-30 rounded-2xl border bg-white shadow-md transition-colors',
+        'relative h-10 w-30 rounded-2xl border shadow-md transition-colors',
         selected
           ? 'border-2 border-blue-500 ring-2 ring-blue-300'
           : 'border-none bg-transparent shadow-none'

@@ -33,7 +33,13 @@ export default function Home() {
             icon="🛠️"
           />
           <GameCard
-            title="Niveau 4"
+            title="Le GraFCET"
+            description="En construction..."
+            disabled
+            icon="🛠️"
+          />
+          <GameCard
+            title="Les robots industriels (ABB, language RAPID)"
             description="En construction..."
             disabled
             icon="🛠️"

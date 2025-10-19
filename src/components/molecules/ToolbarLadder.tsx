@@ -14,7 +14,7 @@ export default function ToolbarLadder({
 }: ToolbarLadderProps) {
   return (
     <div>
-      <div className="flex gap-2 rounded bg-gray-200 p-2 shadow">
+      <div className="flex gap-2 rounded-lg bg-gray-200 p-2 shadow">
         <Button
           tooltip="Bloc contact à ouverture"
           onClick={() => onAddNode('contactNO')}
@@ -30,15 +30,17 @@ export default function ToolbarLadder({
         <Button tooltip="Bloc bobine" onClick={() => onAddNode('bobine')}>
           -( )-
         </Button>
-        <Button onClick={() => onAddNode('SR')}>SR</Button>
+        <Button tooltip="Bloc Set-Reset" onClick={() => onAddNode('SR')}>
+          SR
+        </Button>
         <Button
-          tooltip="Bloc Temporistion à l’enclenchement"
+          tooltip="Bloc Temporistion à l'enclenchement"
           onClick={() => onAddNode('Ton')}
         >
           Ton
         </Button>
         <Button
-          tooltip="Bloc Temporistion à l’ouverture"
+          tooltip="Bloc Temporistion à l'ouverture"
           onClick={() => onAddNode('Toff')}
         >
           Toff
@@ -54,6 +56,15 @@ export default function ToolbarLadder({
             📂
           </Button>
         )}
+
+        {/* Afficher le bouton railAlim uniquement s'il n'existe pas déjà */}
+
+        <Button
+          tooltip="Bloc rail d'alimentation"
+          onClick={() => onAddNode('railAlim')}
+        >
+          |--
+        </Button>
       </div>
     </div>
   );

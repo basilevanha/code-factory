@@ -26,11 +26,11 @@ export default function CreateAccountPage() {
       {!accountCreated ? (
         <>
           <h1 className="mb-6 text-center text-3xl font-bold">
-            Crée ton compte CodingFactory
+            Sauvegarde ta progression !
           </h1>
           <p className="mb-10 max-w-xl text-center text-slate-300">
-            Pour sauvegarder tes progrès et accéder à toutes les
-            fonctionnalités, crée ton compte maintenant.
+            Crée ton compte pour découvir ce que Coding Factory à encore dans
+            son sac...
           </p>
 
           {/* Google Sign-In */}

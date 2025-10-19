@@ -41,19 +41,22 @@ const TOffNode = ({ data, id, selected }: NodeProps) => {
     data.spValue = spValue * 1000;
   }, [spValue]);
 
-  const label = data?.label || `TOF-${id}`;
+  const label = data?.label || `${id}`;
 
   return (
     <div
       className={clsx(
-        'relative h-44 w-30 rounded-2xl border bg-white shadow-md transition-colors',
-        selected
-          ? 'border-2 border-blue-500 ring-2 ring-blue-300'
-          : 'border-gray-300'
+        'relative h-40 w-30 rounded-2xl shadow-md transition-all',
+        selected ? 'border border-blue-400 ring-2 ring-blue-300' : ''
       )}
+      style={{
+        backgroundColor: '#ffffff',
+        borderWidth: selected ? '2px' : '6px',
+        borderColor: selected ? '#3B82F6' : getColorByValue(qValue, false),
+      }}
     >
       {/* Label */}
-      <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-semibold">
+      <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm font-semibold text-gray-100">
         {label}
       </div>
 
