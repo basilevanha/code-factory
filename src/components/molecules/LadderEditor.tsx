@@ -322,7 +322,7 @@ export default function LadderEditor({
   }, []);
 
   return (
-    <div style={{ width: '100%', height: '85%' }}>
+    <div id="ladder-editor" style={{ width: '100%', height: '85%' }}>
       <ToolbarLadder
         onAddNode={addNode}
         onSave={saveLadder}

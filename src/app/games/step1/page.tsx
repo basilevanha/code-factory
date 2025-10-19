@@ -13,6 +13,7 @@ import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
 import LadderEditor from '@/components/molecules/LadderEditor';
 import SuccessPopup from '@/components/molecules/SuccesPopup';
+import HintPopup from '@/components/molecules/HintPopup';
 
 declare global {
   interface Window {
@@ -40,12 +41,6 @@ export default function GamePage() {
   const handleReset = () => {
     if (!isLoaded) return;
     sendMessage('GameManager', 'ResetScene', '');
-  };
-
-  const handleConveyor = (isActive: boolean) => {
-    if (!isLoaded) return;
-    const value = isActive ? '1' : '0';
-    sendMessage('Conveyor_1', 'SetActifFromReact', value);
   };
 
   const [composantsUnity, setComposantsUnity] = useState<string[]>([]);
@@ -126,7 +121,6 @@ export default function GamePage() {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [currentLevel, setCurrentLevel] = useState(1);
 
   useEffect(() => {
     window.onLevelSuccess = (json: string) => {
@@ -149,8 +143,84 @@ export default function GamePage() {
 
   const [showMissionPopup, setShowMissionPopup] = useState(true);
 
-  const [currentVideo, setCurrentVideo] = useState(0);
-  const videos = ['/videos/TutoVideo-1.mp4', '/videos/TutoVideo-2.mp4'];
+  const [showHints, setShowHints] = useState(true);
+
+  const hints = [
+    {
+      text: (
+        <>
+          <strong className="text-lg">🎯 Bienvenue !</strong>
+          <br />
+          <br />
+          Ta mission est de démarrer l'automate du packaging de bouteilles.
+        </>
+      ),
+    },
+    {
+      text: (
+        <>
+          La partie de <strong>droite</strong> te montre l'
+          <strong>usine</strong> en 3D.
+          <br />
+          <br />
+          <strong>Déplace</strong> ta souris sur les éléments de l'usine pour
+          découvrir leurs noms.
+        </>
+      ),
+      targetSelector: '#unity-container',
+    },
+    {
+      text: (
+        <>
+          <strong>Convention de nommage :</strong>
+          <br />
+          <br />• <span>I_</span> = Entrées (détections, capteurs)
+          <br />• <span>Q_</span> = Sorties (actionneurs)
+        </>
+      ),
+      targetSelector: '#unity-container',
+    },
+    {
+      text: (
+        <>
+          La partie de <strong>gauche</strong> permet de :
+          <br />
+          <br />
+          1. <strong>Construire</strong> ton code Ladder
+          <br />
+          2. <strong>Visualiser</strong> l'état des composants en temps réel
+        </>
+      ),
+      targetSelector: '#ladder-editor',
+    },
+    {
+      text: (
+        <>
+          <strong>Clique</strong> maintenant sur
+          <strong className="text-blue-600"> RUN PLC</strong> pour :
+          <br />• Charger le code dans l'automate
+          <br />• Démarrer la simulation
+        </>
+      ),
+      targetSelector: '#run-plc-toggle',
+    },
+    {
+      text: (
+        <>
+          Tu peux maintenant <strong>observer</strong> comment ton code agit sur
+          l'usine.
+          <br />
+          En <span className="font-semibold text-green-500">vert</span>, ce qui
+          est actif.
+          <br />
+          En <span className="font-semibold text-blue-500">bleu</span>, ce qui
+          est inactif.
+        </>
+      ),
+    },
+  ];
+
+  const onHintClick = () => setShowHints(true);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -164,16 +234,13 @@ export default function GamePage() {
               name: 'Revoir les objectifs',
               icon: 'target',
               onClick: () => {
-                console.log(
-                  '   currentLevel avant ouverture popup :',
-                  currentLevel
-                );
-                setShowMissionPopup(true);
+                setShowHints(true);
               },
             },
             {
               type: 'toggle',
               name: 'RUN PLC',
+              id: 'run-plc-toggle',
               onClick: (value: boolean) => {
                 console.log('Toggle RUN PLC changé:', value);
                 setRunPLC(value);
@@ -181,6 +248,7 @@ export default function GamePage() {
               value: runPLC,
             },
           ]}
+          onHintClick={onHintClick}
         />
 
         <div className="flex w-full gap-4">
@@ -198,12 +266,17 @@ export default function GamePage() {
           </div>
           <div className="max-w-[35vw] flex-1">
             <UnityWrapper
+              id="unity-container"
               unityProvider={unityProvider}
               isLoaded={isLoaded}
               loadingProgression={loadingProgression}
             />
           </div>
         </div>
+
+        {showHints && (
+          <HintPopup hints={hints} onClose={() => setShowHints(false)} />
+        )}
 
         <SuccessPopup
           show={showSuccess}

@@ -11,6 +11,7 @@ type UnityWrapperProps = {
   isLoaded: boolean;
   loadingProgression: number;
   className?: string;
+  id?: string;
 };
 
 const UnityWrapper = ({
@@ -18,9 +19,10 @@ const UnityWrapper = ({
   isLoaded,
   loadingProgression,
   className = '',
+  id,
 }: UnityWrapperProps) => {
   return (
-    <div className={`mx-auto w-full max-w-[90vmin] ${className}`}>
+    <div id={id} className={`mx-auto w-full max-w-[90vmin] ${className}`}>
       <Unity
         unityProvider={unityProvider}
         className="aspect-square w-full rounded-lg bg-black"

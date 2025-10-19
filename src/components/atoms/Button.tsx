@@ -6,7 +6,7 @@ import {
   Target,
   RefreshCcw,
   PlusCircleIcon,
-  HelpCircle, // ← Ajoutez cette ligne
+  HelpCircle,
   type LucideIcon,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -21,7 +21,7 @@ export type IconName =
   | 'target'
   | 'refresh'
   | 'plus-circle'
-  | 'help-circle'; // ← Ajoutez cette ligne
+  | 'help-circle';
 
 const iconMap: Record<IconName, LucideIcon> = {
   play: Play,
@@ -31,10 +31,11 @@ const iconMap: Record<IconName, LucideIcon> = {
   target: Target,
   refresh: RefreshCcw,
   'plus-circle': PlusCircleIcon,
-  'help-circle': HelpCircle, // ← Ajoutez cette ligne
+  'help-circle': HelpCircle,
 };
 
 type ButtonProps = {
+  id?: string; // <- nouveau
   children: ReactNode;
   icon?: IconName;
   iconPosition?: 'left' | 'right';
@@ -47,6 +48,7 @@ type ButtonProps = {
 };
 
 const Button = ({
+  id,
   children,
   icon,
   iconPosition = 'left',
@@ -79,6 +81,7 @@ const Button = ({
 
   return (
     <button
+      id={id}
       type={type}
       onClick={onClick}
       disabled={disabled}

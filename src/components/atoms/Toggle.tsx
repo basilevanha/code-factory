@@ -1,18 +1,20 @@
 import { ReactNode } from 'react';
 
 type ToggleProps = {
+  id?: string;
   value: boolean; // état contrôlé depuis l’extérieur
   onClick?: (checked: boolean) => void;
   children?: ReactNode;
 };
 
-const Toggle = ({ value, onClick, children }: ToggleProps) => {
+const Toggle = ({ id, value, onClick, children }: ToggleProps) => {
   const handleToggle = () => {
     onClick?.(!value);
   };
 
   return (
     <button
+      id={id}
       type="button"
       onClick={handleToggle}
       className="flex cursor-pointer items-center gap-3 focus:outline-none"
