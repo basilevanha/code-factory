@@ -14,7 +14,10 @@ export default function ToolbarLadder({
 }: ToolbarLadderProps) {
   return (
     <div>
-      <div className="flex gap-2 rounded-lg bg-gray-200 p-2 shadow">
+      <div
+        id="ToolBarLadder"
+        className="flex gap-2 rounded-lg bg-gray-200 p-2 shadow"
+      >
         <Button
           tooltip="Bloc contact à ouverture"
           onClick={() => onAddNode('contactNO')}

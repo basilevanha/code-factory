@@ -44,7 +44,7 @@ export default function StudyGoalPage() {
       {!selected ? (
         <>
           <h1 className="mb-6 text-center text-3xl font-bold">
-            Choisis ton objectif d’étude hebdomadaire
+            Choisis ton objectif d'apprentissage hebdomadaire
           </h1>
 
           <div className="flex w-full max-w-md flex-col gap-6">

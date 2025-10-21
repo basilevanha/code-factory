@@ -1,4 +1,7 @@
 // LadderEditor.tsx
+'use client';
+import { usePathname } from 'next/navigation';
+
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import ReactFlow, {
   Background,
@@ -88,75 +91,92 @@ export default function LadderEditor({
     []
   );
 
-  // Sauvegarde sur le serveur
-  const saveLadder = useCallback(async () => {
-    if (!rfInstance) return;
+  const saveLadder = useCallback(
+    async (filename: string) => {
+      if (!rfInstance) return;
 
-    // Inclure toutes les data des nodes
-    const flow = {
-      ...rfInstance.toObject(),
-      nodes: nodesRef.current.map((n) => ({
-        ...n,
-        data: { ...n.data }, // <-- conserve toutes les propriétés dynamiques
-      })),
-    };
-
-    try {
-      const response = await fetch('/api/ladder/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(flow),
-      });
-
-      if (response.ok) {
-        console.log('✅ Ladder sauvegardé sur le serveur');
-      } else {
-        console.error('❌ Erreur lors de la sauvegarde du ladder');
+      if (!filename.trim()) {
+        console.error('❌ Nom de fichier requis');
+        return;
       }
-    } catch (error) {
-      console.error('❌ Erreur réseau lors de la sauvegarde :', error);
-    }
-  }, [rfInstance]);
 
-  const loadLadder = useCallback(async () => {
-    if (!composantsUnity || composantsUnity.length === 0) {
-      console.warn(
-        '⚠️ composantsUnity pas encore chargé, impossible de restaurer le ladder'
-      );
-      return;
-    }
+      const flow = {
+        ...rfInstance.toObject(),
+        nodes: nodesRef.current.map((n) => ({
+          ...n,
+          data: { ...n.data },
+        })),
+      };
 
-    try {
-      const response = await fetch('/api/ladder/load');
-      if (!response.ok) throw new Error('Erreur de chargement serveur');
-      const flow = await response.json();
+      try {
+        const response = await fetch('/api/ladder/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            data: flow,
+            filename: filename.trim(),
+          }),
+        });
 
-      const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
+        if (response.ok) {
+          console.log(`✅ Ladder sauvegardé : ${filename}`);
+        } else {
+          console.error('❌ Erreur lors de la sauvegarde du ladder');
+        }
+      } catch (error) {
+        console.error('❌ Erreur réseau lors de la sauvegarde :', error);
+      }
+    },
+    [rfInstance]
+  );
 
-      const nodesWithData = (flow.nodes || []).map((node: Node) => {
-        const shortVar = node.data?.variable || '';
+  const loadLadder = useCallback(
+    async (filename: string) => {
+      if (!composantsUnity || composantsUnity.length === 0) {
+        console.warn('⚠️ composantsUnity pas encore chargé');
+        return;
+      }
 
-        return {
-          ...node,
-          data: {
-            ...node.data,
-            variable: shortVar,
-            composantsUnity,
-            etatsComposants,
-            onChange: () => {},
-          },
-        };
-      });
+      if (!filename.trim()) {
+        console.error('❌ Nom de fichier requis');
+        return;
+      }
 
-      setNodes(nodesWithData);
-      setEdges(flow.edges || []);
-      savedViewportRef.current = { x, y, zoom };
+      try {
+        const response = await fetch(
+          `/api/ladder/load?filename=${encodeURIComponent(filename)}`
+        );
+        if (!response.ok) throw new Error('Erreur de chargement serveur');
+        const flow = await response.json();
 
-      console.log('✅ Ladder chargé depuis le serveur');
-    } catch (error) {
-      console.error('❌ Impossible de charger le ladder :', error);
-    }
-  }, [composantsUnity, etatsComposants]);
+        const { x = 0, y = 0, zoom = 1 } = flow.viewport || {};
+
+        const nodesWithData = (flow.nodes || []).map((node: Node) => {
+          const shortVar = node.data?.variable || '';
+
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              variable: shortVar,
+              composantsUnity,
+              etatsComposants,
+              onChange: () => {},
+            },
+          };
+        });
+
+        setNodes(nodesWithData);
+        setEdges(flow.edges || []);
+        savedViewportRef.current = { x, y, zoom };
+
+        console.log(`✅ Ladder chargé : ${filename}`);
+      } catch (error) {
+        console.error('❌ Impossible de charger le ladder :', error);
+      }
+    },
+    [composantsUnity, etatsComposants]
+  );
 
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
@@ -175,19 +195,30 @@ export default function LadderEditor({
     edgesRef.current = edges;
   }, [edges]);
 
+  const pathname = usePathname();
+
+  // Fonction pour générer le nom du fichier depuis le path
+  const getFilenameFromPath = useCallback(() => {
+    // Ex: '/games/step1' → 'games-step1'
+    const segments = pathname.split('/').filter(Boolean);
+    return segments.join('-') || 'default-ladder';
+  }, [pathname]);
+
   useEffect(() => {
-    // ✅ Dès que les composants Unity sont chargés et que ce n’est pas encore initialisé :
+    // ✅ Dès que les composants Unity sont chargés et que ce n'est pas encore initialisé :
     if (!initialized && composantsUnity?.length) {
       (async () => {
         try {
-          await loadLadder(); // ← charge la scène depuis le serveur
+          const filename = getFilenameFromPath();
+          console.log(`📁 Chargement du fichier : ${filename}`);
+          await loadLadder(filename);
           setInitialized(true);
         } catch (error) {
           console.error('❌ Erreur lors du chargement du ladder :', error);
         }
       })();
     }
-  }, [composantsUnity, initialized, loadLadder]);
+  }, [composantsUnity, initialized, loadLadder, getFilenameFromPath]);
 
   type NodeData = {
     variable?: string;
@@ -357,8 +388,8 @@ export default function LadderEditor({
     <div id="ladder-editor" style={{ width: '100%', height: '85%' }}>
       <ToolbarLadder
         onAddNode={addNode}
-        onSave={saveLadder}
-        onLoad={loadLadder}
+        onSave={() => saveLadder('user_ladder')}
+        onLoad={() => loadLadder('user_ladder')}
       />
       <ReactFlow
         snapToGrid={true}
