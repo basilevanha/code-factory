@@ -1,0 +1,190 @@
+{
+  "nodes": [
+    {
+      "id": "railAlim-1",
+      "type": "railAlim",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "variable": "",
+        "composantsUnity": [
+          "I_Sensor_1",
+          "I_Sensor_2",
+          "Q_Conv_2",
+          "Q_Conv_1"
+        ],
+        "etatsComposants": {},
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 40,
+      "positionAbsolute": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "contactNO-2",
+      "type": "contactNO",
+      "position": {
+        "x": 200,
+        "y": 0
+      },
+      "data": {
+        "variable": "I_Sensor_1",
+        "composantsUnity": [
+          "I_Sensor_1",
+          "I_Sensor_2",
+          "Q_Conv_2",
+          "Q_Conv_1"
+        ],
+        "etatsComposants": {
+          "I_Sensor_1": 0,
+          "I_Sensor_2": 1,
+          "Q_Conv_2": 0,
+          "Q_Conv_1": 0
+        },
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "positionAbsolute": {
+        "x": 200,
+        "y": 0
+      },
+      "width": 120,
+      "height": 40,
+      "selected": false
+    },
+    {
+      "id": "bobine-3",
+      "type": "bobine",
+      "position": {
+        "x": 400,
+        "y": 0
+      },
+      "data": {
+        "variable": "Q_Conv_1",
+        "composantsUnity": [
+          "I_Sensor_1",
+          "I_Sensor_2",
+          "Q_Conv_2",
+          "Q_Conv_1"
+        ],
+        "etatsComposants": {
+          "I_Sensor_1": 0,
+          "I_Sensor_2": 1,
+          "Q_Conv_2": 0,
+          "Q_Conv_1": 0
+        },
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 0
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 40,
+      "positionAbsolute": {
+        "x": 400,
+        "y": 0
+      },
+      "selected": false
+    },
+    {
+      "id": "contactNO-4",
+      "type": "contactNO",
+      "position": {
+        "x": 200,
+        "y": 100
+      },
+      "data": {
+        "variable": "",
+        "composantsUnity": [
+          "I_Sensor_1",
+          "I_Sensor_2",
+          "Q_Conv_2",
+          "Q_Conv_1"
+        ],
+        "etatsComposants": {
+          "I_Sensor_1": 0,
+          "I_Sensor_2": 1,
+          "Q_Conv_2": 0,
+          "Q_Conv_1": 0
+        },
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "positionAbsolute": {
+        "x": 200,
+        "y": 100
+      },
+      "width": 120,
+      "height": 40,
+      "selected": true,
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "id": "edge-railAlim-1-contactNO-2",
+      "source": "railAlim-1",
+      "sourceHandle": "out",
+      "target": "contactNO-2",
+      "targetHandle": "in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "id": "edge-contactNO-2-bobine-3",
+      "source": "contactNO-2",
+      "sourceHandle": "out",
+      "target": "bobine-3",
+      "targetHandle": "in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "railAlim-1",
+      "sourceHandle": "out",
+      "target": "contactNO-4",
+      "targetHandle": "in",
+      "id": "reactflow__edge-railAlim-1out-contactNO-4in"
+    }
+  ],
+  "viewport": {
+    "x": 39.954545454545496,
+    "y": 134.43006993006992,
+    "zoom": 1.5367132867132867
+  }
+}
