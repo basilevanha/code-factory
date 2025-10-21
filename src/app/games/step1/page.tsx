@@ -217,6 +217,7 @@ export default function GamePage() {
           est inactif.
         </>
       ),
+      targetSelector: '#Big',
     },
   ];
 
@@ -226,7 +227,7 @@ export default function GamePage() {
 
   return (
     <main className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 px-6 py-2 text-gray-900">
-      <div className="mx-auto flex flex-col gap-4">
+      <div id="Big" className="mx-auto flex flex-col gap-4">
         <Toolbar
           items={[
             {

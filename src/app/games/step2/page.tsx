@@ -13,6 +13,7 @@ import Toolbar from '@/components/molecules/Toolbar';
 import UnityWrapper from '@/components/molecules/UnityWrapper';
 import LadderEditor from '@/components/molecules/LadderEditor';
 import SuccessPopup from '@/components/molecules/SuccesPopup';
+import HintPopup from '@/components/molecules/HintPopup';
 
 declare global {
   interface Window {
@@ -40,12 +41,6 @@ export default function GamePage() {
   const handleReset = () => {
     if (!isLoaded) return;
     sendMessage('GameManager', 'ResetScene', '');
-  };
-
-  const handleConveyor = (isActive: boolean) => {
-    if (!isLoaded) return;
-    const value = isActive ? '1' : '0';
-    sendMessage('Conveyor_1', 'SetActifFromReact', value);
   };
 
   const [composantsUnity, setComposantsUnity] = useState<string[]>([]);
@@ -126,8 +121,6 @@ export default function GamePage() {
 
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [currentLevel, setCurrentLevel] = useState(1);
-  const maxLevel = 2;
 
   useEffect(() => {
     window.onLevelSuccess = (json: string) => {
@@ -136,6 +129,9 @@ export default function GamePage() {
         console.log('Succès Unity reçu:', data);
 
         if (data.success) {
+          setSuccessMessage(
+            'Tu viens de réussir ta première intervention sur automate!'
+          );
           setShowSuccess(true);
         }
       } catch (e) {
@@ -150,8 +146,57 @@ export default function GamePage() {
 
   const [showMissionPopup, setShowMissionPopup] = useState(true);
 
-  const [currentVideo, setCurrentVideo] = useState(0);
-  const videos = ['/videos/TutoVideo-1.mp4', '/videos/TutoVideo-2.mp4'];
+  const [showHints, setShowHints] = useState(true);
+
+  const hints = [
+    {
+      text: (
+        <>
+          Petit ou gros projet, ta mission se déroule en 3 temps. <br />
+          1. <strong>comprendre</strong> la scène (cahier de charge)
+          <br />
+          2. <strong>corriger</strong> le code (ou en créer un nouveau)
+          <br />
+          3. <strong>tester</strong> le fonctionnement
+        </>
+      ),
+    },
+    {
+      text: (
+        <>
+          Lorsque l'automate est en RUN, une <strong>caisse</strong> tombe sur
+          le convoyeur et doit être acheminée{' '}
+          <strong>jusqu'à la palette</strong>.
+          <br />
+          <br />
+          Quel détecteur sera activé à ce moment là?
+          <br />
+          Passe ta souris sur le détecteur pour voir son nom.
+        </>
+      ),
+      targetSelector: '#unity-container',
+    },
+    {
+      text: (
+        <>
+          Pour modifier le code, <strong>clique maintenant</strong> sur le
+          contact à fermeture <strong> --||--</strong> <br />
+          et choisi le bon détecteur.
+        </>
+      ),
+      targetSelector: '#ladder-editor',
+    },
+    {
+      text: (
+        <>
+          Maintenant teste ton code en cliquant sur
+          <strong className="text-blue-600"> RUN PLC</strong>.
+        </>
+      ),
+    },
+  ];
+
+  const onHintClick = () => setShowHints(true);
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -165,16 +210,13 @@ export default function GamePage() {
               name: 'Revoir les objectifs',
               icon: 'target',
               onClick: () => {
-                console.log(
-                  '   currentLevel avant ouverture popup :',
-                  currentLevel
-                );
-                setShowMissionPopup(true);
+                setShowHints(true);
               },
             },
             {
               type: 'toggle',
               name: 'RUN PLC',
+              id: 'run-plc-toggle',
               onClick: (value: boolean) => {
                 console.log('Toggle RUN PLC changé:', value);
                 setRunPLC(value);
@@ -182,6 +224,7 @@ export default function GamePage() {
               value: runPLC,
             },
           ]}
+          onHintClick={onHintClick}
         />
 
         <div className="flex w-full gap-4">
@@ -199,12 +242,18 @@ export default function GamePage() {
           </div>
           <div className="max-w-[35vw] flex-1">
             <UnityWrapper
+              id="unity-container"
               unityProvider={unityProvider}
               isLoaded={isLoaded}
               loadingProgression={loadingProgression}
             />
           </div>
         </div>
+
+        {showHints && (
+          <HintPopup hints={hints} onClose={() => setShowHints(false)} />
+        )}
+
         <SuccessPopup
           show={showSuccess}
           message={successMessage}
@@ -213,82 +262,6 @@ export default function GamePage() {
           }}
           onClose={() => setShowSuccess(false)}
         />
-
-        {showMissionPopup && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="relative w-full max-w-2xl rounded-2xl bg-white p-6 text-center shadow-xl">
-              <h2 className="mb-4 text-2xl font-bold text-blue-600">
-                Objectif
-              </h2>
-
-              {currentLevel === 1 ? (
-                <>
-                  <p className="mb-4 text-left text-gray-700">
-                    <b>
-                      Complète le programme pour acheminer la caisse sur la
-                      palette.
-                    </b>
-                    <br />
-                    <br />
-                    <u>Conseils:</u>
-                    <br />
-                    <span className={currentVideo === 0 ? 'font-bold' : ''}>
-                      Le nom des composants s'affiche en passant la souris
-                      dessus.
-                    </span>
-                    <br />
-                    <span className={currentVideo === 1 ? 'font-bold' : ''}>
-                      Pour charger la programme dans l'automate, active "Run
-                      PLC", activer le PLC fait apparaitre une caisse
-                    </span>
-                  </p>
-
-                  <div className="mb-4">
-                    <video
-                      src={videos[currentVideo]}
-                      autoPlay
-                      muted
-                      className="mx-auto w-4/5 max-w-lg rounded-lg"
-                      onEnded={() =>
-                        setCurrentVideo((currentVideo + 1) % videos.length)
-                      }
-                    />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <p className="mb-4 text-left text-gray-700">
-                    <b>Ajoute de nouveaux blocs Ladder</b> dans le programme
-                    pour acheminer la caisse sur la palette.
-                    <br />
-                    <br />
-                    <u>Conseils:</u>
-                    <br />
-                    <span className="font-bold">
-                      Connecte les blocs entre eux pour construire la logique.
-                    </span>
-                  </p>
-
-                  <div className="mb-4">
-                    <video
-                      src="/videos/TutoVideo-3.mp4"
-                      autoPlay
-                      muted
-                      className="mx-auto w-4/5 max-w-lg rounded-lg"
-                    />
-                  </div>
-                </>
-              )}
-
-              <Button
-                className="w-full justify-center bg-green-600 text-white hover:bg-green-700"
-                onClick={() => setShowMissionPopup(false)}
-              >
-                J’ai compris
-              </Button>
-            </div>
-          </div>
-        )}
       </div>
     </main>
   );
