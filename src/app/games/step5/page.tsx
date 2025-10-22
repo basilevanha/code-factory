@@ -29,9 +29,8 @@ export default function CreateAccountPage() {
             Sauvegarde ta progression !
           </h1>
           <p className="mb-10 max-w-xl text-center text-slate-300">
-            Tu veux découvir ce que Coding Factory te réserve d'autres comme
-            Aventure? <br />
-            Crée vite ton compte !
+            Prêt à continuer ton aventure sur Coding Factory ?<br />
+            Crée ton compte et débloque la suite !
           </p>
 
           {/* Google Sign-In */}

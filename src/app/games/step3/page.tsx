@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
 const options = [
   {
@@ -26,10 +27,35 @@ const options = [
 ];
 
 export default function StudyGoalPage() {
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [selected, setSelected] = useState<number | null>(null);
   const [message, setMessage] = useState<string>('');
   const [selectedLabel, setSelectedLabel] = useState<string>('');
 
+  // Extraire le numéro de step depuis l’URL (ex: /games/step3 → 3)
+  const extractStepFromUrl = (): number => {
+    const match = pathname.match(/step(\d+)/);
+    return match && match[1] ? parseInt(match[1], 10) : 1;
+  };
+
+  const currentStep = extractStepFromUrl();
+
+  // Marquer la step comme complétée dans localStorage
+  const markStepAsCompleted = (step: number) => {
+    if (typeof window === 'undefined') return;
+
+    const stored = localStorage.getItem('completedLevels');
+    const completed: number[] = stored ? JSON.parse(stored) : [];
+
+    if (!completed.includes(step)) {
+      completed.push(step);
+      localStorage.setItem('completedLevels', JSON.stringify(completed));
+    }
+  };
+
+  // Gestion de la sélection
   const handleSelect = (value: number) => {
     setSelected(value);
     const opt = options.find((o) => o.value === value);
@@ -37,6 +63,15 @@ export default function StudyGoalPage() {
       setMessage(opt.message);
       setSelectedLabel(opt.label);
     }
+
+    // ✅ Marquer la page comme complétée
+    markStepAsCompleted(currentStep);
+  };
+
+  // Aller à la page suivante
+  const handleNext = () => {
+    const nextStep = currentStep + 1;
+    router.push(`/games/step${nextStep}`);
   };
 
   return (
@@ -60,13 +95,21 @@ export default function StudyGoalPage() {
           </div>
         </>
       ) : (
-        <div className="text-center">
+        <div className="animate-fadeIn text-center">
           <p className="mb-4 text-lg font-semibold text-slate-200">
             Ton choix : <span className="text-blue-400">{selectedLabel}</span>
           </p>
           <p className="text-xl font-medium text-blue-400 transition-all duration-500">
             🎯 {message}
           </p>
+
+          {/* Bouton "Continuer" */}
+          <button
+            onClick={handleNext}
+            className="mt-8 rounded-full bg-blue-500 px-6 py-2 text-lg font-semibold text-white shadow-md transition-all hover:scale-105 hover:bg-blue-600"
+          >
+            Continuer →
+          </button>
         </div>
       )}
     </main>

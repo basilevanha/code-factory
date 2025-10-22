@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface ProgressBarProps {
   totalSteps?: number;
@@ -13,18 +13,18 @@ export default function ProgressBar({
   onStepClick,
 }: ProgressBarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
+  const [isWiggling, setIsWiggling] = useState(false);
 
-  // Charger les niveaux réussis depuis localStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('completedLevels');
       const completed: number[] = stored ? JSON.parse(stored) : [];
       setCompletedLevels(completed);
     }
-  }, [pathname]); // Recharger quand on change de page
+  }, [pathname]);
 
-  // Extraire le numéro de step depuis l'URL
   const extractStepFromUrl = (): number => {
     const match = pathname.match(/step(\d+)/);
     if (match && match[1]) {
@@ -39,6 +39,27 @@ export default function ProgressBar({
   const currentStep = extractStepFromUrl();
   const steps = Array.from({ length: totalSteps }, (_, i) => i + 1);
 
+  const handleNextPage = () => {
+    const nextStep = currentStep + 1;
+    if (nextStep <= totalSteps) {
+      router.push(`/games/step${nextStep}`);
+    }
+  };
+
+  // 👉 Fonction pour déclencher le "wizz"
+  const triggerWiggle = () => {
+    setIsWiggling(true);
+    setTimeout(() => setIsWiggling(false), 700);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      triggerWiggle();
+    }, 10000); // toutes les 10s
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="flex w-full items-center justify-center py-2">
       <div className="flex w-full max-w-3xl items-center justify-center">
@@ -49,7 +70,6 @@ export default function ProgressBar({
 
           return (
             <React.Fragment key={step}>
-              {/* Boule cliquable */}
               <div
                 onClick={() => onStepClick && onStepClick(step)}
                 className={`relative h-3 w-3 rounded-full transition-all duration-300 ${
@@ -60,7 +80,6 @@ export default function ProgressBar({
                       : 'bg-gray-500'
                 } ${onStepClick ? 'cursor-pointer hover:scale-125' : ''}`}
               >
-                {/* Icône de validation pour les niveaux réussis */}
                 {isCompleted && !isActive && (
                   <div className="absolute inset-0 flex items-center justify-center text-[8px] text-white">
                     ✓
@@ -68,7 +87,6 @@ export default function ProgressBar({
                 )}
               </div>
 
-              {/* Trait de liaison */}
               {!isLast && (
                 <div
                   className={`mx-1 h-[2px] flex-1 transition-all duration-300 ${
@@ -79,6 +97,17 @@ export default function ProgressBar({
             </React.Fragment>
           );
         })}
+
+        {currentStep < totalSteps && (
+          <button
+            onClick={handleNextPage}
+            className={`ml-4 rounded-full bg-blue-500 px-4 py-1 text-sm font-semibold text-white shadow-md transition-all hover:bg-blue-600 ${
+              isWiggling ? 'wiggle' : ''
+            }`}
+          >
+            →
+          </button>
+        )}
       </div>
     </div>
   );
