@@ -207,7 +207,7 @@ export default function GamePage() {
           items={[
             {
               type: 'button',
-              name: 'Revoir les objectifs',
+              name: 'Objectifs',
               icon: 'target',
               onClick: () => {
                 setShowHints(true);

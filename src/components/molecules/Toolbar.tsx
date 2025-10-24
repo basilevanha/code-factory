@@ -80,7 +80,7 @@ const Toolbar = ({ items, className = '', onHintClick }: ToolbarProps) => {
       {onHintClick && (
         <div className="ml-auto">
           <Button onClick={onHintClick} icon="help-circle" tooltip="Indice">
-            {''}
+            {'Aide'}
           </Button>
         </div>
       )}

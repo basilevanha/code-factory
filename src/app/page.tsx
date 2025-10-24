@@ -6,51 +6,67 @@ import Link from 'next/link';
 export default function CodingFactoryLanding() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [salary, setSalary] = useState(38000);
-  const salaryRef = useRef(38000);
+  const salarySectionRef = useRef<HTMLDivElement | null>(null);
+  const animationStarted = useRef(false);
 
-  // Animate salary counter to a target when visible
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting && !animationStarted.current) {
+          animationStarted.current = true;
+          animateSalary();
+        }
+      },
+      { threshold: 0.4 } // au moins 40% visible
+    );
+
+    if (salarySectionRef.current) observer.observe(salarySectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  function animateSalary() {
     const target = 55000;
-    let rafId: number;
-    const start = performance.now();
+    const startValue = 38000;
     const duration = 1300;
+    const start = performance.now();
+
     function step(now: number) {
       const t = Math.min(1, (now - start) / duration);
       const eased = t * (2 - t);
-      const value = Math.round(38000 + (target - 38000) * eased);
-      salaryRef.current = value;
+      const value = Math.round(startValue + (target - startValue) * eased);
       setSalary(value);
-      if (t < 1) rafId = requestAnimationFrame(step);
+      if (t < 1) requestAnimationFrame(step);
     }
-    rafId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
+    requestAnimationFrame(step);
+  }
 
   const advantages = [
     {
+      icon: '🧠',
       title: 'Apprentissage interactif',
       desc: 'Codez, testez et visualisez en 3D — feedback immédiat sur chaque action.',
     },
     {
+      icon: '🧭',
       title: 'Progression guidée',
       desc: 'Parcours pas-à-pas : débloquez des compétences concrètes !',
     },
     {
+      icon: '🏭',
       title: 'Cas industriels réels',
       desc: 'Scénarios inspirés d’usines : convoyeurs, robots, machines de conditionnement.',
     },
     {
+      icon: '🚫',
       title: 'Sans installation',
       desc: 'Projet en WebGL — pas besoin d’installer de gros logiciel pour débuter.',
     },
     {
+      icon: '📜',
       title: 'Certification',
       desc: 'Attestez de vos compétences et valorisez votre CV auprès des recruteurs.',
     },
-    /*{
-      title: 'Communauté & support',
-      desc: 'Forum, challenges et sessions live pour progresser ensemble.',
-    },*/
   ];
 
   const faqs = [
@@ -146,10 +162,9 @@ export default function CodingFactoryLanding() {
                 Apprenez à programmer les usines de demain
               </h2>
               <p className="mt-4 max-w-xl text-slate-300">
-                Formation pratique en automatisme industriel : TIA Portal,
-                ladder, réseaux industriels et simulations 3D lowpoly.
-                Progressez avec des exercices concrets et un parcours orienté
-                terrain.
+                Formation pratique en automatisme industriel : Ladder, réseaux
+                industriels et simulations 3D lowpoly. Progressez avec des
+                exercices concrets et un parcours orienté terrain.
               </p>
 
               <div className="mt-6 flex items-center gap-4">
@@ -187,61 +202,32 @@ export default function CodingFactoryLanding() {
               </div>
             </div>
 
-            {/* Hero visual: lowpoly factory card */}
+            {/* Hero visual: vidéo démonstration */}
             <div className="relative">
               <div className="rounded-2xl border border-white/5 bg-gradient-to-br from-slate-800/70 to-slate-700/60 p-4 shadow-xl">
-                <div className="flex h-64 w-full items-center justify-center rounded-xl bg-gradient-to-b from-slate-700 to-slate-800 md:h-72">
-                  {/* Placeholder for Unity WebGL iframe or canvas */}
-                  <div className="text-center">
-                    <svg
-                      className="mx-auto mb-3 h-28 w-28 opacity-90"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
+                <div className="relative flex h-64 w-full items-center justify-center overflow-hidden rounded-xl md:h-72">
+                  {/* 🎥 Vidéo en fond */}
+                  <video
+                    className="absolute inset-0 h-full w-full object-cover opacity-70"
+                    src="/videos/Presentation.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+
+                  {/* 🪶 Contenu au-dessus de la vidéo */}
+                  <div className="absolute right-0 bottom-6 left-0 z-10 flex justify-center">
+                    <Link
+                      href="/games/step1"
+                      className="inline-block rounded-md bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition hover:bg-white/20"
                     >
-                      <rect
-                        x="2"
-                        y="7"
-                        width="20"
-                        height="11"
-                        rx="2"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                      />
-                      <path
-                        d="M7 11v-2"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M17 11v-2"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M12 5v-2"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                    <p className="text-sm text-slate-300">
-                      Scène lowpoly interactive — placez du ladder, lancez la
-                      simulation.
-                    </p>
-                    <div className="mt-3">
-                      <Link
-                        href="/games/step1"
-                        className="inline-block rounded-md bg-white/6 px-3 py-1 text-sm"
-                      >
-                        Ouvrir la démo
-                      </Link>
-                    </div>
+                      Ouvrir la démo
+                    </Link>
                   </div>
                 </div>
 
+                {/* Texte sous la vidéo */}
                 <div className="mt-4 grid grid-cols-3 gap-3 text-xs text-slate-400">
                   <div className="text-center">
                     <div className="text-sm font-semibold text-slate-100">
@@ -276,30 +262,11 @@ export default function CodingFactoryLanding() {
             {advantages.map((adv, i) => (
               <article
                 key={i}
-                className="rounded-2xl border border-white/6 bg-white/3 p-6 backdrop-blur-sm"
+                className="rounded-2xl border border-white/6 bg-white/3 p-6 backdrop-blur-sm transition hover:bg-white/5"
               >
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-slate-700 to-slate-600">
-                    <svg
-                      className="h-6 w-6 text-cyan-300"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M3 12h18"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M6 7l6 6 6-6"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-slate-700 to-slate-600 text-2xl">
+                    {adv.icon}
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold">{adv.title}</h4>
@@ -312,7 +279,10 @@ export default function CodingFactoryLanding() {
         </section>
 
         {/* Salary / métiers */}
-        <section className="mx-auto max-w-6xl px-6 py-12">
+        <section
+          ref={salarySectionRef}
+          className="mx-auto max-w-6xl px-6 py-12"
+        >
           <div className="flex flex-col items-center gap-6 rounded-2xl border border-white/6 bg-gradient-to-br from-slate-800/60 to-slate-700/40 p-6 md:flex-row">
             <div className="flex-1">
               <h3 className="text-2xl font-bold">Le métier d’automaticien</h3>
@@ -406,7 +376,7 @@ export default function CodingFactoryLanding() {
                 Tester la démo
               </Link>
               <a
-                href="#contact"
+                href="mailto:simon_solutions@outlook.com"
                 className="rounded-md border border-white/8 px-4 py-2"
               >
                 Contact
@@ -425,10 +395,18 @@ export default function CodingFactoryLanding() {
               <a href="#" className="hover:text-slate-200">
                 Mentions légales
               </a>
-              <a href="#" className="hover:text-slate-200">
+              <a
+                href="mailto:simon_solutions@outlook.com"
+                className="hover:text-slate-200"
+              >
                 Contact
               </a>
-              <a href="#" className="hover:text-slate-200">
+              <a
+                href="https://www.linkedin.com/in/simon-sinnaeve-282611153/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-slate-200"
+              >
                 LinkedIn
               </a>
             </div>
