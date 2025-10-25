@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "id": "railAlim-1",
+      "type": "railAlim",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "data": {
+        "variable": "",
+        "composantsUnity": [
+          "Q_GoPick",
+          "I_box-InPos1",
+          "Q_Conv_bottle",
+          "I_3-bottles",
+          "Q_GoPlace",
+          "I_box-InPos2",
+          "Q_Conv_box"
+        ],
+        "etatsComposants": {},
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 0
+      },
+      "draggable": true,
+      "width": 120,
+      "height": 40,
+      "positionAbsolute": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  ],
+  "edges": [],
+  "viewport": {
+    "x": 4,
+    "y": 214,
+    "zoom": 2
+  }
+}

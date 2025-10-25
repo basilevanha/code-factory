@@ -121,9 +121,12 @@ export default function CodingFactoryLanding() {
             >
               Tester la démo
             </Link>
-            <button className="rounded-md bg-white/6 px-3 py-1.5 text-sm backdrop-blur-sm backdrop-filter hover:bg-white/8">
+            <Link
+              href="/login"
+              className="rounded-md bg-white/6 px-3 py-1.5 text-sm backdrop-blur-sm backdrop-filter hover:bg-white/8"
+            >
               Se connecter
-            </button>
+            </Link>
           </div>
         </div>
       </header>
@@ -392,8 +395,13 @@ export default function CodingFactoryLanding() {
               © {new Date().getFullYear()} CodingFactory — Tous droits réservés
             </div>
             <div className="flex items-center gap-4">
-              <a href="#" className="hover:text-slate-200">
-                Mentions légales
+              <a
+                href="/reglement"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-slate-200"
+              >
+                Règlement / Mentions légales
               </a>
               <a
                 href="mailto:simon_solutions@outlook.com"

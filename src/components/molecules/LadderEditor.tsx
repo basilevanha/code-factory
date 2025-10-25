@@ -205,7 +205,6 @@ export default function LadderEditor({
   }, [pathname]);
 
   useEffect(() => {
-    // ✅ Dès que les composants Unity sont chargés et que ce n'est pas encore initialisé :
     if (!initialized && composantsUnity?.length) {
       (async () => {
         try {
@@ -219,7 +218,6 @@ export default function LadderEditor({
       })();
     }
   }, [composantsUnity, initialized, loadLadder, getFilenameFromPath]);
-
   type NodeData = {
     variable?: string;
     outValue?: number | null;
@@ -291,7 +289,7 @@ export default function LadderEditor({
             stroke: sourceNode
               ? getColorByValue(sourceNode.data.outValue)
               : '#9CA3AF',
-            strokeWidth: 3, // optionnel : rendre les edges plus visibles
+            strokeWidth: 3,
           },
         };
       })

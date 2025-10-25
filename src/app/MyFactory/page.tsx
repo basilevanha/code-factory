@@ -21,10 +21,10 @@ export default function Home() {
             icon="▶️"
           />
           <GameCard
-            title="Niveau 2"
-            description="En construction..."
-            disabled
-            icon="🛠️"
+            title="Packaging de bouteilles"
+            description="Achemine 6 bouteilles par bac"
+            href="MyFactory/Packaging"
+            icon="🍼"
           />
           <GameCard
             title="Les bases du LADDER"

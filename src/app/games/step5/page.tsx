@@ -1,96 +1,57 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'next/navigation';
+import { User } from '@supabase/supabase-js'; // ✅ Import du type officiel
+import AuthForm from '@/components/safety/AuthForm';
 
 export default function CreateAccountPage() {
-  const [accountCreated, setAccountCreated] = useState(false);
-  const [method, setMethod] = useState<string>('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [user, setUser] = useState<User | null>(null); // ✅ Typage correct
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  const handleGoogleSignup = () => {
-    // Ici tu brancheras la logique Google OAuth
-    setMethod('Google');
-    setAccountCreated(true);
-  };
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getSession();
+      const currentUser = data?.session?.user ?? null;
+      setUser(currentUser);
+      setLoading(false);
 
-  const handleEmailSignup = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Ici tu brancheras la logique création de compte avec email/password
-    setMethod('Email');
-    setAccountCreated(true);
-  };
+      // 🔁 Si déjà connecté, redirige vers MyFactory
+      if (currentUser) {
+        router.replace('/MyFactory');
+      }
+    };
 
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 px-6 py-12 text-slate-100 antialiased">
-      {!accountCreated ? (
-        <>
-          <h1 className="mb-6 text-center text-3xl font-bold">
-            Sauvegarde ta progression !
-          </h1>
-          <p className="mb-10 max-w-xl text-center text-slate-300">
-            Prêt à continuer ton aventure sur Coding Factory ?<br />
-            Crée ton compte et débloque la suite !
-          </p>
+    checkUser();
 
-          {/* Google Sign-In */}
-          <button
-            onClick={handleGoogleSignup}
-            className="mb-6 w-full max-w-md rounded-xl bg-blue-400 px-6 py-4 text-lg font-semibold text-slate-900 shadow-lg transition-transform hover:scale-105"
-          >
-            Se connecter avec Google
-          </button>
+    // 🔁 Écoute les changements de session (connexion / déconnexion)
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        const currentUser = session?.user ?? null;
+        setUser(currentUser);
+        if (currentUser) router.replace('/MyFactory');
+      }
+    );
 
-          <div className="mb-6 flex w-full max-w-md items-center">
-            <hr className="flex-1 border-slate-600" />
-            <span className="mx-4 text-slate-400">ou</span>
-            <hr className="flex-1 border-slate-600" />
-          </div>
+    return () => listener.subscription.unsubscribe();
+  }, [router]);
 
-          {/* Formulaire email/password */}
-          <form
-            onSubmit={handleEmailSignup}
-            className="flex w-full max-w-md flex-col gap-4"
-            autoComplete="on"
-          >
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl bg-slate-800 px-4 py-3 text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              required
-              autoComplete="email"
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Mot de passe"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl bg-slate-800 px-4 py-3 text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              required
-              autoComplete="new-password"
-            />
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-blue-700 px-6 py-4 text-lg font-semibold text-slate-100 shadow-lg transition-transform hover:scale-105"
-            >
-              Créer un compte
-            </button>
-          </form>
-        </>
-      ) : (
-        <div className="text-center">
-          <p className="mb-4 text-lg font-semibold text-slate-200">
-            Tu as choisi : <span className="text-blue-400">{method}</span>
-          </p>
-          <p className="text-xl font-medium text-blue-400 transition-all duration-500">
-            🎉 Félicitations ! Ton compte a été créé avec succès.
-          </p>
-        </div>
-      )}
-    </main>
-  );
+  if (loading)
+    return (
+      <main className="flex h-screen items-center justify-center text-slate-300">
+        Vérification de la session...
+      </main>
+    );
+
+  if (!user) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 px-6 py-12 text-slate-100 antialiased">
+        <AuthForm defaultMode="signup" />
+      </main>
+    );
+  }
+
+  return null; // redirection automatique
 }
