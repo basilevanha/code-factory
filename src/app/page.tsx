@@ -157,59 +157,71 @@ export default function CodingFactoryLanding() {
         {/* Hero */}
         <section className="relative z-10 mx-auto max-w-6xl px-6 pt-24 pb-12">
           <div className="grid items-center gap-8 md:grid-cols-2">
+            {/* Texte à gauche */}
             <div>
               <p className="mb-3 text-sm font-medium text-cyan-400 uppercase">
-                Nouveau · WebGL
+                Nouveau · Formation interactive
               </p>
+
               <h2 className="text-4xl leading-tight font-extrabold md:text-5xl">
-                Apprenez à programmer les usines de demain
+                Programme ton premier automate en moins de 10&nbsp;minutes
               </h2>
+
               <p className="mt-4 max-w-xl text-slate-300">
-                Formation pratique en automatisme industriel : Ladder, réseaux
-                industriels et simulations 3D lowpoly. Progressez avec des
-                exercices concrets et un parcours orienté terrain.
+                Plonge dans <strong>Coding Factory</strong> — un monde 3D
+                interactif où tu apprends à
+                <strong> programmer des usines </strong> par la pratique et le
+                jeu. Aucun logiciel à installer, aucun prérequis :
+                <strong>
+                  {' '}
+                  progresse pas à pas jusqu’à ton premier projet fonctionnel.
+                </strong>
               </p>
 
               <div className="mt-6 flex items-center gap-4">
                 <Link
                   href="/games/step1"
-                  className="inline-flex items-center gap-3 rounded-lg bg-cyan-500 px-5 py-3 font-semibold text-slate-900 shadow-lg transition-transform hover:scale-[1.02]"
+                  className="inline-flex items-center gap-3 rounded-lg bg-cyan-500 px-5 py-3 font-semibold text-slate-900 shadow-lg transition-transform hover:scale-[1.03]"
                 >
-                  Tester la démo gratuitement
+                  🎮 Tester la démo
                 </Link>
                 <a
                   href="#avantages"
-                  className="text-sm text-slate-300 underline"
+                  className="text-sm text-slate-300 underline hover:text-cyan-400"
                 >
-                  Découvrir les avantages
+                  Voir pourquoi ça marche
                 </a>
               </div>
 
+              <p className="mt-4 text-xs text-slate-400">
+                Inspiré de l'industrie · 100% interactif
+              </p>
+
+              {/* Preuves et bénéfices rapides */}
               <div className="mt-8 grid grid-cols-2 gap-2 text-xs text-slate-400">
                 <div className="flex items-center gap-2">
-                  <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />{' '}
-                  Exercices inspiré du terrain
+                  <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
+                  Résultats visibles dès le début
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-block h-2 w-2 rounded-full bg-cyan-400" />{' '}
-                  Explore les différentes facettes du métier
+                  <span className="inline-block h-2 w-2 rounded-full bg-cyan-400" />
+                  Environnement 3D interactif
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-block h-2 w-2 rounded-full bg-amber-400" />{' '}
-                  Accès illimité
+                  <span className="inline-block h-2 w-2 rounded-full bg-amber-400" />
+                  Aucun logiciel à installer
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="inline-block h-2 w-2 rounded-full bg-purple-400" />{' '}
-                  Certificat officiel
+                  <span className="inline-block h-2 w-2 rounded-full bg-purple-400" />
+                  Certification disponible
                 </div>
               </div>
             </div>
 
-            {/* Hero visual: vidéo démonstration */}
+            {/* Vidéo démo */}
             <div className="relative">
               <div className="rounded-2xl border border-white/5 bg-gradient-to-br from-slate-800/70 to-slate-700/60 p-4 shadow-xl">
                 <div className="relative flex h-64 w-full items-center justify-center overflow-hidden rounded-xl md:h-72">
-                  {/* 🎥 Vidéo en fond */}
                   <video
                     className="absolute inset-0 h-full w-full object-cover opacity-70"
                     src="/videos/Presentation.mp4"
@@ -218,8 +230,6 @@ export default function CodingFactoryLanding() {
                     loop
                     playsInline
                   />
-
-                  {/* 🪶 Contenu au-dessus de la vidéo */}
                   <div className="absolute right-0 bottom-6 left-0 z-10 flex justify-center">
                     <Link
                       href="/games/step1"
@@ -230,25 +240,25 @@ export default function CodingFactoryLanding() {
                   </div>
                 </div>
 
-                {/* Texte sous la vidéo */}
+                {/* Lignes techniques */}
                 <div className="mt-4 grid grid-cols-3 gap-3 text-xs text-slate-400">
                   <div className="text-center">
                     <div className="text-sm font-semibold text-slate-100">
                       Ladder
                     </div>
-                    <div className="mt-1">Exécution temps réel</div>
+                    <div className="mt-1">Logique temps réel</div>
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-semibold text-slate-100">
                       3D
                     </div>
-                    <div className="mt-1">Visualisation lowpoly</div>
+                    <div className="mt-1">Simulation lowpoly</div>
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-semibold text-slate-100">
-                      Cloud
+                      Web
                     </div>
-                    <div className="mt-1">Aucun install</div>
+                    <div className="mt-1">Aucune installation</div>
                   </div>
                 </div>
               </div>
