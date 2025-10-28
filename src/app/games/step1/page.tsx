@@ -196,7 +196,7 @@ export default function GamePage() {
     {
       text: (
         <>
-          <strong>Clique</strong> maintenant sur
+          <strong>Clique maintenant </strong>sur
           <strong className="text-blue-600"> RUN PLC</strong> pour :
           <br />• Charger le code dans l'automate
           <br />• Démarrer la simulation

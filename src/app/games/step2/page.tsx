@@ -164,6 +164,9 @@ export default function GamePage() {
     {
       text: (
         <>
+          <strong className="text-lg">Comprehension:</strong>
+          <br />
+          <br />
           Lorsque l'automate est en RUN, une <strong>caisse</strong> tombe sur
           le convoyeur et doit être acheminée{' '}
           <strong>jusqu'à la palette</strong>.
@@ -179,6 +182,9 @@ export default function GamePage() {
     {
       text: (
         <>
+          <strong className="text-lg">Correction:</strong>
+          <br />
+          <br />
           Pour modifier le code, <strong>clique maintenant</strong> sur le
           contact à fermeture <strong> --||--</strong> <br />
           et choisi le bon détecteur.
@@ -189,6 +195,9 @@ export default function GamePage() {
     {
       text: (
         <>
+          <strong className="text-lg">Tests:</strong>
+          <br />
+          <br />
           Maintenant teste ton code en cliquant sur
           <strong className="text-blue-600"> RUN PLC</strong>.
         </>
