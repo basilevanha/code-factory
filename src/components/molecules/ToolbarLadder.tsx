@@ -48,6 +48,12 @@ export default function ToolbarLadder({
         >
           Toff
         </Button>
+        <Button
+          tooltip="Bloc Temporistion à l'ouverture"
+          onClick={() => onAddNode('CTU')}
+        >
+          CTU
+        </Button>
         {onSave && (
           <Button tooltip="Sauvegarder le programme" onClick={onSave}>
             💾

@@ -30,6 +30,7 @@ import BobineNode from '../NodeLadder/BobineNode';
 import SRnode from '../NodeLadder/SRnode';
 import TonNode from '../NodeLadder/TonNode';
 import ToffNode from '../NodeLadder/ToffNode';
+import CTUNode from '../NodeLadder/CTUNode';
 //*************************************************************************** */
 import ToolbarLadder from './ToolbarLadder';
 import { ladderize } from './LadderLayout';
@@ -58,6 +59,7 @@ const nodeTypes = {
   SR: SRnode,
   Ton: TonNode,
   Toff: ToffNode,
+  CTU: CTUNode,
 };
 
 export default function LadderEditor({
@@ -328,6 +330,7 @@ export default function LadderEditor({
           if ('outValue' in data) data.outValue = 0;
           if ('qValue' in data) data.qValue = 0;
           if ('etValue' in data) data.etValue = 0;
+          if ('cvValue' in data) data.cvValue = 0;
           if ('memoire' in data) data.memoire = 0;
 
           return { ...node, data };

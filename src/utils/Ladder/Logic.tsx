@@ -86,9 +86,9 @@ export const resolveLadder = (
         targetNode.data.inValue = targetNode.data.inValue || outVal ? 1 : 0;
       }
 
-      console.log(
+      /*console.log(
         `   [PROPAG] ${currentNode.id} (out=${outVal}) → ${targetNode.id}.${handleId} (avant=${prevVal}, après=${outVal})`
-      );
+      );*/
 
       if (!alreadyQueued.has(targetNode.id)) {
         queue.push(targetNode.id);

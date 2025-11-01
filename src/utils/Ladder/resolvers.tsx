@@ -181,6 +181,41 @@ export const resolveContactNF = (
   */
 };
 
+export const resolveCTU = (
+  node: Node,
+  _nodeMap: Map<string, Node>,
+  _edges: Edge[],
+  _deltaTime: number
+): void => {
+  const inVal = node.data.inValue || 0;
+  const rVal = node.data.rValue || 0;
+  const spVal = node.data.spValue || 0;
+
+  // Initialisation si nécessaire
+  if (node.data.cvValue === undefined) node.data.cvValue = 0;
+  if (node.data.prevIn === undefined) node.data.prevIn = 0;
+
+  // Si reset actif → tout remettre à zéro
+  if (rVal === 1) {
+    node.data.cvValue = 0;
+    node.data.qValue = 0;
+  } else {
+    // Détection du front montant sur IN
+    if (inVal === 1 && node.data.prevIn === 0) {
+      node.data.cvValue += 1;
+    }
+
+    // Q actif si le compteur atteint ou dépasse SP
+    node.data.qValue = node.data.cvValue >= spVal ? 1 : 0;
+  }
+
+  // Mémorise l’état précédent de IN
+  node.data.prevIn = inVal;
+
+  // Sortie principale = Q
+  node.data.outValue = node.data.qValue;
+};
+
 export const blockResolvers: Record<string, Resolver> = {
   contactNO: resolveContactNO,
   contactNF: resolveContactNF,
@@ -189,5 +224,6 @@ export const blockResolvers: Record<string, Resolver> = {
   SR: resolveSR,
   Ton: resolveTON,
   Toff: resolveTOff,
+  CTU: resolveCTU,
   // Ajoute les autres types ici
 };
