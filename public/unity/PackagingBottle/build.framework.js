@@ -1283,10 +1283,10 @@ function dbg(text) {
 // === Body ===
 
 var ASM_CONSTS = {
-  4281424: () => { Module['emscripten_get_now_backup'] = performance.now; },  
- 4281479: ($0) => { performance.now = function() { return $0; }; },  
- 4281527: ($0) => { performance.now = function() { return $0; }; },  
- 4281575: () => { performance.now = Module['emscripten_get_now_backup']; }
+  4281328: () => { Module['emscripten_get_now_backup'] = performance.now; },  
+ 4281383: ($0) => { performance.now = function() { return $0; }; },  
+ 4281431: ($0) => { performance.now = function() { return $0; }; },  
+ 4281479: () => { performance.now = Module['emscripten_get_now_backup']; }
 };
 
 
@@ -1642,6 +1642,75 @@ var ASM_CONSTS = {
         warnOnce.shown[text] = 1;
         err(text);
       }
+    }
+
+  function _DisableUnityKeyboardCapture() {
+      console.log("🎮 Disabling Unity keyboard capture...");
+  
+      // Fonction pour désactiver la capture sur le canvas
+      var disableCanvas = function () {
+        var canvas = document.querySelector("canvas");
+        if (canvas) {
+          // Retire le tabindex pour que Unity ne capture pas le focus
+          canvas.tabIndex = -1;
+          canvas.removeAttribute("tabindex");
+          canvas.style.outline = "none";
+  
+          console.log("✅ Canvas tabIndex set to -1");
+          return true;
+        }
+        return false;
+      };
+  
+      // Essaye immédiatement
+      if (!disableCanvas()) {
+        // Si le canvas n'existe pas encore, attends
+        var attempts = 0;
+        var checkInterval = setInterval(function () {
+          attempts++;
+          if (disableCanvas() || attempts > 50) {
+            clearInterval(checkInterval);
+            if (attempts > 50) {
+              console.warn("⚠️ Could not find Unity canvas after 5 seconds");
+            }
+          }
+        }, 100);
+      }
+  
+      // Intercepte les événements clavier AVANT qu'ils n'atteignent Unity
+      ["keydown", "keyup", "keypress", "input"].forEach(function (eventType) {
+        document.addEventListener(
+          eventType,
+          function (e) {
+            var target = e.target;
+  
+            // Si on est dans un élément interactif, bloque Unity
+            if (
+              target.tagName === "INPUT" ||
+              target.tagName === "TEXTAREA" ||
+              target.tagName === "SELECT" ||
+              target.hasAttribute("contenteditable") ||
+              target.closest('[contenteditable="true"]')
+            ) {
+              // Empêche Unity de recevoir l'événement
+              e.stopImmediatePropagation();
+  
+              // Log pour debug (retire en prod si besoin)
+              if (eventType === "keydown") {
+                console.log(
+                  "🛡️ Blocked keyboard event for:",
+                  target.tagName,
+                  "Key:",
+                  e.key
+                );
+              }
+            }
+          },
+          true
+        ); // true = capture phase (avant Unity)
+      });
+  
+      console.log("✅ Keyboard interception active");
     }
 
   function _GetJSLoadTimeInfo(loadTimePtr) {
@@ -16462,6 +16531,7 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
 var wasmImports = {
+  "DisableUnityKeyboardCapture": _DisableUnityKeyboardCapture,
   "GetJSLoadTimeInfo": _GetJSLoadTimeInfo,
   "GetJSMemoryInfo": _GetJSMemoryInfo,
   "JS_Accelerometer_IsRunning": _JS_Accelerometer_IsRunning,
@@ -17298,8 +17368,6 @@ var dynCall_vjiiiii = Module["dynCall_vjiiiii"] = createExportWrapper("dynCall_v
 /** @type {function(...*):?} */
 var dynCall_jijii = Module["dynCall_jijii"] = createExportWrapper("dynCall_jijii");
 /** @type {function(...*):?} */
-var dynCall_iiffi = Module["dynCall_iiffi"] = createExportWrapper("dynCall_iiffi");
-/** @type {function(...*):?} */
 var dynCall_iiiji = Module["dynCall_iiiji"] = createExportWrapper("dynCall_iiiji");
 /** @type {function(...*):?} */
 var dynCall_viiiiiiiiiiiiii = Module["dynCall_viiiiiiiiiiiiii"] = createExportWrapper("dynCall_viiiiiiiiiiiiii");
@@ -17339,6 +17407,8 @@ var dynCall_iiiifiiii = Module["dynCall_iiiifiiii"] = createExportWrapper("dynCa
 var dynCall_iiiifiii = Module["dynCall_iiiifiii"] = createExportWrapper("dynCall_iiiifiii");
 /** @type {function(...*):?} */
 var dynCall_viffffi = Module["dynCall_viffffi"] = createExportWrapper("dynCall_viffffi");
+/** @type {function(...*):?} */
+var dynCall_iiffi = Module["dynCall_iiffi"] = createExportWrapper("dynCall_iiffi");
 /** @type {function(...*):?} */
 var dynCall_iffffi = Module["dynCall_iffffi"] = createExportWrapper("dynCall_iffffi");
 /** @type {function(...*):?} */

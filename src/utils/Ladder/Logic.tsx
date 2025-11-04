@@ -79,7 +79,9 @@ export const resolveLadder = (
 
       if (!targetNode.data.inputs) targetNode.data.inputs = {};
       const prevVal = targetNode.data.inputs[handleId] ?? 0;
-      targetNode.data.inputs[handleId] = outVal;
+
+      // ✅ Fusion logique : au moins un OUT à 1 => IN = 1
+      targetNode.data.inputs[handleId] = Math.max(prevVal, outVal);
 
       // Compatibilité avec anciens blocs
       if (handleId === 'in') {

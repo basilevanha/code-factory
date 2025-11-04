@@ -48,6 +48,9 @@ export default function CreateAccountPage() {
   if (!user) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 px-6 py-12 text-slate-100 antialiased">
+        <h1 className="mb-6 text-center text-3xl font-bold">
+          Sauvegarde ta progression !
+        </h1>
         <AuthForm defaultMode="signup" />
       </main>
     );

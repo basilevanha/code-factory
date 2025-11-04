@@ -10,13 +10,12 @@
       "data": {
         "variable": "",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
         "etatsComposants": {},
         "inValue": 0,
@@ -46,15 +45,21 @@
       "data": {
         "variable": "I_3-bottles",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
@@ -81,15 +86,21 @@
       "data": {
         "variable": "",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "spValue": 200,
@@ -120,15 +131,21 @@
       "data": {
         "variable": "Q_Conv_bottle",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
@@ -156,15 +173,21 @@
       "data": {
         "variable": "I_3-bottles",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
@@ -192,15 +215,21 @@
       "data": {
         "variable": "",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "spValue": 500,
@@ -231,19 +260,25 @@
       "data": {
         "variable": "",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 2,
         "inputs": {
-          "reset": 1,
+          "reset": 0,
           "set": 0
         },
         "outValue": 0
@@ -267,15 +302,21 @@
       "data": {
         "variable": "Q_GoPick",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
@@ -293,78 +334,6 @@
       }
     },
     {
-      "id": "contactNF-11",
-      "type": "contactNF",
-      "position": {
-        "x": 200,
-        "y": 700
-      },
-      "data": {
-        "variable": "I_box-InPos1",
-        "composantsUnity": [
-          "I_box-InPos1",
-          "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
-        ],
-        "etatsComposants": {},
-        "inValue": 0,
-        "rungHeight": 1,
-        "inputs": {
-          "in": 1
-        },
-        "outValue": 0
-      },
-      "draggable": false,
-      "width": 120,
-      "height": 40,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 200,
-        "y": 700
-      },
-      "dragging": false
-    },
-    {
-      "id": "bobine-12",
-      "type": "bobine",
-      "position": {
-        "x": 800,
-        "y": 700
-      },
-      "data": {
-        "variable": "Q_Conv_box",
-        "composantsUnity": [
-          "I_box-InPos1",
-          "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
-        ],
-        "etatsComposants": {},
-        "inValue": 0,
-        "rungHeight": 1,
-        "inputs": {
-          "in": 0
-        },
-        "outValue": 0
-      },
-      "draggable": false,
-      "width": 120,
-      "height": 40,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 800,
-        "y": 700
-      },
-      "dragging": false
-    },
-    {
       "id": "contactNO-14",
       "type": "contactNO",
       "position": {
@@ -374,15 +343,21 @@
       "data": {
         "variable": "Q_GoPlace",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
@@ -410,15 +385,21 @@
       "data": {
         "variable": "I_box-InPos1",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
@@ -437,37 +418,84 @@
       "dragging": false
     },
     {
-      "id": "contactNF-14",
-      "type": "contactNF",
+      "id": "contactNO-18",
+      "type": "contactNO",
       "position": {
         "x": 400,
         "y": 500
       },
       "data": {
-        "variable": "Q_Conv_box",
+        "variable": "Q_GoPick",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
-          "in": 0
+          "in": 1
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "positionAbsolute": {
+        "x": 400,
+        "y": 500
+      },
+      "width": 120,
+      "height": 40,
+      "selected": false
+    },
+    {
+      "id": "SR-18",
+      "type": "SR",
+      "position": {
+        "x": 600,
+        "y": 500
+      },
+      "data": {
+        "variable": "",
+        "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
+          "I_box-InPos1",
+          "Q_Conv_box",
+          "Q_Conv_bottle"
+        ],
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
+        "inValue": 0,
+        "rungHeight": 2,
+        "inputs": {
+          "reset": 0,
+          "set": 0
         },
         "outValue": 0
       },
       "draggable": false,
       "width": 120,
-      "height": 40,
-      "selected": false,
+      "height": 160,
       "positionAbsolute": {
-        "x": 400,
+        "x": 600,
         "y": 500
       }
     },
@@ -481,19 +509,25 @@
       "data": {
         "variable": "Q_GoPlace",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
-          "in": 1
+          "in": 0
         },
         "outValue": 0
       },
@@ -508,24 +542,241 @@
       }
     },
     {
-      "id": "contactNO-15",
+      "id": "contactNO-16",
+      "type": "contactNO",
+      "position": {
+        "x": 200,
+        "y": 700
+      },
+      "data": {
+        "variable": "Q_GoPlace",
+        "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
+          "I_box-InPos1",
+          "Q_Conv_box",
+          "Q_Conv_bottle"
+        ],
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "positionAbsolute": {
+        "x": 200,
+        "y": 700
+      },
+      "width": 120,
+      "height": 40,
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "SR-14",
+      "type": "SR",
+      "position": {
+        "x": 600,
+        "y": 700
+      },
+      "data": {
+        "variable": "",
+        "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
+          "I_box-InPos1",
+          "Q_Conv_box",
+          "Q_Conv_bottle"
+        ],
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
+        "inValue": 0,
+        "rungHeight": 2,
+        "inputs": {
+          "set": 0,
+          "reset": 1
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 160,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 600,
+        "y": 700
+      },
+      "dragging": false
+    },
+    {
+      "id": "bobine-12",
+      "type": "bobine",
+      "position": {
+        "x": 800,
+        "y": 700
+      },
+      "data": {
+        "variable": "Q_Conv_box",
+        "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
+          "I_box-InPos1",
+          "Q_Conv_box",
+          "Q_Conv_bottle"
+        ],
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 0
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 40,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 800,
+        "y": 700
+      },
+      "dragging": false
+    },
+    {
+      "id": "contactNO-17",
+      "type": "contactNO",
+      "position": {
+        "x": 200,
+        "y": 1000
+      },
+      "data": {
+        "variable": "I_box-InPos1",
+        "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
+          "I_box-InPos1",
+          "Q_Conv_box",
+          "Q_Conv_bottle"
+        ],
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "positionAbsolute": {
+        "x": 200,
+        "y": 1000
+      },
+      "width": 120,
+      "height": 40,
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "contactNF-17",
+      "type": "contactNF",
+      "position": {
+        "x": 200,
+        "y": 800
+      },
+      "data": {
+        "variable": "I_box-InPos1",
+        "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
+          "I_box-InPos1",
+          "Q_Conv_box",
+          "Q_Conv_bottle"
+        ],
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
+        "inValue": 0,
+        "rungHeight": 1,
+        "inputs": {
+          "in": 1
+        },
+        "outValue": 0
+      },
+      "draggable": false,
+      "width": 120,
+      "height": 40,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 200,
+        "y": 800
+      },
+      "dragging": false
+    },
+    {
+      "id": "contactNO-19",
       "type": "contactNO",
       "position": {
         "x": 200,
         "y": 600
       },
       "data": {
-        "variable": "I_box-InPos2",
+        "variable": "Q_GoPlace",
         "composantsUnity": [
+          "Q_GoPlace",
+          "I_3-bottles",
+          "Q_GoPick",
           "I_box-InPos1",
           "Q_Conv_box",
-          "Q_GoPick",
-          "Q_Conv_bottle",
-          "Q_GoPlace",
-          "I_box-InPos2",
-          "I_3-bottles"
+          "Q_Conv_bottle"
         ],
-        "etatsComposants": {},
+        "etatsComposants": {
+          "Q_GoPlace": 0,
+          "I_3-bottles": 0,
+          "Q_GoPick": 0,
+          "I_box-InPos1": 1,
+          "Q_Conv_box": 0,
+          "Q_Conv_bottle": 1
+        },
         "inValue": 0,
         "rungHeight": 1,
         "inputs": {
@@ -599,18 +850,6 @@
         "stroke": "#9CA3AF",
         "strokeWidth": 3
       },
-      "source": "railAlim-3",
-      "sourceHandle": "out",
-      "target": "contactNF-11",
-      "targetHandle": "in",
-      "id": "reactflow__edge-railAlim-3out-contactNF-11in"
-    },
-    {
-      "type": "smoothstep",
-      "style": {
-        "stroke": "#9CA3AF",
-        "strokeWidth": 3
-      },
       "id": "edge-Ton-6-SR-12",
       "source": "Ton-6",
       "sourceHandle": "out",
@@ -671,42 +910,6 @@
         "stroke": "#9CA3AF",
         "strokeWidth": 3
       },
-      "id": "edge-contactNO-9-contactNF-14",
-      "source": "contactNO-9",
-      "sourceHandle": "out",
-      "target": "contactNF-14",
-      "targetHandle": "in"
-    },
-    {
-      "type": "smoothstep",
-      "style": {
-        "stroke": "#9CA3AF",
-        "strokeWidth": 3
-      },
-      "source": "contactNO-15",
-      "sourceHandle": "out",
-      "target": "contactNF-14",
-      "targetHandle": "in",
-      "id": "reactflow__edge-contactNO-15out-contactNF-14in"
-    },
-    {
-      "type": "smoothstep",
-      "style": {
-        "stroke": "#9CA3AF",
-        "strokeWidth": 3
-      },
-      "source": "railAlim-3",
-      "sourceHandle": "out",
-      "target": "contactNO-15",
-      "targetHandle": "in",
-      "id": "reactflow__edge-railAlim-3out-contactNO-15in"
-    },
-    {
-      "type": "smoothstep",
-      "style": {
-        "stroke": "#9CA3AF",
-        "strokeWidth": 2
-      },
       "source": "Toff-4",
       "sourceHandle": "q",
       "target": "bobine-3",
@@ -717,30 +920,153 @@
       "type": "smoothstep",
       "style": {
         "stroke": "#9CA3AF",
-        "strokeWidth": 2
+        "strokeWidth": 3
       },
-      "source": "contactNF-14",
+      "source": "SR-14",
       "sourceHandle": "out",
-      "target": "bobine-10",
+      "target": "bobine-12",
       "targetHandle": "in",
-      "id": "reactflow__edge-contactNF-14out-bobine-10in"
+      "id": "reactflow__edge-SR-14out-bobine-12in",
+      "selected": false
     },
     {
       "type": "smoothstep",
       "style": {
         "stroke": "#9CA3AF",
-        "strokeWidth": 2
+        "strokeWidth": 3
       },
-      "source": "contactNF-11",
+      "source": "railAlim-3",
       "sourceHandle": "out",
-      "target": "bobine-12",
+      "target": "contactNO-16",
       "targetHandle": "in",
-      "id": "reactflow__edge-contactNF-11out-bobine-12in"
+      "id": "reactflow__edge-railAlim-3out-contactNO-16in",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "railAlim-3",
+      "sourceHandle": "out",
+      "target": "contactNO-17",
+      "targetHandle": "in",
+      "id": "reactflow__edge-railAlim-3out-contactNO-17in",
+      "selected": false
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "contactNO-17",
+      "sourceHandle": "out",
+      "target": "SR-14",
+      "targetHandle": "reset",
+      "id": "reactflow__edge-contactNO-17out-SR-14reset"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "railAlim-3",
+      "sourceHandle": "out",
+      "target": "contactNF-17",
+      "targetHandle": "in",
+      "id": "reactflow__edge-railAlim-3out-contactNF-17in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "SR-18",
+      "sourceHandle": "out",
+      "target": "bobine-10",
+      "targetHandle": "in",
+      "id": "reactflow__edge-SR-18out-bobine-10in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "id": "edge-contactNO-9-contactNO-18",
+      "source": "contactNO-9",
+      "sourceHandle": "out",
+      "target": "contactNO-18",
+      "targetHandle": "in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "contactNO-19",
+      "sourceHandle": "out",
+      "target": "SR-18",
+      "targetHandle": "reset",
+      "id": "reactflow__edge-contactNO-19out-SR-18reset"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "contactNO-18",
+      "sourceHandle": "out",
+      "target": "SR-18",
+      "targetHandle": "set",
+      "id": "reactflow__edge-contactNO-18out-SR-18set"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "railAlim-3",
+      "sourceHandle": "out",
+      "target": "contactNO-19",
+      "targetHandle": "in",
+      "id": "reactflow__edge-railAlim-3out-contactNO-19in"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "contactNF-17",
+      "sourceHandle": "out",
+      "target": "SR-14",
+      "targetHandle": "set",
+      "id": "reactflow__edge-contactNF-17out-SR-14set"
+    },
+    {
+      "type": "smoothstep",
+      "style": {
+        "stroke": "#9CA3AF",
+        "strokeWidth": 3
+      },
+      "source": "contactNO-16",
+      "sourceHandle": "out",
+      "target": "SR-14",
+      "targetHandle": "set",
+      "id": "reactflow__edge-contactNO-16out-SR-14set"
     }
   ],
   "viewport": {
-    "x": 165.9864864864865,
-    "y": 22.00000000000003,
-    "zoom": 0.5945945945945945
+    "x": 111.2837837837838,
+    "y": -390.0089951654129,
+    "zoom": 0.7135135135135134
   }
 }
