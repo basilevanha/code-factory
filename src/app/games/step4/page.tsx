@@ -14,6 +14,7 @@ import UnityWrapper from '@/components/molecules/UnityWrapper';
 import LadderEditor from '@/components/molecules/LadderEditor';
 import SuccessPopup from '@/components/molecules/SuccesPopup';
 import HintPopup from '@/components/molecules/HintPopup';
+import ToolbarLadder from '@/components/molecules/ToolbarLadder';
 
 declare global {
   interface Window {
@@ -33,6 +34,15 @@ export default function GamePage() {
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
     useUnityContext(unityPaths);
   const [runPLC, setRunPLC] = useState(false);
+
+  const addNodeRef = useRef<((type: string) => void) | null>(null);
+  const saveLadderRef = useRef<((filename: string) => Promise<void>) | null>(
+    null
+  );
+  const loadLadderRef = useRef<((filename: string) => Promise<void>) | null>(
+    null
+  );
+
   const handleSpawn = () => {
     if (!isLoaded) return;
     sendMessage('Pipe', 'TriggerSpawn', '');
@@ -201,7 +211,12 @@ export default function GamePage() {
   ];
 
   const onHintClick = () => setShowHints(true);
-
+  const visibleButtons = [
+    'contactNO',
+    'bobine',
+    'railAlim',
+    // Pas de SR, Ton, Toff, CTU pour ce niveau débutant
+  ];
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
@@ -234,6 +249,14 @@ export default function GamePage() {
         <div className="flex w-full gap-4">
           {/* Colonne gauche : Toolbar + LadderEditor */}
           <div className="flex flex-1 flex-col gap-4">
+            <ToolbarLadder
+              onAddNode={(type) => {
+                if (addNodeRef.current) {
+                  addNodeRef.current(type);
+                }
+              }}
+              visibleButtons={visibleButtons}
+            />
             <div className="flex-1">
               <LadderEditor
                 composantsUnity={composantsUnity}
@@ -241,6 +264,15 @@ export default function GamePage() {
                 sendMessage={sendMessage}
                 runPLC={runPLC}
                 setRunPLC={setRunPLC}
+                onAddNodeExposed={(fn) => {
+                  addNodeRef.current = fn;
+                }}
+                onSaveExposed={(fn) => {
+                  saveLadderRef.current = fn;
+                }}
+                onLoadExposed={(fn) => {
+                  loadLadderRef.current = fn;
+                }}
               />
             </div>
           </div>

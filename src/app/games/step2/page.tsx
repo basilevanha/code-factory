@@ -33,6 +33,7 @@ export default function GamePage() {
   const { unityProvider, isLoaded, loadingProgression, sendMessage } =
     useUnityContext(unityPaths);
   const [runPLC, setRunPLC] = useState(false);
+
   const handleSpawn = () => {
     if (!isLoaded) return;
     sendMessage('Pipe', 'TriggerSpawn', '');

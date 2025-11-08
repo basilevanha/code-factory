@@ -22,7 +22,6 @@ import { resolveLadder } from '../../utils/Ladder/Logic';
 import { applyOutputs } from '../../utils/Ladder/ApplyOutputs';
 import { getColorByValue } from '../../utils/getColorByValue';
 
-//simplifiable?????????******************************************************************
 import ContactNONode from '../NodeLadder/ContactNOnode';
 import ContactNFNode from '../NodeLadder/ContactNFnode';
 import RailAlimNode from '../NodeLadder/RailAlimNode';
@@ -31,8 +30,7 @@ import SRnode from '../NodeLadder/SRnode';
 import TonNode from '../NodeLadder/TonNode';
 import ToffNode from '../NodeLadder/ToffNode';
 import CTUNode from '../NodeLadder/CTUNode';
-//*************************************************************************** */
-import ToolbarLadder from './ToolbarLadder';
+
 import { ladderize } from './LadderLayout';
 import { addNodeWithAutoConnection } from './AutoConnection';
 import { useUndoRedo } from './UndoRedo';
@@ -49,6 +47,11 @@ type LadderEditorProps = {
   ) => void;
   runPLC: boolean;
   setRunPLC: (value: boolean) => void;
+  // ✅ Nouvelle prop pour exposer la fonction addNode
+  onAddNodeExposed?: (addNodeFn: (type: string) => void) => void;
+  // ✅ Nouvelles props pour save/load
+  onSaveExposed?: (saveFn: (filename: string) => Promise<void>) => void;
+  onLoadExposed?: (loadFn: (filename: string) => Promise<void>) => void;
 };
 
 const nodeTypes = {
@@ -68,6 +71,9 @@ export default function LadderEditor({
   sendMessage,
   runPLC,
   setRunPLC,
+  onAddNodeExposed,
+  onSaveExposed,
+  onLoadExposed,
 }: LadderEditorProps) {
   const [rfInstance, setRfInstance] = useState<
     import('reactflow').ReactFlowInstance | null
@@ -199,9 +205,7 @@ export default function LadderEditor({
 
   const pathname = usePathname();
 
-  // Fonction pour générer le nom du fichier depuis le path
   const getFilenameFromPath = useCallback(() => {
-    // Ex: '/games/step1' → 'games-step1'
     const segments = pathname.split('/').filter(Boolean);
     return segments.join('-') || 'default-ladder';
   }, [pathname]);
@@ -220,6 +224,7 @@ export default function LadderEditor({
       })();
     }
   }, [composantsUnity, initialized, loadLadder, getFilenameFromPath]);
+
   type NodeData = {
     variable?: string;
     outValue?: number | null;
@@ -233,23 +238,46 @@ export default function LadderEditor({
     data: NodeData;
   };
 
-  const addNode = (type: string) => {
-    const { newNode, newEdges } = addNodeWithAutoConnection(
-      type,
-      selectedNodeId,
-      nodesRef.current,
-      edgesRef.current,
-      composantsUnity,
-      etatsComposants
-    );
+  const addNode = useCallback(
+    (type: string) => {
+      const { newNode, newEdges } = addNodeWithAutoConnection(
+        type,
+        selectedNodeId,
+        nodesRef.current,
+        edgesRef.current,
+        composantsUnity,
+        etatsComposants
+      );
 
-    let updatedNodes = [...nodesRef.current, newNode];
-    updatedNodes = ladderize(updatedNodes, newEdges);
+      let updatedNodes = [...nodesRef.current, newNode];
+      updatedNodes = ladderize(updatedNodes, newEdges);
 
-    setNodes(updatedNodes);
-    setEdges(newEdges);
-    setSelectedNodeId(newNode.id);
-  };
+      setNodes(updatedNodes);
+      setEdges(newEdges);
+      setSelectedNodeId(newNode.id);
+    },
+    [selectedNodeId, composantsUnity, etatsComposants]
+  );
+
+  // ✅ Expose addNode au parent via callback
+  useEffect(() => {
+    if (onAddNodeExposed) {
+      onAddNodeExposed(addNode);
+    }
+  }, [addNode, onAddNodeExposed]);
+
+  // ✅ Expose saveLadder et loadLadder au parent
+  useEffect(() => {
+    if (onSaveExposed) {
+      onSaveExposed(saveLadder);
+    }
+  }, [saveLadder, onSaveExposed]);
+
+  useEffect(() => {
+    if (onLoadExposed) {
+      onLoadExposed(loadLadder);
+    }
+  }, [loadLadder, onLoadExposed]);
 
   const selected = nodesRef.current.find((n) => n.id === selectedNodeId);
 
@@ -260,7 +288,6 @@ export default function LadderEditor({
     const deltaTime = lastRunTime !== null ? now - lastRunTime : 0;
     lastRunTime = now;
 
-    // Injection des dernières valeurs Unity dans les nodes
     const nodesWithLatestState = nodesRef.current.map((node) => {
       if (node.type !== 'railAlim') {
         return {
@@ -306,26 +333,21 @@ export default function LadderEditor({
     applyOutputs(nodesWithData, sendMessage);
   };
 
-  // Boucle automatique si runPLC actif et à chaque nouvelle valeur Unity
   useEffect(() => {
     if (!runPLC) return;
     if (!etatsComposants || Object.keys(etatsComposants).length === 0) return;
 
-    //console.log('[DEBUG] runPLC actif -> déclenchement runWorkflow');
     runWorkflow();
   }, [etatsComposants, runPLC]);
 
   useEffect(() => {
-    // Mets à jour la variable globale (utilisée par getColorByValue)
     window.runPLCState = runPLC;
 
-    // 🔹 Reset nodes et edges quand PLC OFF
     if (!runPLC) {
       setNodes((prevNodes) =>
         prevNodes.map((node) => {
           const data = { ...node.data };
 
-          // valeurs à remettre à zéro pour reset visuel et logique
           if ('inValue' in data) data.inValue = 0;
           if ('outValue' in data) data.outValue = 0;
           if ('qValue' in data) data.qValue = 0;
@@ -367,7 +389,7 @@ export default function LadderEditor({
 
   const onEdgesChange: OnEdgesChange = useCallback((changes) => {
     setEdges((eds) => applyEdgeChanges(changes, eds));
-    setRunPLC(false); // toggle OFF dès qu'un edge change
+    setRunPLC(false);
   }, []);
 
   const onConnect = useCallback((connection: Connection) => {
@@ -377,7 +399,6 @@ export default function LadderEditor({
       return updatedEdges;
     });
 
-    // Stop le PLC dès qu'une nouvelle connexion est créée
     setRunPLC(false);
   }, []);
 
@@ -387,11 +408,6 @@ export default function LadderEditor({
 
   return (
     <div id="ladder-editor" style={{ width: '100%', height: '85%' }}>
-      <ToolbarLadder
-        onAddNode={addNode}
-        onSave={() => saveLadder('user_ladder')}
-        onLoad={() => loadLadder('user_ladder')}
-      />
       <ReactFlow
         snapToGrid={true}
         snapGrid={[40, 40]}
