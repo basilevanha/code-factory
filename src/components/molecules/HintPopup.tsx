@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef, ReactNode } from 'react';
-import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X } from 'lucide-react';
 import Button from '@/components/atoms/Button';
+import clsx from 'clsx';
 
 type PopupPosition = 'top' | 'bottom' | 'left' | 'right' | 'center';
 
@@ -21,6 +22,7 @@ type HintPopupProps = {
 export default function HintPopup({ hints, onClose }: HintPopupProps) {
   const [currentHint, setCurrentHint] = useState(0);
   const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
+  const [isWiggling, setIsWiggling] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
 
   const hint = hints[currentHint];
@@ -56,6 +58,16 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
 
   const handlePrevious = () => {
     if (currentHint > 0) setCurrentHint(currentHint - 1);
+  };
+
+  const triggerWiggle = () => {
+    if (isWiggling) return;
+    setIsWiggling(true);
+    setTimeout(() => setIsWiggling(false), 600);
+  };
+
+  const handleOutsideClick = () => {
+    triggerWiggle(); // 🌀 au lieu de fermer
   };
 
   const getBestPosition = (): PopupPosition => {
@@ -149,7 +161,7 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50">
-      {/* Zones sombres autour du highlight */}
+      {/* Zones sombres cliquables */}
       {highlightRect ? (
         <>
           <div
@@ -160,7 +172,7 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
               width: '100%',
               height: highlightRect.top,
             }}
-            onClick={onClose}
+            onClick={handleOutsideClick}
           />
           <div
             className="pointer-events-auto fixed bg-black/40"
@@ -170,7 +182,7 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
               width: '100%',
               height: `calc(100vh - ${highlightRect.bottom}px)`,
             }}
-            onClick={onClose}
+            onClick={handleOutsideClick}
           />
           <div
             className="pointer-events-auto fixed bg-black/40"
@@ -180,7 +192,7 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
               width: highlightRect.left,
               height: highlightRect.height,
             }}
-            onClick={onClose}
+            onClick={handleOutsideClick}
           />
           <div
             className="pointer-events-auto fixed bg-black/40"
@@ -190,7 +202,7 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
               width: `calc(100vw - ${highlightRect.right}px)`,
               height: highlightRect.height,
             }}
-            onClick={onClose}
+            onClick={handleOutsideClick}
           />
 
           <div
@@ -206,14 +218,17 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
       ) : (
         <div
           className="pointer-events-auto fixed inset-0 bg-black/40 backdrop-blur-sm"
-          onClick={onClose}
+          onClick={handleOutsideClick}
         />
       )}
 
-      {/* Popup principale */}
+      {/* Popup principale avec animation wiggle */}
       <div
         ref={popupRef}
-        className="pointer-events-auto fixed w-80 rounded-2xl bg-white p-5 text-gray-800 shadow-2xl transition-all"
+        className={clsx(
+          'pointer-events-auto fixed w-80 rounded-2xl bg-white p-5 text-gray-800 shadow-2xl transition-all',
+          isWiggling && 'animate-wiggle'
+        )}
         style={popupStyle}
       >
         <button
@@ -226,7 +241,6 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
         <div className="mb-4 text-base leading-relaxed">{hint.text}</div>
 
         <div className="mt-4 flex items-center justify-between">
-          {/* Bouton précédent ghost discret */}
           <Button
             icon="chevron-left"
             onClick={handlePrevious}
@@ -236,12 +250,10 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
             {''}
           </Button>
 
-          {/* Compteur étape */}
           <div className="text-xs text-gray-400">
             {currentHint + 1} / {hints.length}
           </div>
 
-          {/* Bouton suivant classique */}
           <Button icon="chevron-right" onClick={handleNext}>
             {currentHint < hints.length - 1 ? 'Suivant' : 'Terminer'}
           </Button>

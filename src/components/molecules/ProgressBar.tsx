@@ -15,7 +15,6 @@ export default function ProgressBar({
   const pathname = usePathname();
   const router = useRouter();
   const [completedLevels, setCompletedLevels] = useState<number[]>([]);
-  const [isWiggling, setIsWiggling] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -45,20 +44,6 @@ export default function ProgressBar({
       router.push(`/games/step${nextStep}`);
     }
   };
-
-  // 👉 Fonction pour déclencher le "wizz"
-  const triggerWiggle = () => {
-    setIsWiggling(true);
-    setTimeout(() => setIsWiggling(false), 700);
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      triggerWiggle();
-    }, 10000); // toutes les 10s
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="flex w-full items-center justify-center py-2">
@@ -101,9 +86,7 @@ export default function ProgressBar({
         {currentStep < totalSteps && (
           <button
             onClick={handleNextPage}
-            className={`ml-4 rounded-full bg-blue-500 px-4 py-1 text-sm font-semibold text-white shadow-md transition-all hover:bg-blue-600 ${
-              isWiggling ? 'wiggle' : ''
-            }`}
+            className="ml-4 rounded-full bg-blue-500 px-4 py-1 text-sm font-semibold text-white shadow-md transition-all hover:bg-blue-600"
           >
             →
           </button>
