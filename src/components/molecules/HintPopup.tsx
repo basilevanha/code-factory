@@ -12,6 +12,7 @@ type Hint = {
   targetSelector?: string;
   popupPosition?: PopupPosition;
   offset?: number;
+  nextOnClick?: boolean; // 👈 optionnel, false par défaut
 };
 
 type HintPopupProps = {
@@ -67,7 +68,38 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
   };
 
   const handleOutsideClick = () => {
-    triggerWiggle(); // 🌀 au lieu de fermer
+    // 🌀 seulement en dehors du highlight
+    triggerWiggle();
+  };
+
+  /** 🟡 Clic dans la zone highlight */
+  const handleHighlightClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // 1️⃣ Relayer le clic vers l’élément réel sous la souris
+    const overlay = e.currentTarget as HTMLElement;
+
+    // Désactiver temporairement les events sur l'overlay
+    overlay.style.pointerEvents = 'none';
+    const target = document.elementFromPoint(
+      e.clientX,
+      e.clientY
+    ) as HTMLElement | null;
+    overlay.style.pointerEvents = 'auto';
+
+    if (target && target !== overlay) {
+      const realClick = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        clientX: e.clientX,
+        clientY: e.clientY,
+      });
+      target.dispatchEvent(realClick);
+    }
+
+    // 2️⃣ Si demandé, passer au hint suivant
+    if (hint.nextOnClick) {
+      handleNext();
+    }
+    // ❌ pas de wiggle ici, clique toujours "utile"
   };
 
   const getBestPosition = (): PopupPosition => {
@@ -161,9 +193,9 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50">
-      {/* Zones sombres cliquables */}
       {highlightRect ? (
         <>
+          {/* Zones sombres : bloquent les clics */}
           <div
             className="pointer-events-auto fixed bg-black/40"
             style={{
@@ -205,14 +237,16 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
             onClick={handleOutsideClick}
           />
 
+          {/* 🟡 Zone highlight : capte le clic, mais le relaie et avance éventuellement */}
           <div
-            className="pointer-events-none fixed rounded-lg border-4 border-yellow-400 shadow-[0_0_30px_10px_rgba(255,255,0,0.8)]"
+            className="pointer-events-auto fixed rounded-lg border-4 border-yellow-400 shadow-[0_0_30px_10px_rgba(255,255,0,0.8)]"
             style={{
               top: highlightRect.top - 6,
               left: highlightRect.left - 6,
               width: highlightRect.width + 12,
               height: highlightRect.height + 12,
             }}
+            onClick={handleHighlightClick}
           />
         </>
       ) : (
@@ -222,7 +256,7 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
         />
       )}
 
-      {/* Popup principale avec animation wiggle */}
+      {/* Popup principale */}
       <div
         ref={popupRef}
         className={clsx(
