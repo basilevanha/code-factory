@@ -53,6 +53,7 @@ export default function AuthForm({ defaultMode = 'login' }: AuthFormProps) {
 
     setLoading(true);
     try {
+      // 🔹 Étape 1 : création du compte utilisateur Supabase
       const { data: signupData, error: signupError } =
         await supabase.auth.signUp({
           email,
@@ -67,12 +68,33 @@ export default function AuthForm({ defaultMode = 'login' }: AuthFormProps) {
         return;
       }
 
+      // 🔹 Étape 2 : insérer le joueur dans ta table "joueurs"
       const code = `CF-${Math.floor(100000 + Math.random() * 900000)}`;
-      const { error: insertError } = await supabase
-        .from('joueurs')
-        .insert([{ user_id: user.id, nom: surname, email: user.email, code }]);
+      const { error: insertError } = await supabase.from('joueurs').insert([
+        {
+          user_id: user.id,
+          nom: surname,
+          email: user.email,
+          code,
+        },
+      ]);
       if (insertError) throw insertError;
 
+      // 🔹 Étape 3 : relier les stats anonymes (visitor_id)
+      const visitor_id = localStorage.getItem('visitor_id');
+      if (visitor_id) {
+        const { error: linkError } = await supabase
+          .from('visitor_sessions')
+          .update({ user_id: user.id })
+          .eq('visitor_id', visitor_id)
+          .is('user_id', null);
+
+        if (linkError)
+          console.error('Erreur lien visitor -> user :', linkError);
+        else console.log('✅ Sessions anonymes reliées au compte');
+      }
+
+      // ✅ Étape 4 : redirection
       router.push('/MyFactory');
     } catch (err: unknown) {
       if (err instanceof Error) setError(err.message);

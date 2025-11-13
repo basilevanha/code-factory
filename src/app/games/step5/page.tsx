@@ -5,8 +5,10 @@ import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 import { User } from '@supabase/supabase-js'; // ✅ Import du type officiel
 import AuthForm from '@/components/safety/AuthForm';
+import useTrackVisitor from '@/lib/trackingVisitor';
 
 export default function CreateAccountPage() {
+  useTrackVisitor();
   const [user, setUser] = useState<User | null>(null); // ✅ Typage correct
   const [loading, setLoading] = useState(true);
   const router = useRouter();

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import useTrackVisitor from '@/lib/trackingVisitor';
 
 const options = [
   {
@@ -27,6 +28,7 @@ const options = [
 ];
 
 export default function StudyGoalPage() {
+  useTrackVisitor();
   const pathname = usePathname();
   const router = useRouter();
 
