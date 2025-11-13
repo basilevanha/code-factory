@@ -1,12 +1,24 @@
 'use client';
 
+import { Suspense } from 'react';
 import useTrackVisitor from '@/lib/trackingVisitor';
+
+function TrackingWrapper() {
+  useTrackVisitor();
+  return null;
+}
 
 export default function ClientWrapper({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  useTrackVisitor(); // 👈 Tracking actif sur tout le site
-  return <>{children}</>;
+  return (
+    <>
+      <Suspense fallback={null}>
+        <TrackingWrapper />
+      </Suspense>
+      {children}
+    </>
+  );
 }

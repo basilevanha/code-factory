@@ -27,10 +27,10 @@ export default function useTrackVisitor() {
     const screen_width = window.screen.width;
     const screen_height = window.screen.height;
 
-    // 🔗 Données UTM
-    const utm_source = searchParams.get('utm_source');
-    const utm_medium = searchParams.get('utm_medium');
-    const utm_campaign = searchParams.get('utm_campaign');
+    // 🔗 Données UTM - searchParams peut être null dans certains cas
+    const utm_source = searchParams?.get('utm_source') || null;
+    const utm_medium = searchParams?.get('utm_medium') || null;
+    const utm_campaign = searchParams?.get('utm_campaign') || null;
 
     const start = Date.now();
 

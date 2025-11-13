@@ -15,7 +15,6 @@ import LadderEditor from '@/components/molecules/LadderEditor';
 import SuccessPopup from '@/components/molecules/SuccesPopup';
 import HintPopup from '@/components/molecules/HintPopup';
 import ToolbarLadder from '@/components/molecules/ToolbarLadder';
-import useTrackVisitor from '@/lib/trackingVisitor';
 
 declare global {
   interface Window {
@@ -28,7 +27,6 @@ declare global {
 const gamePath = '/unity/BasicConveyor-2';
 
 export default function GamePage() {
-  useTrackVisitor();
   const [sensorState, setSensorState] = useState<number | null>(null);
   const unityPaths = getUnityPaths(gamePath);
 

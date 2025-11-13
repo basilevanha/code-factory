@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import useTrackVisitor from '@/lib/trackingVisitor';
 
 const options = [
   {
@@ -18,7 +17,7 @@ const options = [
   {
     label: '8 heures / semaine',
     value: 8,
-    message: 'Excellent ! Ton engagement te permettra d’avancer très vite.',
+    message: "Excellent ! Ton engagement te permettra d'avancer très vite.",
   },
   {
     label: '+8 heures / semaine',
@@ -28,7 +27,6 @@ const options = [
 ];
 
 export default function StudyGoalPage() {
-  useTrackVisitor();
   const pathname = usePathname();
   const router = useRouter();
 
