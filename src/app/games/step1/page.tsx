@@ -204,6 +204,7 @@ export default function GamePage() {
         </>
       ),
       targetSelector: '#run-plc-toggle',
+      nextOnClick: true,
     },
     {
       text: (

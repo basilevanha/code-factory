@@ -237,16 +237,19 @@ export default function HintPopup({ hints, onClose }: HintPopupProps) {
             onClick={handleOutsideClick}
           />
 
-          {/* 🟡 Zone highlight : capte le clic, mais le relaie et avance éventuellement */}
+          {/* 🟡 Zone highlight */}
           <div
-            className="pointer-events-auto fixed rounded-lg border-4 border-yellow-400 shadow-[0_0_30px_10px_rgba(255,255,0,0.8)]"
+            className={clsx(
+              'fixed rounded-lg border-4 border-yellow-400 shadow-[0_0_30px_10px_rgba(255,255,0,0.8)]',
+              hint.nextOnClick ? 'pointer-events-auto' : 'pointer-events-none'
+            )}
             style={{
               top: highlightRect.top - 6,
               left: highlightRect.left - 6,
               width: highlightRect.width + 12,
               height: highlightRect.height + 12,
             }}
-            onClick={handleHighlightClick}
+            onClick={hint.nextOnClick ? handleHighlightClick : undefined}
           />
         </>
       ) : (
